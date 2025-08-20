@@ -1,140 +1,481 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pavan Srivathsa Ramesh — Portfolio</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;margin:0;padding:0;background:#f9fafc;color:#1a1a1a;}
-    header {background:#0a192f;color:#fff;padding:2rem;text-align:center;}
-    header h1 {margin:0;font-size:2.5rem;}
-    header p {margin:.5rem 0;}
-    nav {display:flex;justify-content:center;gap:2rem;margin-top:1rem;}
-    nav a {color:#64ffda;text-decoration:none;font-weight:bold;}
-    section {padding:3rem 10%;}
-    h2 {color:#0a192f;margin-bottom:1rem;}
-    .grid {display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
-    .card {background:#fff;border-radius:12px;padding:1.5rem;box-shadow:0 4px 12px rgba(0,0,0,0.08);}
-    .card h3 {margin-top:0;}
-    .tag {background:#e6f7f4;color:#007f73;padding:4px 10px;border-radius:20px;font-size:.8rem;margin-right:5px;}
-    footer {background:#0a192f;color:#aaa;text-align:center;padding:2rem;margin-top:2rem;}
-    .contact a {color:#64ffda;margin:0 10px;font-size:1.2rem;}
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Pavan Srivathsa Ramesh</h1>
-    <p>MS in Computer Science (AI) @ USC | Data Scientist & AI Engineer</p>
-    <nav>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#talks">Talks</a>
-      <a href="#education">Education</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Github, Linkedin, Mail, Bot, ArrowRight, Download, Sparkles, ChevronDown } from "lucide-react";
 
-  <section id="experience">
-    <h2>Professional Experience</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>BlackBuckInsights (AI Engineer)</h3>
-        <p><em>Aug 2024 – Present</em></p>
-        <ul>
-          <li>Built automated Gemini Pro 1.5 email system, saving 20+ hours/week.</li>
-          <li>Enhanced weekly sales & inventory insights delivery efficiency.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Koantek (Data Scientist)</h3>
-        <p><em>Nov 2021 – Aug 2024</em></p>
-        <ul>
-          <li>Developed RAG chatbot with LangChain & Llama3 80B.</li>
-          <li>Built supply chain chatbot with dynamic SQL generation.</li>
-          <li>Fine‑tuned LLMs (Wizard Vicuna, Dolly) using QLoRA & PEFT.</li>
-          <li>Created time‑series demand forecasting (MAPE 9.1%).</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h3>Ugam Solutions (Associate Analyst)</h3>
-        <p><em>Mar 2021 – Oct 2021</em></p>
-        <ul>
-          <li>Developed web‑scraping scripts with BeautifulSoup for retailers.</li>
-        </ul>
-      </div>
+/**
+ * Pavan — Interactive Portfolio
+ * - Scroll-linked transitions (parallax hero, progress bar, reveal-on-scroll)
+ * - Sections: Experience, Projects (with tagged images), Talks, Education, Contact
+ * - Floating AI Chatbot: "Ask me anything about AI" with two backends:
+ *    1) In-browser LLM via WebLLM (WebGPU) — no API key, runs locally
+ *    2) Remote model via your proxy endpoint (Cloudflare Worker/Netlify) — set PROXY_URL
+ * - Dark/light ready (Tailwind)
+ *
+ * HOW TO USE
+ * 1) In your repo run: `npm i framer-motion lucide-react @radix-ui/react-dialog @mlc-ai/web-llm`
+ *    (shadcn/ui components are available; adjust import paths if needed.)
+ * 2) Place images under /public/images and update the `projects` array below.
+ * 3) For WebLLM (local): works out of the box on modern browsers with WebGPU (Chrome/Edge).
+ * 4) For remote proxy: set `const PROXY_URL = "https://<your-worker>.workers.dev/v1/chat/completions";`
+ *    and forward OpenAI-compatible requests to your provider.
+ */
+
+// ---- CONFIG ----
+const PROXY_URL = ""; // Optional: your serverless proxy (Cloudflare Worker / Netlify Function)
+const LOCAL_LLM_DEFAULT = true; // Try local LLM first if supported.
+
+const socials = [
+  { href: "mailto:pavansri@usc.edu", icon: Mail, label: "Email" },
+  { href: "https://github.com/Pavan-Srivathsa", icon: Github, label: "GitHub" },
+  { href: "https://www.linkedin.com/in/pavan-srivathsa-1a6342165/", icon: Linkedin, label: "LinkedIn" },
+];
+
+const experience = [
+  {
+    company: "BlackBuckInsights (BBI)",
+    role: "AI Engineer",
+    period: "Aug 2024 – Present",
+    bullets: [
+      "Automated Gemini 1.5–powered weekly sales & inventory recaps (LW vs LY), cutting manual effort by ~80% (20+ hrs/wk).",
+      "Improved reliability of data processing and on‑time delivery of insights for decisions.",
+    ],
+  },
+  {
+    company: "Koantek",
+    role: "Data Scientist",
+    period: "Nov 2021 – Aug 2024",
+    bullets: [
+      "Built supply‑chain chatbot with dynamic SQL generation and agentic workflow.",
+      "RAG Studio: PDFs/SQL/URLs with routing agent (LangChain + Llama3 80B on Databricks), ↓ latency 22%.",
+      "LLM fine‑tuning (WizardVicuna/Dolly) with PEFT/QLoRA, Chroma + FAISS store.",
+      "Time‑series demand forecasting (SARIMAX/Prophet), MAPE 9.1%, Azure MLOps lifecycle.",
+      "CV & NLP systems: Siamese U‑Net for disaster analysis (Grad‑CAM), spaCy NER from PDFs.",
+      "Recommenders: ALS + Apriori on 1M interactions → +35% conversion, +15% AOV.",
+    ],
+  },
+  {
+    company: "Ugam Solutions",
+    role: "Associate Analyst",
+    period: "Mar 2021 – Oct 2021",
+    bullets: ["Scaled web scraping pipelines across multi‑regional retailers (BeautifulSoup, requests)."],
+  },
+];
+
+const projects = [
+  {
+    title: "LLM RAG Studio",
+    img: "/images/rag-studio.jpg",
+    caption: "RAG over PDFs/SQL/URLs with routing agent and eval harness",
+    tags: ["LangChain", "Llama 3", "Databricks", "FAISS"],
+    link: "#",
+  },
+  {
+    title: "Supply‑Chain Chatbot",
+    img: "/images/supplychain-chatbot.jpg",
+    caption: "Agentic SQL generation with clarifying Qs and natural‑language answers",
+    tags: ["Agents", "SQL", "FastAPI"],
+    link: "#",
+  },
+  {
+    title: "Glaucoma Segmentation",
+    img: "/images/optic-disc-cup.jpg",
+    caption: "CLAHE + Res‑UNet; DICE ↑ from 71% → 81%",
+    tags: ["PyTorch", "Med‑CV", "Grad‑CAM"],
+    link: "#",
+  },
+  {
+    title: "Neural MRI Synthesis",
+    img: "/images/cyclegan-mri.jpg",
+    caption: "CycleGAN for multi‑contrast synthesis; potential 10% cost reduction",
+    tags: ["CycleGAN", "WebGPU‑ready"],
+    link: "#",
+  },
+  {
+    title: "Virtual Try‑On",
+    img: "/images/virtual-tryon.jpg",
+    caption: "Faster‑RCNN + StyleGAN for realistic apparel try‑on",
+    tags: ["CV", "GANs"],
+    link: "#",
+  },
+  {
+    title: "E‑commerce Recommenders",
+    img: "/images/recsys.jpg",
+    caption: "+35% conversion, +15% AOV via ALS + sequence mining",
+    tags: ["ALS", "Apriori", "Spark"],
+    link: "#",
+  },
+];
+
+const talks = [
+  { title: "RAG for Document Processing", desc: "Hands‑on walkthrough integrating vector DBs + fine‑tuned LLMs.", when: "Workshop" },
+  { title: "LLM Seminar", desc: "LLM internals (llama.cpp, GGML) and vector DBs; 45–50 attendees.", when: "Seminar" },
+  { title: "Fine‑Tuning LLMs", desc: "LoRA, QLoRA, LongLoRA, PEFT, MoE, Prompt Tuning.", when: "Workshop" },
+];
+
+const education = [
+  { school: "University of Southern California", program: "MS Computer Science (AI)", time: "Jan 2025 – Dec 2026" },
+  { school: "IIIT‑B & Liverpool John Moores University", program: "M.Sc / PGD in AI/ML — Distinction", time: "Dec 2019 – Apr 2022" },
+  { school: "Dr. Ambedkar Institute of Technology", program: "B.E. Computer Science — 8.8/10", time: "Aug 2016 – Aug 2020" },
+];
+
+// ------- Helpers -------
+function useProgressBar() {
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.2 });
+  return scaleX;
+}
+
+function Section({ id, children, className = "" }: React.PropsWithChildren<{ id: string; className?: string }>) {
+  return (
+    <section id={id} className={`min-h-screen w-full py-24 md:py-32 scroll-mt-20 ${className}`}>
+      <div className="container mx-auto px-4 md:px-8">{children}</div>
+    </section>
+  );
+}
+
+function Hero() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], ["0vh", "-25vh"]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.2]);
+
+  return (
+    <div ref={ref} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <motion.div style={{ y, opacity }} className="text-center max-w-4xl">
+        <div className="inline-flex items-center gap-2 rounded-full border px-3 py-1 mb-4 text-sm">
+          <Sparkles className="h-4 w-4" /> Open to internships & roles
+        </div>
+        <h1 className="text-4xl md:text-6xl font-bold leading-[1.1]">
+          Hi, I'm <span className="text-primary">Pavan</span> — I build <span className="underline decoration-dotted underline-offset-4">data products</span> & AI systems.
+        </h1>
+        <p className="mt-4 text-muted-foreground text-lg">
+          MS CS (AI) @ USC · LLMs, RAG, MLOps, Time‑series, CV. Passionate about healthcare AI & reproducible research.
+        </p>
+        <div className="mt-6 flex items-center justify-center gap-3 flex-wrap">
+          {socials.map((s) => (
+            <Button key={s.label} asChild variant="secondary">
+              <a href={s.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
+                <s.icon className="h-4 w-4" /> {s.label}
+              </a>
+            </Button>
+          ))}
+          <Button asChild>
+            <a href="/Pavan_CV_Jan_25.pdf" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
+              <Download className="h-4 w-4" /> Resume
+            </a>
+          </Button>
+        </div>
+        <div className="mt-10 text-muted-foreground flex items-center justify-center gap-2 animate-bounce">
+          <ChevronDown className="h-5 w-5" /> Scroll
+        </div>
+      </motion.div>
+
+      {/* parallax blobs */}
+      <motion.div className="absolute -z-10 top-10 left-10 h-56 w-56 rounded-full bg-primary/10 blur-2xl" style={{ y: useTransform(scrollYProgress, [0, 1], [0, 80]) }} />
+      <motion.div className="absolute -z-10 bottom-20 right-10 h-72 w-72 rounded-full bg-secondary/20 blur-2xl" style={{ y: useTransform(scrollYProgress, [0, 1], [0, -100]) }} />
     </div>
-  </section>
+  );
+}
 
-  <section id="projects">
-    <h2>Key Projects</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Semantic Segmentation of Optic Disc & Cup</h3>
-        <p>Improved glaucoma diagnosis with Res‑Unet & CLAHE preprocessing (DICE ↑ to 81%).</p>
-      </div>
-      <div class="card">
-        <h3>Neural Synthesis of MRI Images</h3>
-        <p>Built CycleGAN model to generate multi‑contrast MRI scans, reducing cost by 10%.</p>
-      </div>
-      <div class="card">
-        <h3>Recommendation Engine</h3>
-        <p>ALS & Apriori based engine, improving conversions by 35% and AOV by 15%.</p>
-      </div>
-      <div class="card">
-        <h3>Virtual Try‑On</h3>
-        <p>Used Faster‑RCNN & StyleGAN to build realistic AI‑powered apparel try‑on system.</p>
-      </div>
+function Experience() {
+  return (
+    <div className="grid md:grid-cols-3 gap-6">
+      {experience.map((job) => (
+        <Card key={job.company} className="backdrop-blur">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-between">
+              <span>{job.company}</span>
+              <Badge variant="secondary">{job.period}</Badge>
+            </CardTitle>
+            <p className="text-sm text-muted-foreground">{job.role}</p>
+          </CardHeader>
+          <CardContent>
+            <ul className="list-disc pl-5 space-y-2 text-sm">
+              {job.bullets.map((b, i) => (
+                <li key={i}>{b}</li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      ))}
     </div>
-  </section>
+  );
+}
 
-  <section id="talks">
-    <h2>Technical Talks & Workshops</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>RAG for Document Processing</h3>
-        <p>Hands‑on walkthrough of Retrieval‑Augmented Generation (RAG).</p>
-      </div>
-      <div class="card">
-        <h3>LLM Seminar</h3>
-        <p>Talk on Llama.cpp, GGML, and vector DBs; converted 3 startups into clients.</p>
-      </div>
-      <div class="card">
-        <h3>Fine‑Tuning LLMs Workshop</h3>
-        <p>Covered LoRA, QLoRA, PEFT, MoE Fine‑Tuning, and Prompt Tuning.</p>
-      </div>
+function Projects() {
+  return (
+    <div className="grid md:grid-cols-3 gap-6">
+      {projects.map((p) => (
+        <motion.a key={p.title} href={p.link} target="_self" whileHover={{ y: -4 }} className="block">
+          <Card className="overflow-hidden">
+            <div className="relative h-44 w-full bg-muted">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={p.img} alt={p.title} className="object-cover w-full h-full" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            </div>
+            <CardHeader>
+              <CardTitle>{p.title}</CardTitle>
+              <p className="text-sm text-muted-foreground">{p.caption}</p>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-2">
+              {p.tags.map((t) => (
+                <Badge key={t} variant="outline">{t}</Badge>
+              ))}
+            </CardContent>
+          </Card>
+        </motion.a>
+      ))}
     </div>
-  </section>
+  );
+}
 
-  <section id="education">
-    <h2>Education</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>University of Southern California</h3>
-        <p>MS in Computer Science (AI) (2025 – 2026)</p>
-      </div>
-      <div class="card">
-        <h3>IIIT‑Bangalore & Liverpool John Moores University</h3>
-        <p>M.Sc in AI & ML — Distinction (2019 – 2022)</p>
-      </div>
-      <div class="card">
-        <h3>Dr. Ambedkar Institute of Technology</h3>
-        <p>B.E. Computer Science — 8.8/10.0 (2016 – 2020)</p>
-      </div>
+function Talks() {
+  return (
+    <div className="grid md:grid-cols-3 gap-6">
+      {talks.map((t) => (
+        <Card key={t.title}>
+          <CardHeader>
+            <CardTitle>{t.title}</CardTitle>
+            <p className="text-sm text-muted-foreground">{t.when}</p>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm">{t.desc}</p>
+          </CardContent>
+        </Card>
+      ))}
     </div>
-  </section>
+  );
+}
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <div class="contact" style="text-align:center">
-      <a href="mailto:pavansri@usc.edu"><i class="fa fa-envelope"></i></a>
-      <a href="https://github.com/Pavan-Srivathsa" target="_blank"><i class="fab fa-github"></i></a>
-      <a href="https://www.linkedin.com/in/pavan-srivathsa-1a6342165/" target="_blank"><i class="fab fa-linkedin"></i></a>
+function Education() {
+  return (
+    <div className="grid md:grid-cols-3 gap-6">
+      {education.map((e) => (
+        <Card key={e.school}>
+          <CardHeader>
+            <CardTitle>{e.school}</CardTitle>
+            <p className="text-sm text-muted-foreground">{e.time}</p>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm">{e.program}</p>
+          </CardContent>
+        </Card>
+      ))}
     </div>
-  </section>
+  );
+}
 
-  <footer>
-    <p>© 2025 Pavan Srivathsa Ramesh</p>
-  </footer>
-</body>
-</html>
+// ---- AI Chatbot ----
+function Chatbot() {
+  const [open, setOpen] = useState(false);
+  const [messages, setMessages] = useState<{ role: "user" | "assistant"; content: string }[]>([
+    { role: "assistant", content: "Hi! Ask me anything about AI — LLMs, RAG, MLOps, CV, you name it." },
+  ]);
+  const [input, setInput] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [useLocal, setUseLocal] = useState(LOCAL_LLM_DEFAULT);
+  const webllmRef = useRef<any>(null);
+
+  // lazy-load WebLLM only if needed
+  useEffect(() => {
+    if (!open || !useLocal || webllmRef.current) return;
+    (async () => {
+      try {
+        // @ts-ignore
+        const webllm = await import("@mlc-ai/web-llm");
+        const engine = await webllm.CreateMLCEngine({
+          // small default model for fast load; you can switch to Llama 3 8B later
+          model: "Qwen2.5-1.5B-Instruct-q4f16_1-MLC", // available in WebLLM model zoo
+          // stream back partial tokens
+          onProgress: (p: any) => console.log(p?.progress || p),
+        });
+        webllmRef.current = engine;
+      } catch (e) {
+        console.warn("WebLLM load failed; falling back to proxy if configured", e);
+        setUseLocal(false);
+      }
+    })();
+  }, [open, useLocal]);
+
+  const ask = async () => {
+    const q = input.trim();
+    if (!q) return;
+    setMessages((m) => [...m, { role: "user", content: q }]);
+    setInput("");
+    setBusy(true);
+
+    try {
+      if (useLocal && webllmRef.current) {
+        const engine = webllmRef.current;
+        const reply = await engine.chat.completions.create({
+          messages: [
+            { role: "system", content: "You are an AI expert helping with practical, accurate answers." },
+            ...messages,
+            { role: "user", content: q },
+          ],
+          max_tokens: 512,
+          temperature: 0.3,
+        });
+        const text = reply?.choices?.[0]?.message?.content || "(no response)";
+        setMessages((m) => [...m, { role: "assistant", content: text }]);
+      } else if (PROXY_URL) {
+        const resp = await fetch(PROXY_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "gpt-4o-mini", // or any OpenAI-compatible server model
+            messages: [
+              { role: "system", content: "You are an AI expert helping with practical, accurate answers." },
+              ...messages,
+              { role: "user", content: q },
+            ],
+            temperature: 0.3,
+            max_tokens: 512,
+          }),
+        });
+        const data = await resp.json();
+        const text = data?.choices?.[0]?.message?.content || JSON.stringify(data);
+        setMessages((m) => [...m, { role: "assistant", content: text }]);
+      } else {
+        setMessages((m) => [
+          ...m,
+          { role: "assistant", content: "No backend configured. Enable WebLLM (local) or set PROXY_URL." },
+        ]);
+      }
+    } catch (e: any) {
+      setMessages((m) => [...m, { role: "assistant", content: `Error: ${e?.message || e}` }]);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="fixed bottom-5 right-5 rounded-full h-12 w-12 shadow-lg" title="AI Chatbot">
+          <Bot className="h-5 w-5" />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="flex items-center justify-between">
+            <span>Ask me anything about AI</span>
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <label className="flex items-center gap-1">
+                <input type="checkbox" checked={useLocal} onChange={(e) => setUseLocal(e.target.checked)} />
+                Use local (WebLLM)
+              </label>
+            </div>
+          </DialogTitle>
+        </DialogHeader>
+        <div className="max-h-[50vh] overflow-y-auto space-y-3 pr-1">
+          {messages.map((m, i) => (
+            <div key={i} className={`rounded-lg p-3 text-sm ${m.role === "user" ? "bg-primary/10 ml-auto w-fit" : "bg-muted"}`}>
+              {m.content}
+            </div>
+          ))}
+        </div>
+        <div className="flex gap-2 pt-2">
+          <Input placeholder="Ask about LLMs, RAG, MLOps, CV…" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === "Enter" && ask()} />
+          <Button onClick={ask} disabled={busy}>
+            Send <ArrowRight className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
+        {!useLocal && !PROXY_URL && (
+          <p className="text-xs text-muted-foreground pt-2">Tip: set <code>PROXY_URL</code> to your serverless proxy (Cloudflare Worker) to call remote models.</p>
+        )}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default function App() {
+  const scaleX = useProgressBar();
+  return (
+    <div className="relative">
+      {/* scroll progress bar */}
+      <motion.div style={{ scaleX }} className="fixed left-0 right-0 top-0 h-1 origin-left bg-primary z-50" />
+
+      {/* NAV */}
+      <header className="sticky top-0 z-40 backdrop-blur bg-background/70 border-b">
+        <div className="container mx-auto px-4 md:px-8 h-14 flex items-center justify-between">
+          <div className="font-semibold">Pavan</div>
+          <nav className="hidden md:flex items-center gap-4 text-sm">
+            <a href="#experience" className="hover:underline">Experience</a>
+            <a href="#projects" className="hover:underline">Projects</a>
+            <a href="#talks" className="hover:underline">Talks</a>
+            <a href="#education" className="hover:underline">Education</a>
+            <a href="#contact" className="hover:underline">Contact</a>
+          </nav>
+          <div className="flex items-center gap-2">
+            {socials.map((s) => (
+              <a key={s.label} href={s.href} target="_blank" rel="noreferrer" className="p-2 hover:text-primary">
+                <s.icon className="h-5 w-5" />
+              </a>
+            ))}
+          </div>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <Section id="home" className="pt-10">
+        <Hero />
+      </Section>
+
+      {/* EXPERIENCE */}
+      <Section id="experience">
+        <h2 className="text-3xl font-bold mb-6">Experience</h2>
+        <Experience />
+      </Section>
+
+      {/* PROJECTS */}
+      <Section id="projects">
+        <h2 className="text-3xl font-bold mb-6">Projects</h2>
+        <Projects />
+      </Section>
+
+      {/* TALKS */}
+      <Section id="talks">
+        <h2 className="text-3xl font-bold mb-6">Talks & Workshops</h2>
+        <Talks />
+      </Section>
+
+      {/* EDUCATION */}
+      <Section id="education">
+        <h2 className="text-3xl font-bold mb-6">Education</h2>
+        <Education />
+      </Section>
+
+      {/* CONTACT */}
+      <Section id="contact">
+        <h2 className="text-3xl font-bold mb-6">Contact</h2>
+        <Card>
+          <CardContent className="py-6">
+            <p className="text-muted-foreground">Email: <a className="underline" href="mailto:pavansri@usc.edu">pavansri@usc.edu</a></p>
+            <div className="mt-4 flex gap-3">
+              {socials.map((s) => (
+                <Button key={s.label} asChild variant="outline">
+                  <a href={s.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2">
+                    <s.icon className="h-4 w-4" /> {s.label}
+                  </a>
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </Section>
+
+      {/* FOOTER */}
+      <footer className="text-center text-xs text-muted-foreground pb-10">© {new Date().getFullYear()} Pavan Srivathsa Ramesh</footer>
+
+      {/* Floating Chatbot */}
+      <Chatbot />
+    </div>
+  );
+}
