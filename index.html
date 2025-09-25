@@ -3,271 +3,140 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pavan Srivathsa - Portfolio</title>
+  <title>Pavan Srivathsa - Netflix Style</title>
   <style>
-    /* RESET */
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Helvetica Neue', Arial, sans-serif; background:#141414; color:#fff; overflow-x:hidden; }
+    * {margin:0;padding:0;box-sizing:border-box;}
+    body {font-family:"Helvetica Neue",Arial,sans-serif;background:#141414;color:#fff;overflow-x:hidden;}
 
-    /* ---------- OPENING ANIMATION ---------- */
-    .opening-animation {
-      position:fixed; inset:0; z-index:2000;
-      display:flex; align-items:center; justify-content:center;
-      background:linear-gradient(135deg,#000,#1a1a1a);
-      overflow:hidden;
-      animation: fadeOutOpening 1s ease-in-out 5s forwards;
-    }
-    @keyframes fadeOutOpening { to { opacity:0; visibility:hidden; } }
+    /* === Opening Animation === */
+    .opening-animation {position:fixed;inset:0;display:grid;place-items:center;
+      background:radial-gradient(circle at center,#0b0b0b 0%,#000 60%);
+      z-index:2000;animation:overlayFadeOut .7s ease 4.2s forwards;}
+    .letters {display:flex;gap:14vw;align-items:center;animation:introPulse .9s ease-out .2s both;}
+    .letter {font-weight:900;font-size:clamp(72px,18vw,220px);color:#E50914;
+      text-shadow:0 0 20px rgba(229,9,20,.4),0 0 40px rgba(229,9,20,.25);opacity:0;}
+    .letter.left {animation:letterIn .45s ease-out .35s forwards,splitLeft .8s cubic-bezier(.2,.7,.2,1) 1.6s forwards;}
+    .letter.right{animation:letterIn .45s ease-out .45s forwards,splitRight .8s cubic-bezier(.2,.7,.2,1) 1.6s forwards;}
+    .names {position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;align-items:center;}
+    .full-name-left,.full-name-right {font-weight:800;font-size:clamp(36px,6vw,80px);letter-spacing:.18em;
+      text-transform:uppercase;color:#fff;opacity:0;}
+    .full-name-left{justify-self:start;margin-left:6vw;animation:nameFadeInLeft .6s ease 2.5s forwards;}
+    .full-name-right{justify-self:end;margin-right:6vw;animation:nameFadeInRight .6s ease 2.5s forwards;}
+    .main-content{opacity:0;animation:fadeInMain .7s ease 4.3s forwards;}
 
-    .letter-container {
-      display:flex; align-items:center; justify-content:center; gap:200px;
-      animation: moveLettersClose 2s ease-in-out 1s forwards;
-      z-index:2;
-    }
-    .letter {
-      font-size:150px; font-weight:900; color:#E50914;
-      text-shadow:5px 5px 0 #B71C1C,10px 10px 0 #8B0000,15px 15px 0 #660000,20px 20px 25px rgba(0,0,0,0.8);
-      opacity:0;
-      animation: fadeInLetter 1s ease-in-out forwards;
-    }
-    .letter.p { animation-delay:0.2s; }
-    .letter.s { animation-delay:0.4s; }
+    @keyframes letterIn{from{opacity:0;transform:scale(.75) translateY(20px);}to{opacity:1;transform:scale(1);}}
+    @keyframes introPulse{0%{transform:scale(.96);}60%{transform:scale(1.02);}100%{transform:scale(1);}}
+    @keyframes splitLeft{to{transform:translateX(-32vw) scale(.72);opacity:0;}}
+    @keyframes splitRight{to{transform:translateX(32vw) scale(.72);opacity:0;}}
+    @keyframes nameFadeInLeft{from{opacity:0;transform:translateX(-2vw);}to{opacity:1;transform:translateX(0);}}
+    @keyframes nameFadeInRight{from{opacity:0;transform:translateX(2vw);}to{opacity:1;transform:translateX(0);}}
+    @keyframes overlayFadeOut{to{opacity:0;visibility:hidden;}}
+    @keyframes fadeInMain{to{opacity:1;}}
 
-    @keyframes fadeInLetter {
-      from { opacity:0; transform:translateY(50px) scale(0.8); }
-      to { opacity:1; transform:translateY(0) scale(1); }
-    }
-    @keyframes moveLettersClose {
-      to { gap:50px; transform:scale(0.6); }
-    }
+    /* === Navbar === */
+    .navbar{position:fixed;top:0;width:100%;padding:20px 4%;z-index:100;
+      background:linear-gradient(180deg,rgba(0,0,0,.7) 10%,transparent);
+      transition:background-color .4s ease;}
+    .navbar.scrolled{background:#141414;}
+    .nav-content{display:flex;justify-content:space-between;align-items:center;}
+    .logo{font-size:28px;font-weight:700;color:#E50914;}
 
-    .full-name {
-      position:absolute; font-size:80px; font-weight:700; color:#E50914;
-      text-shadow:3px 3px 0 #B71C1C,6px 6px 0 #8B0000,9px 9px 0 #660000,12px 12px 15px rgba(0,0,0,0.8);
-      opacity:0; letter-spacing:3px;
-      animation: expandToFullName 1.5s ease-in-out 3.5s forwards;
-    }
-    @keyframes expandToFullName {
-      from { opacity:0; transform:scale(0.5); }
-      50% { opacity:0.7; transform:scale(0.8); }
-      to { opacity:1; transform:scale(1); }
-    }
+    /* === Sections === */
+    .content-section{padding:60px 4%;}
+    .section-title{font-size:24px;font-weight:700;margin-bottom:20px;color:#e5e5e5;}
 
-    /* Floating logos */
-    .logo-container { position:absolute; bottom:-100px; left:0; right:0; display:flex; justify-content:space-around; z-index:1; }
-    .logo-bubble {
-      width:60px; height:auto; opacity:0;
-      filter:drop-shadow(0 0 12px rgba(229,9,20,.5));
-      animation: floatUp 8s ease-in-out infinite;
-    }
-    .logo-bubble:nth-child(1){animation-delay:0s}
-    .logo-bubble:nth-child(2){animation-delay:1s}
-    .logo-bubble:nth-child(3){animation-delay:2s}
-    .logo-bubble:nth-child(4){animation-delay:3s}
-    .logo-bubble:nth-child(5){animation-delay:4s}
-    .logo-bubble:nth-child(6){animation-delay:5s}
+    /* === Cards === */
+    .row-content{display:flex;gap:20px;flex-wrap:wrap;}
+    .card{flex:1;min-width:280px;height:160px;border-radius:12px;position:relative;cursor:pointer;
+      overflow:hidden;display:flex;align-items:center;justify-content:center;
+      box-shadow:0 4px 15px rgba(0,0,0,.4);
+      transition:transform .3s ease,box-shadow .3s ease;}
+    .card:hover{transform:scale(1.05) translateY(-6px);box-shadow:0 8px 25px rgba(0,0,0,.6);}
+    .card-image{text-align:center;font-weight:bold;color:#fff;text-transform:uppercase;font-size:18px;letter-spacing:1px;line-height:1.4;}
+    .card-image div:first-child{font-size:32px;margin-bottom:6px;}
+    .card-label{position:absolute;bottom:10px;left:10px;font-size:12px;font-weight:600;color:#fff;
+      padding:3px 8px;border-radius:4px;background:rgba(0,0,0,.8);}
 
-    @keyframes floatUp {
-      0% { opacity:0; transform:translateY(0) scale(0.7); }
-      20%{ opacity:1; }
-      80%{ opacity:1; transform:translateY(-350px) scale(1.1); }
-      100%{ opacity:0; transform:translateY(-450px) scale(0.6); }
-    }
-
-    /* ---------- MAIN CONTENT (Netflix style) ---------- */
-    .main-content { opacity:0; animation: fadeInMain 1s ease-in-out 5.2s forwards; }
-    @keyframes fadeInMain { to { opacity:1; } }
-
-    .navbar { position:fixed; top:0; width:100%; background:linear-gradient(180deg,rgba(0,0,0,0.7) 10%,transparent); padding:20px 4%; z-index:100; }
-    .navbar.scrolled { background:#141414; }
-    .nav-content{display:flex;justify-content:space-between;align-items:center}
-    .logo{font-size:32px;font-weight:bold;color:#E50914;text-shadow:2px 2px 4px rgba(0,0,0,0.8)}
-    .nav-links{display:flex;list-style:none;gap:20px}
-    .nav-links a{color:#fff;text-decoration:none;font-size:14px;font-weight:500;transition:.3s}
-    .nav-links a:hover{color:#b3b3b3}
-
-    /* Hero Section */
+    /* === Hero === */
     .hero{height:100vh;display:flex;align-items:center;padding:0 4%;
-      background:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.6)),radial-gradient(ellipse at center,#1a1a1a 0%,#000 100%);
-    }
-    .hero h1{font-size:72px;color:#E50914;margin-bottom:15px;text-shadow:3px 3px 0 #B71C1C,6px 6px 0 #8B0000,9px 9px 0 #660000,12px 12px 15px rgba(0,0,0,0.8);}
-    .subtitle{font-size:28px;margin-bottom:20px}
-    .description{font-size:18px;line-height:1.6;max-width:500px;margin-bottom:30px;color:#e5e5e5}
-    .hero-buttons{display:flex;gap:15px;flex-wrap:wrap}
-    .btn{padding:15px 30px;border:none;border-radius:6px;font-size:16px;font-weight:bold;cursor:pointer;transition:.3s}
-    .btn-primary{background:#E50914;color:#fff}
-    .btn-primary:hover{background:#f40612;transform:translateY(-2px)}
-    .btn-secondary{background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.3)}
-    .btn-secondary:hover{background:rgba(255,255,255,.3);transform:translateY(-2px)}
-
-    /* (keep your sections, rows, skills, experience, footer, modal same as in your code) */
+      background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.6)),
+                radial-gradient(ellipse at center,#1a1a1a 0%,#000 100%);}
+    .hero h1{font-size:72px;font-weight:700;margin-bottom:15px;color:#E50914;}
+    .hero .subtitle{font-size:28px;margin-bottom:20px;}
+    .hero .description{max-width:600px;color:#e5e5e5;}
   </style>
 </head>
 <body>
-  <!-- Opening Animation -->
-  <div class="opening-animation">
-    <div class="logo-container">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/google.svg" class="logo-bubble" alt="Google">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="logo-bubble" alt="Amazon">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/microsoft.svg" class="logo-bubble" alt="Microsoft">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/meta.svg" class="logo-bubble" alt="Meta">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/apple.svg" class="logo-bubble" alt="Apple">
-      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg" class="logo-bubble" alt="Netflix">
+  <!-- === Opening Animation === -->
+  <div class="opening-animation" id="openingAnimation">
+    <div class="letters">
+      <span class="letter left">P</span>
+      <span class="letter right">S</span>
     </div>
-
-    <div class="letter-container">
-      <div class="letter p">P</div>
-      <div class="letter s">S</div>
+    <div class="names">
+      <span class="full-name-left">PAVAN</span>
+      <span class="full-name-right">SRIVATHSA</span>
     </div>
-    <div class="full-name">PAVAN SRIVATHSA</div>
   </div>
 
-  <!-- Main Content -->
+  <!-- === Main Content === -->
   <div class="main-content">
-    <!-- Navigation -->
     <nav class="navbar" id="navbar">
       <div class="nav-content">
         <div class="logo">PAVAN SRIVATHSA</div>
-        <ul class="nav-links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#skills">Skills</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
       </div>
     </nav>
 
-    <!-- Hero -->
     <section class="hero" id="home">
       <div>
         <h1>Pavan Srivathsa</h1>
         <p class="subtitle">AI Engineer & Data Scientist</p>
-        <p class="description">Innovative AI Engineer and Data Scientist with 3+ years of experience in ML, Generative AI, and LLM fine-tuning. Currently pursuing MS in Computer Science (AI) at USC. Expert in Python, PyTorch, TensorFlow, and cloud platforms with a proven track record of building production-ready AI solutions.</p>
-        <div class="hero-buttons">
-          <button class="btn btn-primary" onclick="document.getElementById('projects').scrollIntoView()">▶ View My Work</button>
-          <button class="btn btn-secondary" onclick="downloadResume()">📄 Download Resume</button>
+        <p class="description">Innovative AI Engineer with 3+ years of experience in ML, Generative AI, and cloud platforms.</p>
+      </div>
+    </section>
+
+    <section class="content-section" id="projects">
+      <h2 class="section-title">Today's Top Picks for Recruiters</h2>
+      <div class="row-content">
+        <div class="card" style="background:linear-gradient(135deg,#3d342b,#1f1a14);">
+          <div class="card-image"><div>📋</div>WORK AUTHORIZATION</div>
+          <div class="card-label">Work Permit</div>
+        </div>
+        <div class="card" style="background:linear-gradient(135deg,#1c2230,#0d1117);">
+          <div class="card-image"><div>⚡</div>TECHNICAL SKILLS</div>
+          <div class="card-label">Skills</div>
         </div>
       </div>
     </section>
 
-    <!-- 🔻 Keep your Projects, Skills, Experience, Footer, Modal code from your version here 🔻 -->
+    <section class="content-section">
+      <h2 class="section-title">Continue Watching for Recruiters</h2>
+      <div class="row-content">
+        <div class="card" style="background:linear-gradient(135deg,#0f3c23,#062b18);">
+          <div class="card-image"><div>🎵</div>MUSIC & CREATIVITY</div>
+          <div class="card-label">Music</div>
+        </div>
+        <div class="card" style="background:linear-gradient(135deg,#5a3624,#2d1c13);">
+          <div class="card-image"><div>📚</div>CONTINUOUS LEARNING</div>
+          <div class="card-label">Reading</div>
+        </div>
+      </div>
+    </section>
   </div>
 
-<script>
-  // Navbar scroll effect
-  window.addEventListener('scroll', () => {
-    const navbar=document.getElementById('navbar');
-    navbar.classList.toggle('scrolled', window.scrollY>100);
-  });
-  // Resume download
-  function downloadResume(){
-    const a=document.createElement('a');
-    a.href='./Pavan_CV_Jan_25.pdf';
-    a.download='Pavan_Srivathsa_Resume.pdf';
-    a.click();
-  }
-</script>
-
-
-
-
-
-          // Modal functions
-        function openModal(type) {
-            const modal = document.getElementById('modal');
-            const modalBody = document.getElementById('modal-body');
-            modal.style.display = 'block';
-
-            let content = '';
-            switch(type) {
-                case 'work-permit':
-                    content = `
-                        <h2>Work Authorization</h2>
-                        <p><strong>Status:</strong> F-1 Visa (STEM Eligible)</p>
-                        <p>Authorized to work in the U.S. with CPT/OPT. Eligible for STEM extension (3 years).</p>
-                    `;
-                    break;
-                case 'skills':
-                    content = `
-                        <h2>Technical Skills</h2>
-                        <p>Proficient in Python, Java, SQL, ML/DL frameworks (PyTorch, TensorFlow), and cloud platforms (AWS, Azure, GCP, Databricks).</p>
-                    `;
-                    break;
-                case 'experience':
-                    content = `
-                        <h2>MS in Computer Science (AI)</h2>
-                        <p>Pursuing MSCS at the University of Southern California (AI track). Expected graduation: Dec 2026.</p>
-                    `;
-                    break;
-                case 'certifications':
-                    content = `
-                        <h2>Certifications</h2>
-                        <p>AWS Certified Solutions Architect, TensorFlow Developer Certificate, Databricks Lakehouse Fundamentals.</p>
-                    `;
-                    break;
-                case 'recommendations':
-                    content = `
-                        <h2>Recommendations</h2>
-                        <p>Endorsed by professors and senior engineers for outstanding contributions in research and production AI systems.</p>
-                    `;
-                    break;
-                case 'projects':
-                    content = `
-                        <h2>Featured Projects</h2>
-                        <p>✔ Supply Chain Chatbot with RAG + LLMs</p>
-                        <p>✔ Cancer Risk Stratification ML model</p>
-                        <p>✔ Multimodal Medical Research Dashboards</p>
-                    `;
-                    break;
-                case 'music':
-                    content = `
-                        <h2>Music & Creativity</h2>
-                        <p>Passionate about Indian classical violin and composing AI-generated soundtracks.</p>
-                    `;
-                    break;
-                case 'reading':
-                    content = `
-                        <h2>Continuous Learning</h2>
-                        <p>Actively reading research papers on LLM fine-tuning, RLHF, and Generative AI applications.</p>
-                    `;
-                    break;
-                case 'blogs':
-                    content = `
-                        <h2>Technical Writing</h2>
-                        <p>Published blogs on LLMs, distributed ML pipelines, and AI for healthcare. Available on Medium and GitHub Pages.</p>
-                    `;
-                    break;
-                case 'contact':
-                    content = `
-                        <h2>Contact</h2>
-                        <p>Email: <a href="mailto:pavansri@usc.edu">pavansri@usc.edu</a></p>
-                        <p>Phone: +1 (213) 275-9012</p>
-                        <p>LinkedIn: <a href="https://linkedin.com/in/Pavan-Srivathsa" target="_blank">linkedin.com/in/Pavan-Srivathsa</a></p>
-                        <p>GitHub: <a href="https://github.com/Pavan-srivathsa" target="_blank">github.com/Pavan-srivathsa</a></p>
-                    `;
-                    break;
-                default:
-                    content = `<h2>More Info</h2><p>Coming soon...</p>`;
-            }
-
-            modalBody.innerHTML = content;
-        }
-
-        function closeModal() {
-            document.getElementById('modal').style.display = 'none';
-        }
-
-        // Close modal when clicking outside
-        window.onclick = function(event) {
-            const modal = document.getElementById('modal');
-            if (event.target === modal) {
-                modal.style.display = "none";
-            }
-        }
-    </script>
-</body>
-</html>
-
+  <script>
+    // Navbar scroll
+    window.addEventListener("scroll",()=> {
+      const nav=document.getElementById("navbar");
+      if(window.scrollY>100) nav.classList.add("scrolled");
+      else nav.classList.remove("scrolled");
+    });
+    // Skip animation on click
+    document.getElementById("openingAnimation").addEventListener("click",function(){
+      this.style.animation="overlayFadeOut .35s ease forwards";
+      document.querySelector(".main-content").style.opacity="1";
+      setTimeout(()=>this.remove(),360);
+    });
+  </script>
 </body>
 </html>
