@@ -168,5 +168,106 @@
     a.click();
   }
 </script>
+
+
+
+
+
+          // Modal functions
+        function openModal(type) {
+            const modal = document.getElementById('modal');
+            const modalBody = document.getElementById('modal-body');
+            modal.style.display = 'block';
+
+            let content = '';
+            switch(type) {
+                case 'work-permit':
+                    content = `
+                        <h2>Work Authorization</h2>
+                        <p><strong>Status:</strong> F-1 Visa (STEM Eligible)</p>
+                        <p>Authorized to work in the U.S. with CPT/OPT. Eligible for STEM extension (3 years).</p>
+                    `;
+                    break;
+                case 'skills':
+                    content = `
+                        <h2>Technical Skills</h2>
+                        <p>Proficient in Python, Java, SQL, ML/DL frameworks (PyTorch, TensorFlow), and cloud platforms (AWS, Azure, GCP, Databricks).</p>
+                    `;
+                    break;
+                case 'experience':
+                    content = `
+                        <h2>MS in Computer Science (AI)</h2>
+                        <p>Pursuing MSCS at the University of Southern California (AI track). Expected graduation: Dec 2026.</p>
+                    `;
+                    break;
+                case 'certifications':
+                    content = `
+                        <h2>Certifications</h2>
+                        <p>AWS Certified Solutions Architect, TensorFlow Developer Certificate, Databricks Lakehouse Fundamentals.</p>
+                    `;
+                    break;
+                case 'recommendations':
+                    content = `
+                        <h2>Recommendations</h2>
+                        <p>Endorsed by professors and senior engineers for outstanding contributions in research and production AI systems.</p>
+                    `;
+                    break;
+                case 'projects':
+                    content = `
+                        <h2>Featured Projects</h2>
+                        <p>✔ Supply Chain Chatbot with RAG + LLMs</p>
+                        <p>✔ Cancer Risk Stratification ML model</p>
+                        <p>✔ Multimodal Medical Research Dashboards</p>
+                    `;
+                    break;
+                case 'music':
+                    content = `
+                        <h2>Music & Creativity</h2>
+                        <p>Passionate about Indian classical violin and composing AI-generated soundtracks.</p>
+                    `;
+                    break;
+                case 'reading':
+                    content = `
+                        <h2>Continuous Learning</h2>
+                        <p>Actively reading research papers on LLM fine-tuning, RLHF, and Generative AI applications.</p>
+                    `;
+                    break;
+                case 'blogs':
+                    content = `
+                        <h2>Technical Writing</h2>
+                        <p>Published blogs on LLMs, distributed ML pipelines, and AI for healthcare. Available on Medium and GitHub Pages.</p>
+                    `;
+                    break;
+                case 'contact':
+                    content = `
+                        <h2>Contact</h2>
+                        <p>Email: <a href="mailto:pavansri@usc.edu">pavansri@usc.edu</a></p>
+                        <p>Phone: +1 (213) 275-9012</p>
+                        <p>LinkedIn: <a href="https://linkedin.com/in/Pavan-Srivathsa" target="_blank">linkedin.com/in/Pavan-Srivathsa</a></p>
+                        <p>GitHub: <a href="https://github.com/Pavan-srivathsa" target="_blank">github.com/Pavan-srivathsa</a></p>
+                    `;
+                    break;
+                default:
+                    content = `<h2>More Info</h2><p>Coming soon...</p>`;
+            }
+
+            modalBody.innerHTML = content;
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('modal');
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
+
 </body>
 </html>
