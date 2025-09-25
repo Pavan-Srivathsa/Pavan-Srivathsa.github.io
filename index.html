@@ -1,159 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Pavan Srivathsa – Portfolio</title>
-<style>
-  :root{
-    --red:#E50914;
-    --bg:#0b0b0b;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:"Helvetica Neue",Arial,sans-serif;background:#141414;color:#fff;overflow-x:hidden}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pavan Srivathsa - Portfolio</title>
+  <style>
+    /* RESET */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Helvetica Neue', Arial, sans-serif; background:#141414; color:#fff; overflow-x:hidden; }
 
-  /* ---------- OPENER ---------- */
-  .opener{
-    position:fixed; inset:0; z-index:9999;
-    display:grid; place-items:center;
-    background:#000;
-    overflow:hidden; cursor:pointer;
-  }
-  .opener__scan{
-    position:absolute; inset:0; pointer-events:none; opacity:.25;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.15) 40%, transparent 60%);
-    transform: translateX(-100%);
-    animation: scan 2s ease-in .3s both;
-  }
-  @keyframes scan{to{transform:translateX(100%)}}
+    /* ---------- OPENING ANIMATION ---------- */
+    .opening-animation {
+      position:fixed; inset:0; z-index:2000;
+      display:flex; align-items:center; justify-content:center;
+      background:linear-gradient(135deg,#000,#1a1a1a);
+      overflow:hidden;
+      animation: fadeOutOpening 1s ease-in-out 5s forwards;
+    }
+    @keyframes fadeOutOpening { to { opacity:0; visibility:hidden; } }
 
-  /* Floating logos */
-  .logo-container{position:absolute;bottom:-100px;left:0;right:0;display:flex;justify-content:space-around;z-index:0}
-  .logo-bubble{
-    width:60px;height:auto;opacity:0;filter:drop-shadow(0 0 12px rgba(229,9,20,.5));
-    animation: floatUp 8s ease-in-out infinite;
-  }
-  .logo-bubble:nth-child(1){animation-delay:0s}
-  .logo-bubble:nth-child(2){animation-delay:1s}
-  .logo-bubble:nth-child(3){animation-delay:2s}
-  .logo-bubble:nth-child(4){animation-delay:3s}
-  .logo-bubble:nth-child(5){animation-delay:4s}
-  .logo-bubble:nth-child(6){animation-delay:5s}
-  @keyframes floatUp{
-    0%{opacity:0;transform:translateY(0) scale(.7)}
-    20%{opacity:1}
-    80%{opacity:1;transform:translateY(-350px) scale(1.1)}
-    100%{opacity:0;transform:translateY(-450px) scale(.6)}
-  }
+    .letter-container {
+      display:flex; align-items:center; justify-content:center; gap:200px;
+      animation: moveLettersClose 2s ease-in-out 1s forwards;
+      z-index:2;
+    }
+    .letter {
+      font-size:150px; font-weight:900; color:#E50914;
+      text-shadow:5px 5px 0 #B71C1C,10px 10px 0 #8B0000,15px 15px 0 #660000,20px 20px 25px rgba(0,0,0,0.8);
+      opacity:0;
+      animation: fadeInLetter 1s ease-in-out forwards;
+    }
+    .letter.p { animation-delay:0.2s; }
+    .letter.s { animation-delay:0.4s; }
 
-  /* P / S split */
-  .ps{position:relative;display:flex;gap:12vw;align-items:baseline;z-index:1}
-  .big{
-    font-size:clamp(72px,18vw,220px);font-weight:900;color:var(--red);
-    text-shadow:0 0 22px rgba(229,9,20,.35);
-    opacity:0;
-  }
-  .word{
-    font-size:clamp(34px,6vw,84px);font-weight:800;color:#fff;text-transform:uppercase;
-    letter-spacing:.18em;white-space:nowrap;opacity:0;
-  }
-  .big--p{animation:bigIn .6s ease .4s forwards,splitLeft .9s ease 1.2s forwards,bigAway .4s ease 2.1s forwards}
-  .big--s{animation:bigIn .6s ease .5s forwards,splitRight .9s ease 1.2s forwards,bigAway .4s ease 2.1s forwards}
-  .word--p{animation:revealLeft .6s ease 1.6s forwards}
-  .word--s{animation:revealRight .6s ease 1.6s forwards}
+    @keyframes fadeInLetter {
+      from { opacity:0; transform:translateY(50px) scale(0.8); }
+      to { opacity:1; transform:translateY(0) scale(1); }
+    }
+    @keyframes moveLettersClose {
+      to { gap:50px; transform:scale(0.6); }
+    }
 
-  @keyframes bigIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
-  @keyframes splitLeft{to{transform:translateX(-26vw) scale(.8)}}
-  @keyframes splitRight{to{transform:translateX(26vw) scale(.8)}}
-  @keyframes bigAway{to{opacity:0;filter:blur(6px)}}
-  @keyframes revealLeft{from{opacity:0;transform:scaleX(.2)}to{opacity:1;transform:scaleX(1)}}
-  @keyframes revealRight{from{opacity:0;transform:scaleX(.2)}to{opacity:1;transform:scaleX(1)}}
+    .full-name {
+      position:absolute; font-size:80px; font-weight:700; color:#E50914;
+      text-shadow:3px 3px 0 #B71C1C,6px 6px 0 #8B0000,9px 9px 0 #660000,12px 12px 15px rgba(0,0,0,0.8);
+      opacity:0; letter-spacing:3px;
+      animation: expandToFullName 1.5s ease-in-out 3.5s forwards;
+    }
+    @keyframes expandToFullName {
+      from { opacity:0; transform:scale(0.5); }
+      50% { opacity:0.7; transform:scale(0.8); }
+      to { opacity:1; transform:scale(1); }
+    }
 
-  .opener.fade{animation:fadeOut .7s ease forwards}
-  @keyframes fadeOut{to{opacity:0;visibility:hidden}}
+    /* Floating logos */
+    .logo-container { position:absolute; bottom:-100px; left:0; right:0; display:flex; justify-content:space-around; z-index:1; }
+    .logo-bubble {
+      width:60px; height:auto; opacity:0;
+      filter:drop-shadow(0 0 12px rgba(229,9,20,.5));
+      animation: floatUp 8s ease-in-out infinite;
+    }
+    .logo-bubble:nth-child(1){animation-delay:0s}
+    .logo-bubble:nth-child(2){animation-delay:1s}
+    .logo-bubble:nth-child(3){animation-delay:2s}
+    .logo-bubble:nth-child(4){animation-delay:3s}
+    .logo-bubble:nth-child(5){animation-delay:4s}
+    .logo-bubble:nth-child(6){animation-delay:5s}
 
-  /* ---------- PAGE ---------- */
-  .navbar{position:sticky;top:0;padding:18px 4%;background:linear-gradient(180deg,rgba(0,0,0,.7),transparent)}
-  .logo{font-size:24px;font-weight:800;color:var(--red)}
-  .main{opacity:0;transition:opacity .45s ease}
-  .main.show{opacity:1}
+    @keyframes floatUp {
+      0% { opacity:0; transform:translateY(0) scale(0.7); }
+      20%{ opacity:1; }
+      80%{ opacity:1; transform:translateY(-350px) scale(1.1); }
+      100%{ opacity:0; transform:translateY(-450px) scale(0.6); }
+    }
 
-  .wrap{padding:28px 4%}
-  h1{font-size:32px;color:var(--red);margin-bottom:10px}
-  .muted{color:#aaa}
+    /* ---------- MAIN CONTENT (Netflix style) ---------- */
+    .main-content { opacity:0; animation: fadeInMain 1s ease-in-out 5.2s forwards; }
+    @keyframes fadeInMain { to { opacity:1; } }
 
-  .resume{margin-top:20px;border:1px solid rgba(255,255,255,.2);border-radius:10px;overflow:hidden}
-  .resume__bar{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#111}
-  .resume__btn{background:transparent;color:#fff;border:1px solid #fff;padding:6px 12px;border-radius:6px;cursor:pointer}
-  .resume__btn:hover{background:#fff;color:#000}
-  .resume__frame{width:100%;height:80vh;border:none}
-</style>
+    .navbar { position:fixed; top:0; width:100%; background:linear-gradient(180deg,rgba(0,0,0,0.7) 10%,transparent); padding:20px 4%; z-index:100; }
+    .navbar.scrolled { background:#141414; }
+    .nav-content{display:flex;justify-content:space-between;align-items:center}
+    .logo{font-size:32px;font-weight:bold;color:#E50914;text-shadow:2px 2px 4px rgba(0,0,0,0.8)}
+    .nav-links{display:flex;list-style:none;gap:20px}
+    .nav-links a{color:#fff;text-decoration:none;font-size:14px;font-weight:500;transition:.3s}
+    .nav-links a:hover{color:#b3b3b3}
+
+    /* Hero Section */
+    .hero{height:100vh;display:flex;align-items:center;padding:0 4%;
+      background:linear-gradient(rgba(0,0,0,.4),rgba(0,0,0,.6)),radial-gradient(ellipse at center,#1a1a1a 0%,#000 100%);
+    }
+    .hero h1{font-size:72px;color:#E50914;margin-bottom:15px;text-shadow:3px 3px 0 #B71C1C,6px 6px 0 #8B0000,9px 9px 0 #660000,12px 12px 15px rgba(0,0,0,0.8);}
+    .subtitle{font-size:28px;margin-bottom:20px}
+    .description{font-size:18px;line-height:1.6;max-width:500px;margin-bottom:30px;color:#e5e5e5}
+    .hero-buttons{display:flex;gap:15px;flex-wrap:wrap}
+    .btn{padding:15px 30px;border:none;border-radius:6px;font-size:16px;font-weight:bold;cursor:pointer;transition:.3s}
+    .btn-primary{background:#E50914;color:#fff}
+    .btn-primary:hover{background:#f40612;transform:translateY(-2px)}
+    .btn-secondary{background:rgba(255,255,255,.2);color:#fff;border:2px solid rgba(255,255,255,.3)}
+    .btn-secondary:hover{background:rgba(255,255,255,.3);transform:translateY(-2px)}
+
+    /* (keep your sections, rows, skills, experience, footer, modal same as in your code) */
+  </style>
 </head>
 <body>
+  <!-- Opening Animation -->
+  <div class="opening-animation">
+    <div class="logo-container">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/google.svg" class="logo-bubble" alt="Google">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="logo-bubble" alt="Amazon">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/microsoft.svg" class="logo-bubble" alt="Microsoft">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/meta.svg" class="logo-bubble" alt="Meta">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/apple.svg" class="logo-bubble" alt="Apple">
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg" class="logo-bubble" alt="Netflix">
+    </div>
 
-<!-- ---------- OPENER ---------- -->
-<div class="opener" id="opener">
-  <div class="opener__scan"></div>
-
-  <!-- Floating logos -->
-  <div class="logo-container">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/google.svg" class="logo-bubble" alt="Google">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/amazon.svg" class="logo-bubble" alt="Amazon">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/microsoft.svg" class="logo-bubble" alt="Microsoft">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/meta.svg" class="logo-bubble" alt="Meta">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/apple.svg" class="logo-bubble" alt="Apple">
-    <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/netflix.svg" class="logo-bubble" alt="Netflix">
+    <div class="letter-container">
+      <div class="letter p">P</div>
+      <div class="letter s">S</div>
+    </div>
+    <div class="full-name">PAVAN SRIVATHSA</div>
   </div>
 
-  <div class="ps">
-    <div>
-      <span class="big big--p">P</span>
-      <span class="word word--p">PAVAN</span>
-    </div>
-    <div>
-      <span class="big big--s">S</span>
-      <span class="word word--s">SRIVATHSA</span>
-    </div>
-  </div>
-</div>
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-content">
+        <div class="logo">PAVAN SRIVATHSA</div>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
 
-<!-- ---------- SITE ---------- -->
-<nav class="navbar"><div class="logo">PAVAN SRIVATHSA</div></nav>
-
-<main class="main" id="main">
-  <section class="wrap">
-    <h1>Resume</h1>
-    <p class="muted">View inline or open in new tab:</p>
-
-    <div class="resume">
-      <div class="resume__bar">
-        <span>📄 Pavan_Srivathsa_Resume.pdf</span>
-        <div>
-          <button class="resume__btn" onclick="openResume()">Open</button>
-          <button class="resume__btn" onclick="downloadResume()">Download</button>
+    <!-- Hero -->
+    <section class="hero" id="home">
+      <div>
+        <h1>Pavan Srivathsa</h1>
+        <p class="subtitle">AI Engineer & Data Scientist</p>
+        <p class="description">Innovative AI Engineer and Data Scientist with 3+ years of experience in ML, Generative AI, and LLM fine-tuning. Currently pursuing MS in Computer Science (AI) at USC. Expert in Python, PyTorch, TensorFlow, and cloud platforms with a proven track record of building production-ready AI solutions.</p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary" onclick="document.getElementById('projects').scrollIntoView()">▶ View My Work</button>
+          <button class="btn btn-secondary" onclick="downloadResume()">📄 Download Resume</button>
         </div>
       </div>
-      <iframe src="Pavan_CV_Jan_25.pdf#view=FitH" class="resume__frame"></iframe>
-    </div>
-  </section>
-</main>
+    </section>
+
+    <!-- 🔻 Keep your Projects, Skills, Experience, Footer, Modal code from your version here 🔻 -->
+  </div>
 
 <script>
-(function(){
-  const opener=document.getElementById('opener');
-  const main=document.getElementById('main');
-  let done=false;
-  function show(){if(done)return;done=true;opener.classList.add('fade');main.classList.add('show');setTimeout(()=>opener.remove(),800);}
-  setTimeout(show,5000); // safety
-  opener.addEventListener('click',show);
-
-  window.openResume=function(){window.open("Pavan_CV_Jan_25.pdf","_blank")};
-  window.downloadResume=function(){
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    const navbar=document.getElementById('navbar');
+    navbar.classList.toggle('scrolled', window.scrollY>100);
+  });
+  // Resume download
+  function downloadResume(){
     const a=document.createElement('a');
-    a.href="Pavan_CV_Jan_25.pdf";a.download="Pavan_Srivathsa_Resume.pdf";
-    document.body.appendChild(a);a.click();a.remove();
+    a.href='./Pavan_CV_Jan_25.pdf';
+    a.download='Pavan_Srivathsa_Resume.pdf';
+    a.click();
   }
-})();
 </script>
 </body>
 </html>
