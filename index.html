@@ -161,7 +161,7 @@
             align-items: center;
         }
 
-        /* TV Show GIF Backgrounds */
+        /* TV Show GIF Backgrounds - MATCHED TO QUOTES */
         .hero-slide {
             position: absolute;
             inset: 0;
@@ -178,11 +178,30 @@
             background-position: center;
         }
 
-        .slide-office .hero-slide-bg { background-image: url('https://media.giphy.com/media/IwAZ6dvvvaTtdI8SD5/giphy.gif'); }
-        .slide-friends .hero-slide-bg { background-image: url('https://media.giphy.com/media/l0ErOholJjSmFlMFG/giphy.gif'); }
-        .slide-himym .hero-slide-bg { background-image: url('https://media.giphy.com/media/bPdI2MXEbnDUs/giphy.gif'); }
-        .slide-brooklyn .hero-slide-bg { background-image: url('https://media.giphy.com/media/3ohzdFRFAi7zQ0VKKI/giphy.gif'); }
-        .slide-bigbang .hero-slide-bg { background-image: url('https://media.giphy.com/media/xUPGcC0R9QjyxkPnS8/giphy.gif'); }
+        /* The Office - Michael Scott "That's what she said" */
+        .slide-office .hero-slide-bg { 
+            background-image: url('https://media.giphy.com/media/5wWf7H89PisM6An8UAU/giphy.gif'); 
+        }
+        
+        /* Friends - Central Perk / "I'll be there for you" */
+        .slide-friends .hero-slide-bg { 
+            background-image: url('https://media.giphy.com/media/KDRv3QggAjyo/giphy.gif'); 
+        }
+        
+        /* HIMYM - Barney "Legendary" suit up */
+        .slide-himym .hero-slide-bg { 
+            background-image: url('https://media.giphy.com/media/fqo0kbmVpcZLEoLaqG/giphy.gif'); 
+        }
+        
+        /* Brooklyn 99 - Jake "Cool cool cool" */
+        .slide-brooklyn .hero-slide-bg { 
+            background-image: url('https://media.giphy.com/media/3ohzdFRFAi7zQ0VKKI/giphy.gif'); 
+        }
+        
+        /* Big Bang Theory - Sheldon "Bazinga" */
+        .slide-bigbang .hero-slide-bg { 
+            background-image: url('https://media.giphy.com/media/erGWBdQlhrmwE/giphy.gif'); 
+        }
 
         .hero-slide-overlay {
             position: absolute;
@@ -449,6 +468,24 @@
             margin-bottom: 25px;
         }
 
+        .about-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .highlight-item {
+            background: rgba(229,9,20,0.1);
+            border: 1px solid rgba(229,9,20,0.3);
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
         .about-info {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -460,15 +497,26 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            background: rgba(255,255,255,0.03);
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .info-item:hover {
+            background: rgba(229,9,20,0.1);
+            transform: translateX(5px);
         }
 
         .info-icon {
-            font-size: 20px;
+            font-size: 24px;
         }
 
         .info-item span {
-            color: #aaa;
-            font-size: 14px;
+            color: #888;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .info-item strong {
@@ -622,6 +670,17 @@
             font-size: 13px;
             font-weight: 600;
             margin-bottom: 15px;
+        }
+
+        .timeline-badge {
+            display: inline-block;
+            background: #46d369;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-left: 10px;
         }
 
         .timeline-content h3 {
@@ -1015,6 +1074,7 @@
             .timeline-dot { left: 20px; }
             .contact-content { grid-template-columns: 1fr; }
             .about-info { grid-template-columns: 1fr; }
+            .projects-grid { grid-template-columns: 1fr; }
         }
 
         ::-webkit-scrollbar { width: 10px; }
@@ -1052,7 +1112,7 @@
 
         <!-- Hero Section -->
         <section class="hero" id="home">
-            <!-- TV Show Slides -->
+            <!-- TV Show Slides - GIFs matched to quotes -->
             <div class="hero-slide slide-office active">
                 <div class="hero-slide-bg"></div>
                 <div class="hero-slide-overlay"></div>
@@ -1143,13 +1203,21 @@
                     <img src="portfolio_assets/profile.jpg" alt="Pavan Srivathsa presenting on Gen AI" onerror="this.src='https://via.placeholder.com/400x500/1a1a2e/E50914?text=PS'">
                 </div>
                 <div class="about-text">
-                    <h3>I'm Pavan Srivathsa</h3>
-                    <p class="about-role">AI/ML Engineer & Data Scientist</p>
+                    <h3>👋 I'm Pavan Srivathsa</h3>
+                    <p class="about-role">🤖 AI/ML Engineer & Data Scientist</p>
                     <p class="about-description">
-                        I'm a Master's student at USC specializing in Computer Science with a focus on AI/ML. With 3+ years of industry experience, I've built production-grade AI systems including RAG chatbots, recommendation engines, and fine-tuned LLMs.
+                        I'm a Master's student at USC 🎓 specializing in Computer Science with a focus on AI/ML. With 3+ years of industry experience, I've built production-grade AI systems including RAG chatbots 💬, recommendation engines ⚡, and fine-tuned LLMs 🧠.
                         <br><br>
-                        My expertise spans PyTorch, TensorFlow, LangChain, and cloud platforms like GCP, Azure, and AWS. I'm passionate about turning complex ML research into scalable, real-world solutions. From deploying Text-to-SQL agents handling 1000+ concurrent users to optimizing LLM memory footprints by 60%, I bring both technical depth and practical impact.
+                        My expertise spans PyTorch 🔥, TensorFlow, LangChain 🦜, and cloud platforms like GCP ☁️, Azure, and AWS. I'm passionate about turning complex ML research into scalable, real-world solutions 🚀. From deploying Text-to-SQL agents handling 1000+ concurrent users to optimizing LLM memory footprints by 60%, I bring both technical depth and practical impact! ✨
                     </p>
+                    
+                    <div class="about-highlights">
+                        <div class="highlight-item">🏆 3+ Years Experience</div>
+                        <div class="highlight-item">🎯 Production ML Systems</div>
+                        <div class="highlight-item">📊 Data Science Expert</div>
+                        <div class="highlight-item">🌟 LLM Specialist</div>
+                    </div>
+
                     <div class="about-info">
                         <div class="info-item">
                             <span class="info-icon">📱</span>
@@ -1169,14 +1237,14 @@
                             <span class="info-icon">📍</span>
                             <div>
                                 <span>Location</span>
-                                <strong>Los Angeles, CA</strong>
+                                <strong>Los Angeles, CA 🌴</strong>
                             </div>
                         </div>
                         <div class="info-item">
                             <span class="info-icon">🎓</span>
                             <div>
                                 <span>GPA</span>
-                                <strong>3.53 / 4.0</strong>
+                                <strong>3.53 / 4.0 ⭐</strong>
                             </div>
                         </div>
                     </div>
@@ -1217,23 +1285,33 @@
                 <h2 class="section-title">My <span>Education</span></h2>
                 <div class="section-line"></div>
             </div>
-            <p class="education-quote">"Education is not the learning of facts, but the training of the mind to think."</p>
+            <p class="education-quote">"Education is not the learning of facts, but the training of the mind to think." 📚</p>
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <span class="timeline-year">2025 - 2026</span>
+                        <span class="timeline-year">🎓 2025 - 2026</span>
                         <h3>MS in Computer Science</h3>
                         <h4>University of Southern California</h4>
-                        <p>GPA: 3.53/4.0 | Los Angeles, CA<br>Focus: Machine Learning, NLP, Deep Learning</p>
+                        <p>📍 Los Angeles, CA | GPA: 3.53/4.0<br>🎯 Focus: Machine Learning, NLP, Deep Learning</p>
                     </div>
                     <div class="timeline-dot"></div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-content">
-                        <span class="timeline-year">2016 - 2020</span>
+                        <span class="timeline-year">🏅 2020 - 2022</span>
+                        <span class="timeline-badge">DISTINCTION</span>
+                        <h3>MS in AI and Machine Learning</h3>
+                        <h4>Liverpool John Moores University</h4>
+                        <p>📍 United Kingdom<br>🎯 Advanced AI/ML specialization with Distinction</p>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <span class="timeline-year">🎓 2016 - 2020</span>
                         <h3>B.Tech in Computer Science</h3>
                         <h4>Dr. Ambedkar Institute of Technology</h4>
-                        <p>Bangalore, India<br>Strong foundation in CS fundamentals</p>
+                        <p>📍 Bangalore, India<br>🎯 Strong foundation in CS fundamentals</p>
                     </div>
                     <div class="timeline-dot"></div>
                 </div>
@@ -1250,7 +1328,7 @@
                 <div class="exp-card">
                     <div class="exp-header">
                         <div class="exp-title">
-                            <h3>Research Intern</h3>
+                            <h3>🔬 Research Intern</h3>
                             <h4>University of Southern California</h4>
                         </div>
                         <span class="exp-date">Sep 2025 - Present</span>
@@ -1271,7 +1349,7 @@
                 <div class="exp-card">
                     <div class="exp-header">
                         <div class="exp-title">
-                            <h3>AI Engineer</h3>
+                            <h3>🤖 AI Engineer</h3>
                             <h4>BlackBuck Insights</h4>
                         </div>
                         <span class="exp-date">Sep 2024 - Dec 2024</span>
@@ -1293,7 +1371,7 @@
                 <div class="exp-card">
                     <div class="exp-header">
                         <div class="exp-title">
-                            <h3>Data Scientist</h3>
+                            <h3>📊 Data Scientist</h3>
                             <h4>Koantek</h4>
                         </div>
                         <span class="exp-date">Nov 2021 - Aug 2024</span>
@@ -1396,8 +1474,8 @@
             </div>
             <div class="contact-content">
                 <div class="contact-info">
-                    <h3>Let's Connect!</h3>
-                    <p>I'm actively seeking AI/ML Engineering opportunities and would love to hear about exciting projects. Whether you have a question or just want to say hi, feel free to reach out!</p>
+                    <h3>🤝 Let's Connect!</h3>
+                    <p>I'm actively seeking AI/ML Engineering opportunities and would love to hear about exciting projects. Whether you have a question or just want to say hi, feel free to reach out! 🚀</p>
                     <div class="contact-details">
                         <div class="contact-item">
                             <div class="contact-icon">📱</div>
@@ -1417,7 +1495,7 @@
                             <div class="contact-icon">📍</div>
                             <div>
                                 <span>Location</span>
-                                <strong>Los Angeles, CA, USA</strong>
+                                <strong>Los Angeles, CA, USA 🌴</strong>
                             </div>
                         </div>
                     </div>
@@ -1435,7 +1513,7 @@
                     <div class="form-group">
                         <textarea placeholder="Your Message" required></textarea>
                     </div>
-                    <button type="submit" class="btn-submit">Send Message</button>
+                    <button type="submit" class="btn-submit">🚀 Send Message</button>
                 </form>
             </div>
         </section>
@@ -1443,12 +1521,12 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="social-links">
-                <a href="https://linkedin.com/in/pav0201" target="_blank">💼</a>
-                <a href="https://github.com/Pavan-Srivathsa" target="_blank">💻</a>
-                <a href="mailto:pavansri@usc.edu">📧</a>
-                <a href="tel:+12132759012">📱</a>
+                <a href="https://linkedin.com/in/pav0201" target="_blank" title="LinkedIn">💼</a>
+                <a href="https://github.com/Pavan-Srivathsa" target="_blank" title="GitHub">💻</a>
+                <a href="mailto:pavansri@usc.edu" title="Email">📧</a>
+                <a href="tel:+12132759012" title="Phone">📱</a>
             </div>
-            <p class="footer-text">Thank you for visiting my portfolio. Connect with me over socials!</p>
+            <p class="footer-text">Thank you for visiting my portfolio! Connect with me over socials. ✨</p>
             <p class="footer-copy">Designed with ❤️ by <a href="https://linkedin.com/in/pav0201" target="_blank">Pavan Srivathsa</a></p>
         </footer>
     </div>
@@ -1486,7 +1564,7 @@
         // Form handler
         function handleSubmit(e) {
             e.preventDefault();
-            alert('Thanks for reaching out! I\'ll get back to you soon.');
+            alert('Thanks for reaching out! I\'ll get back to you soon. 🎉');
             e.target.reset();
         }
 
