@@ -161,12 +161,12 @@
             align-items: center;
         }
 
-        /* TV Show GIF Backgrounds - MATCHED TO QUOTES */
+        /* TV Show GIF Backgrounds */
         .hero-slide {
             position: absolute;
             inset: 0;
             opacity: 0;
-            transition: opacity 1.5s ease;
+            transition: opacity 1.8s ease;
         }
 
         .hero-slide.active { opacity: 1; }
@@ -179,28 +179,28 @@
         }
 
         /* The Office - Michael Scott "That's what she said" */
-        .slide-office .hero-slide-bg { 
-            background-image: url('https://media.giphy.com/media/5wWf7H89PisM6An8UAU/giphy.gif'); 
+        .slide-office .hero-slide-bg {
+            background-image: url('https://media.giphy.com/media/tlGD7PDy1w8fK/giphy.gif');
         }
-        
-        /* Friends - Central Perk / "I'll be there for you" */
-        .slide-friends .hero-slide-bg { 
-            background-image: url('https://media.giphy.com/media/KDRv3QggAjyo/giphy.gif'); 
+
+        /* Friends - "How you doin?" */
+        .slide-friends .hero-slide-bg {
+            background-image: url('https://media.giphy.com/media/Lr3RZl7gkhd5BWZ5Nh/giphy.gif');
         }
-        
-        /* HIMYM - Barney "Legendary" suit up */
-        .slide-himym .hero-slide-bg { 
-            background-image: url('https://media.giphy.com/media/fqo0kbmVpcZLEoLaqG/giphy.gif'); 
+
+        /* HIMYM - Barney "Legendary" */
+        .slide-himym .hero-slide-bg {
+            background-image: url('https://media.giphy.com/media/d2jjuAZzDSVLZ5kI/giphy.gif');
         }
-        
-        /* Brooklyn 99 - Jake "Cool cool cool" */
-        .slide-brooklyn .hero-slide-bg { 
-            background-image: url('https://media.giphy.com/media/3ohzdFRFAi7zQ0VKKI/giphy.gif'); 
+
+        /* Brooklyn 99 - Jake Peralta */
+        .slide-brooklyn .hero-slide-bg {
+            background-image: url('https://media.giphy.com/media/3oxHQjRHcp4w4mRLkA/giphy.gif');
         }
-        
+
         /* Big Bang Theory - Sheldon "Bazinga" */
-        .slide-bigbang .hero-slide-bg { 
-            background-image: url('https://media.giphy.com/media/erGWBdQlhrmwE/giphy.gif'); 
+        .slide-bigbang .hero-slide-bg {
+            background-image: url('https://media.giphy.com/media/xUPGcMzfkOPDC6sMaA/giphy.gif');
         }
 
         .hero-slide-overlay {
@@ -208,11 +208,11 @@
             inset: 0;
         }
 
-        .slide-office .hero-slide-overlay { background: linear-gradient(135deg, rgba(26,35,126,0.6) 0%, rgba(13,20,33,0.75) 100%); }
-        .slide-friends .hero-slide-overlay { background: linear-gradient(135deg, rgba(156,39,176,0.55) 0%, rgba(74,20,66,0.75) 100%); }
-        .slide-himym .hero-slide-overlay { background: linear-gradient(135deg, rgba(183,28,28,0.55) 0%, rgba(74,20,20,0.75) 100%); }
-        .slide-brooklyn .hero-slide-overlay { background: linear-gradient(135deg, rgba(21,101,192,0.55) 0%, rgba(13,50,80,0.75) 100%); }
-        .slide-bigbang .hero-slide-overlay { background: linear-gradient(135deg, rgba(46,125,50,0.55) 0%, rgba(20,60,20,0.75) 100%); }
+        .slide-office .hero-slide-overlay { background: linear-gradient(135deg, rgba(26,35,126,0.65) 0%, rgba(13,20,33,0.8) 100%); }
+        .slide-friends .hero-slide-overlay { background: linear-gradient(135deg, rgba(156,39,176,0.6) 0%, rgba(74,20,66,0.8) 100%); }
+        .slide-himym .hero-slide-overlay { background: linear-gradient(135deg, rgba(183,28,28,0.6) 0%, rgba(74,20,20,0.8) 100%); }
+        .slide-brooklyn .hero-slide-overlay { background: linear-gradient(135deg, rgba(21,101,192,0.6) 0%, rgba(13,50,80,0.8) 100%); }
+        .slide-bigbang .hero-slide-overlay { background: linear-gradient(135deg, rgba(46,125,50,0.6) 0%, rgba(20,60,20,0.8) 100%); }
 
         .show-label {
             position: absolute;
@@ -296,21 +296,25 @@
             font-weight: 600;
         }
 
-        .typewriter {
-            display: inline-block;
-            overflow: hidden;
-            border-right: 3px solid var(--netflix-red);
-            white-space: nowrap;
-            animation: typing 3s steps(30) infinite, blink 0.7s step-end infinite;
+        /* FIX #3: JS-based typewriter - cursor hugs text */
+        .typewriter-wrapper {
+            display: inline;
         }
-
-        @keyframes typing {
-            0%, 100% { width: 0; }
-            30%, 70% { width: 100%; }
+        .typewriter-text {
+            display: inline;
+        }
+        .typewriter-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.1em;
+            background: var(--netflix-red);
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 0.7s step-end infinite;
         }
 
         @keyframes blink {
-            50% { border-color: transparent; }
+            50% { background: transparent; }
         }
 
         .hero-meta {
@@ -383,9 +387,37 @@
             height: 50px;
         }
 
+        /* ==================== SECTION TRANSITIONS (FIX #1) ==================== */
+        .section-blend {
+            height: 120px;
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+        }
+        .blend-hero-about {
+            margin-top: -120px;
+            background: linear-gradient(to bottom, var(--netflix-black) 0%, #1a1a2e 100%);
+        }
+        .blend-about-skills {
+            margin-top: -120px;
+            background: linear-gradient(to bottom, #0f0f23 0%, var(--netflix-black) 100%);
+        }
+        .blend-skills-journey {
+            margin-top: -120px;
+            background: linear-gradient(to bottom, var(--netflix-black) 0%, #1a1a2e 100%);
+        }
+        .blend-journey-projects {
+            margin-top: -120px;
+            background: linear-gradient(to bottom, #0f0f23 0%, #1a1a2e 100%);
+        }
+        .blend-projects-contact {
+            margin-top: -120px;
+            background: linear-gradient(to bottom, #0f0f23 0%, var(--netflix-black) 100%);
+        }
+
         /* ==================== ABOUT SECTION ==================== */
         .about-section {
-            padding: 100px 4%;
+            padding: 100px 4% 160px;
             background: var(--gradient-dark);
             position: relative;
         }
@@ -429,6 +461,7 @@
             border-radius: 10px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             transition: transform 0.4s;
+            display: block;
         }
 
         .about-image:hover img {
@@ -445,6 +478,50 @@
             border: 3px solid var(--netflix-red);
             border-radius: 10px;
             z-index: -1;
+        }
+
+        /* FIX #2: About image fallback placeholder */
+        .about-placeholder {
+            width: 100%;
+            aspect-ratio: 4/5;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #0d1b2a 50%, #1a0a2e 100%);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        .about-placeholder::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 30px,
+                rgba(229,9,20,0.03) 30px,
+                rgba(229,9,20,0.03) 60px
+            );
+        }
+        .about-placeholder .placeholder-initials {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 100px;
+            color: var(--netflix-red);
+            text-shadow: 0 0 40px var(--glow-red);
+            position: relative;
+            z-index: 1;
+        }
+        .about-placeholder .placeholder-label {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
         }
 
         .about-text h3 {
@@ -536,7 +613,7 @@
 
         /* ==================== SKILLS SECTION ==================== */
         .skills-section {
-            padding: 100px 4%;
+            padding: 100px 4% 160px;
             background: var(--netflix-black);
         }
 
@@ -593,72 +670,112 @@
             color: #fff;
         }
 
-        /* ==================== EDUCATION SECTION ==================== */
-        .education-section {
-            padding: 100px 4%;
+        /* ==================== COMBINED EDUCATION & EXPERIENCE SECTION ==================== */
+        .journey-section {
+            padding: 100px 4% 160px;
             background: var(--gradient-dark);
         }
 
-        .education-quote {
+        .journey-quote {
             text-align: center;
             font-style: italic;
             color: #888;
             font-size: 18px;
-            margin-bottom: 50px;
+            margin-bottom: 60px;
             max-width: 700px;
             margin-left: auto;
             margin-right: auto;
         }
 
-        .timeline {
-            max-width: 900px;
+        .journey-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            max-width: 1400px;
             margin: 0 auto;
+            align-items: start;
+        }
+
+        .journey-column {
             position: relative;
         }
 
-        .timeline::before {
+        .column-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(229,9,20,0.2);
+        }
+        .column-header-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(229,9,20,0.15);
+            border: 1px solid rgba(229,9,20,0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .column-header h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 32px;
+            letter-spacing: 3px;
+        }
+        .column-header h3 span {
+            color: var(--netflix-red);
+        }
+
+        /* Vertical timeline line for both columns */
+        .vtimeline {
+            position: relative;
+            padding-left: 35px;
+        }
+        .vtimeline::before {
             content: '';
             position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 8px;
+            top: 0;
+            bottom: 0;
             width: 3px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--netflix-red) 0%, rgba(229,9,20,0.2) 100%);
+            background: linear-gradient(180deg, var(--netflix-red) 0%, rgba(229,9,20,0.15) 100%);
+            border-radius: 3px;
         }
 
-        .timeline-item {
-            display: flex;
-            margin-bottom: 50px;
+        .vtimeline-item {
             position: relative;
+            margin-bottom: 35px;
+        }
+        .vtimeline-item:last-child { margin-bottom: 0; }
+
+        .vtimeline-dot {
+            position: absolute;
+            left: -35px;
+            top: 28px;
+            width: 19px;
+            height: 19px;
+            background: var(--netflix-red);
+            border-radius: 50%;
+            border: 4px solid #1a1a2e;
+            z-index: 2;
+            box-shadow: 0 0 12px rgba(229,9,20,0.4);
         }
 
-        .timeline-item:nth-child(odd) { flex-direction: row-reverse; }
-
-        .timeline-content {
-            width: calc(50% - 40px);
+        .vtimeline-card {
             background: linear-gradient(135deg, rgba(40,40,40,0.8) 0%, rgba(20,20,20,0.95) 100%);
-            padding: 30px;
+            padding: 25px;
             border-radius: 12px;
             transition: all 0.4s;
             border: 1px solid rgba(255,255,255,0.05);
+            position: relative;
         }
-
-        .timeline-content:hover {
+        .vtimeline-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0,0,0,0.4);
             border-color: rgba(229,9,20,0.3);
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 20px;
-            background: var(--netflix-red);
-            border-radius: 50%;
-            border: 4px solid var(--netflix-black);
-            z-index: 2;
         }
 
         .timeline-year {
@@ -669,7 +786,7 @@
             border-radius: 20px;
             font-size: 13px;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .timeline-badge {
@@ -680,125 +797,145 @@
             border-radius: 15px;
             font-size: 11px;
             font-weight: 700;
-            margin-left: 10px;
+            margin-left: 8px;
         }
 
-        .timeline-content h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
+        .vtimeline-card h3 {
+            font-size: 18px;
+            margin-bottom: 6px;
+            color: white;
         }
 
-        .timeline-content h4 {
+        .vtimeline-card h4 {
             color: #46d369;
-            font-size: 15px;
-            margin-bottom: 10px;
-        }
-
-        .timeline-content p {
-            color: #aaa;
             font-size: 14px;
-        }
-
-        /* ==================== EXPERIENCE SECTION ==================== */
-        .experience-section {
-            padding: 100px 4%;
-            background: var(--netflix-black);
-        }
-
-        .exp-timeline {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .exp-card {
-            background: linear-gradient(135deg, rgba(40,40,40,0.6) 0%, rgba(20,20,20,0.9) 100%);
-            border-radius: 12px;
-            margin-bottom: 30px;
-            overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: all 0.4s;
-        }
-
-        .exp-card:hover {
-            transform: translateX(10px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            border-color: rgba(229,9,20,0.3);
-        }
-
-        .exp-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            padding: 25px 30px;
-            background: linear-gradient(90deg, rgba(229,9,20,0.1) 0%, transparent 100%);
-            border-left: 4px solid var(--netflix-red);
-            cursor: pointer;
-        }
-
-        .exp-title h3 {
-            font-size: 20px;
-            margin-bottom: 5px;
-        }
-
-        .exp-title h4 {
-            color: var(--netflix-red);
-            font-size: 15px;
+            margin-bottom: 10px;
             font-weight: 500;
         }
 
-        .exp-date {
-            background: rgba(255,255,255,0.1);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 13px;
+        .vtimeline-card p {
             color: #aaa;
-            white-space: nowrap;
+            font-size: 13px;
+            line-height: 1.7;
         }
 
-        .exp-body {
-            padding: 0 30px 25px;
+        /* Education hover tooltip */
+        .edu-tooltip {
+            position: absolute;
+            bottom: calc(100% + 15px);
+            left: 50%;
+            transform: translateX(-50%) translateY(10px);
+            background: rgba(20, 20, 20, 0.97);
+            border: 1px solid var(--netflix-red);
+            border-radius: 12px;
+            padding: 18px 22px;
+            min-width: 270px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6), 0 0 20px rgba(229,9,20,0.15);
+        }
+        .edu-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: var(--netflix-red);
+        }
+        .vtimeline-card:hover .edu-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .edu-tooltip-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .edu-tooltip-row:last-child { margin-bottom: 0; }
+        .edu-tooltip-icon {
+            font-size: 18px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .edu-tooltip-label {
+            color: #888;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .edu-tooltip-value {
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .edu-tooltip-degree {
+            display: inline-block;
+            background: rgba(229,9,20,0.15);
+            border: 1px solid rgba(229,9,20,0.3);
+            color: var(--netflix-red);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 2px;
         }
 
-        .exp-body ul {
+        /* Experience card details within vtimeline */
+        .exp-details {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .exp-details li {
+            padding: 6px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #bbb;
+            font-size: 13px;
+            line-height: 1.7;
             list-style: none;
         }
-
-        .exp-body li {
-            padding: 10px 0;
-            padding-left: 25px;
-            position: relative;
-            color: #ccc;
-            font-size: 15px;
-            line-height: 1.7;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-        }
-
-        .exp-body li::before {
+        .exp-details li::before {
             content: '▸';
             position: absolute;
             left: 0;
             color: var(--netflix-red);
+            font-size: 13px;
         }
 
         .exp-tags {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 14px;
         }
 
         .exp-tag {
             background: rgba(229,9,20,0.15);
             color: var(--netflix-red);
-            padding: 5px 14px;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
+        }
+
+        /* Journey section responsive */
+        @media (max-width: 1024px) {
+            .journey-grid {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
         }
 
         /* ==================== PROJECTS SECTION ==================== */
         .projects-section {
-            padding: 100px 4%;
+            padding: 100px 4% 160px;
             background: var(--gradient-dark);
         }
 
@@ -1054,6 +1191,17 @@
             text-decoration: none;
         }
 
+        /* ==================== SCROLL REVEAL ==================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         /* ==================== RESPONSIVE ==================== */
         @media (max-width: 1024px) {
             .about-content { grid-template-columns: 1fr; }
@@ -1068,13 +1216,24 @@
             .section-title { font-size: 38px; }
             .nav-links { display: none; }
             .mobile-menu { display: block; }
-            .timeline::before { left: 20px; }
-            .timeline-item { flex-direction: column !important; }
-            .timeline-content { width: calc(100% - 50px); margin-left: 50px; }
-            .timeline-dot { left: 20px; }
             .contact-content { grid-template-columns: 1fr; }
             .about-info { grid-template-columns: 1fr; }
             .projects-grid { grid-template-columns: 1fr; }
+            .section-blend { height: 80px; }
+            .edu-tooltip {
+                position: relative;
+                bottom: auto;
+                left: auto;
+                transform: none;
+                margin-top: 15px;
+                opacity: 0;
+                visibility: hidden;
+                min-width: auto;
+            }
+            .vtimeline-card:hover .edu-tooltip {
+                transform: none;
+            }
+            .edu-tooltip::after { display: none; }
         }
 
         ::-webkit-scrollbar { width: 10px; }
@@ -1112,7 +1271,6 @@
 
         <!-- Hero Section -->
         <section class="hero" id="home">
-            <!-- TV Show Slides - GIFs matched to quotes -->
             <div class="hero-slide slide-office active">
                 <div class="hero-slide-bg"></div>
                 <div class="hero-slide-overlay"></div>
@@ -1164,7 +1322,10 @@
                 <p class="hero-greeting">Hi There, I'm</p>
                 <h1 class="hero-title">PAVAN SRIVATHSA</h1>
                 <p class="hero-subtitle">
-                    <span class="typewriter">AI/ML Engineer & Data Scientist</span>
+                    <!-- FIX #3: JS-based typewriter with tight cursor -->
+                    <span class="typewriter-wrapper">
+                        <span class="typewriter-text" id="typewriter-text"></span><span class="typewriter-cursor"></span>
+                    </span>
                 </p>
                 <div class="hero-meta">
                     <span class="match-score">98% Match</span>
@@ -1192,17 +1353,25 @@
             </div>
         </section>
 
+        <!-- Blend: Hero → About -->
+        <div class="section-blend blend-hero-about"></div>
+
         <!-- About Section -->
         <section class="about-section" id="about">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <h2 class="section-title">About <span>Me</span></h2>
                 <div class="section-line"></div>
             </div>
             <div class="about-content">
-                <div class="about-image">
-                    <img src="portfolio_assets/profile.jpg" alt="Pavan Srivathsa presenting on Gen AI" onerror="this.src='https://via.placeholder.com/400x500/1a1a2e/E50914?text=PS'">
+                <div class="about-image reveal">
+                    <img id="about-img" src="portfolio_assets/profile.jpg" alt="Pavan Srivathsa presenting on Gen AI">
+                    <!-- Fallback placeholder shown if image fails -->
+                    <div class="about-placeholder" id="about-placeholder">
+                        <span class="placeholder-initials">PS</span>
+                        <span class="placeholder-label">Pavan Srivathsa</span>
+                    </div>
                 </div>
-                <div class="about-text">
+                <div class="about-text reveal">
                     <h3>👋 I'm Pavan Srivathsa</h3>
                     <p class="about-role">🤖 AI/ML Engineer & Data Scientist</p>
                     <p class="about-description">
@@ -1253,156 +1422,239 @@
             </div>
         </section>
 
+        <!-- Blend: About → Skills -->
+        <div class="section-blend blend-about-skills"></div>
+
         <!-- Skills Section -->
         <section class="skills-section" id="skills">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <h2 class="section-title">Skills & <span>Abilities</span></h2>
                 <div class="section-line"></div>
             </div>
             <div class="skills-grid">
-                <div class="skill-card"><span class="skill-icon">🐍</span><h4>Python</h4></div>
-                <div class="skill-card"><span class="skill-icon">🔥</span><h4>PyTorch</h4></div>
-                <div class="skill-card"><span class="skill-icon">🧠</span><h4>TensorFlow</h4></div>
-                <div class="skill-card"><span class="skill-icon">🦜</span><h4>LangChain</h4></div>
-                <div class="skill-card"><span class="skill-icon">🤗</span><h4>Hugging Face</h4></div>
-                <div class="skill-card"><span class="skill-icon">📊</span><h4>Pandas</h4></div>
-                <div class="skill-card"><span class="skill-icon">⚡</span><h4>Spark</h4></div>
-                <div class="skill-card"><span class="skill-icon">🗄️</span><h4>SQL</h4></div>
-                <div class="skill-card"><span class="skill-icon">☁️</span><h4>GCP</h4></div>
-                <div class="skill-card"><span class="skill-icon">🔷</span><h4>Azure</h4></div>
-                <div class="skill-card"><span class="skill-icon">🟠</span><h4>AWS</h4></div>
-                <div class="skill-card"><span class="skill-icon">🐳</span><h4>Docker</h4></div>
-                <div class="skill-card"><span class="skill-icon">🔄</span><h4>MLflow</h4></div>
-                <div class="skill-card"><span class="skill-icon">⚛️</span><h4>React</h4></div>
-                <div class="skill-card"><span class="skill-icon">🌐</span><h4>FastAPI</h4></div>
-                <div class="skill-card"><span class="skill-icon">📈</span><h4>Tableau</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🐍</span><h4>Python</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🔥</span><h4>PyTorch</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🧠</span><h4>TensorFlow</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🦜</span><h4>LangChain</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🤗</span><h4>Hugging Face</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">📊</span><h4>Pandas</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">⚡</span><h4>Spark</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🗄️</span><h4>SQL</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">☁️</span><h4>GCP</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🔷</span><h4>Azure</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🟠</span><h4>AWS</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🐳</span><h4>Docker</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🔄</span><h4>MLflow</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">⚛️</span><h4>React</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🌐</span><h4>FastAPI</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">📈</span><h4>Tableau</h4></div>
             </div>
         </section>
 
-        <!-- Education Section -->
-        <section class="education-section" id="education">
-            <div class="section-header">
-                <h2 class="section-title">My <span>Education</span></h2>
+        <!-- Blend: Skills → Journey -->
+        <div class="section-blend blend-skills-journey"></div>
+
+        <!-- Combined Education & Experience Section -->
+        <section class="journey-section" id="education">
+            <div class="section-header reveal">
+                <h2 class="section-title">Education & <span>Experience</span></h2>
                 <div class="section-line"></div>
             </div>
-            <p class="education-quote">"Education is not the learning of facts, but the training of the mind to think." 📚</p>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <span class="timeline-year">🎓 2025 - 2026</span>
-                        <h3>MS in Computer Science</h3>
-                        <h4>University of Southern California</h4>
-                        <p>📍 Los Angeles, CA | GPA: 3.53/4.0<br>🎯 Focus: Machine Learning, NLP, Deep Learning</p>
+            <p class="journey-quote reveal">"Education is not the learning of facts, but the training of the mind to think." 📚</p>
+
+            <div class="journey-grid">
+                <!-- LEFT: Education -->
+                <div class="journey-column reveal">
+                    <div class="column-header">
+                        <div class="column-header-icon">🎓</div>
+                        <h3>My <span>Education</span></h3>
                     </div>
-                    <div class="timeline-dot"></div>
+                    <div class="vtimeline">
+                        <!-- USC -->
+                        <div class="vtimeline-item">
+                            <div class="vtimeline-dot"></div>
+                            <div class="vtimeline-card">
+                                <div class="edu-tooltip">
+                                    <div class="edu-tooltip-row">
+                                        <span class="edu-tooltip-icon">📍</span>
+                                        <div>
+                                            <div class="edu-tooltip-label">Location</div>
+                                            <div class="edu-tooltip-value">Los Angeles, California, USA</div>
+                                        </div>
+                                    </div>
+                                    <div class="edu-tooltip-row">
+                                        <span class="edu-tooltip-icon">📜</span>
+                                        <div>
+                                            <div class="edu-tooltip-label">Degree</div>
+                                            <span class="edu-tooltip-degree">Master of Science (M.S.)</span>
+                                        </div>
+                                    </div>
+                                    <div class="edu-tooltip-row">
+                                        <span class="edu-tooltip-icon">📊</span>
+                                        <div>
+                                            <div class="edu-tooltip-label">GPA</div>
+                                            <div class="edu-tooltip-value">3.53 / 4.0</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="timeline-year">🎓 2025 - 2026</span>
+                                <h3>MS in Computer Science</h3>
+                                <h4>University of Southern California</h4>
+                                <p>📍 Los Angeles, CA | GPA: 3.53/4.0<br>🎯 Focus: Machine Learning, NLP, Deep Learning</p>
+                            </div>
+                        </div>
+                        <!-- LJMU -->
+                        <div class="vtimeline-item">
+                            <div class="vtimeline-dot"></div>
+                            <div class="vtimeline-card">
+                                <div class="edu-tooltip">
+                                    <div class="edu-tooltip-row">
+                                        <span class="edu-tooltip-icon">📍</span>
+                                        <div>
+                                            <div class="edu-tooltip-label">Location</div>
+                                            <div class="edu-tooltip-value">Liverpool, United Kingdom</div>
+                                        </div>
+                                    </div>
+                                    <div class="edu-tooltip-row">
+                                        <span class="edu-tooltip-icon">📜</span>
+                                        <div>
+                                            <div class="edu-tooltip-label">Degree</div>
+                                            <span class="edu-tooltip-degree">Master of Science (M.S.)</span>
+                                        </div>
+                                    </div>
+                                    <div class="edu-tooltip-row">
+                                        <span class="edu-tooltip-icon">🏅</span>
+                                        <div>
+                                            <div class="edu-tooltip-label">Honors</div>
+                                            <div class="edu-tooltip-value">Distinction</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="timeline-year">🏅 2020 - 2022</span>
+                                <span class="timeline-badge">DISTINCTION</span>
+                                <h3>MS in AI and Machine Learning</h3>
+                                <h4>Liverpool John Moores University</h4>
+                                <p>📍 United Kingdom<br>🎯 Advanced AI/ML specialization with Distinction</p>
+                            </div>
+                        </div>
+                        <!-- B.Tech -->
+                        <div class="vtimeline-item">
+                            <div class="vtimeline-dot"></div>
+                            <div class="vtimeline-card">
+                                <div class="edu-tooltip">
+                                    <div class="edu-tooltip-row">
+                                        <span class="edu-tooltip-icon">📍</span>
+                                        <div>
+                                            <div class="edu-tooltip-label">Location</div>
+                                            <div class="edu-tooltip-value">Bangalore, Karnataka, India</div>
+                                        </div>
+                                    </div>
+                                    <div class="edu-tooltip-row">
+                                        <span class="edu-tooltip-icon">📜</span>
+                                        <div>
+                                            <div class="edu-tooltip-label">Degree</div>
+                                            <span class="edu-tooltip-degree">Bachelor of Technology (B.Tech)</span>
+                                        </div>
+                                    </div>
+                                    <div class="edu-tooltip-row">
+                                        <span class="edu-tooltip-icon">💻</span>
+                                        <div>
+                                            <div class="edu-tooltip-label">Major</div>
+                                            <div class="edu-tooltip-value">Computer Science & Engineering</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="timeline-year">🎓 2016 - 2020</span>
+                                <h3>B.Tech in Computer Science</h3>
+                                <h4>Dr. Ambedkar Institute of Technology</h4>
+                                <p>📍 Bangalore, India<br>🎯 Strong foundation in CS fundamentals</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <span class="timeline-year">🏅 2020 - 2022</span>
-                        <span class="timeline-badge">DISTINCTION</span>
-                        <h3>MS in AI and Machine Learning</h3>
-                        <h4>Liverpool John Moores University</h4>
-                        <p>📍 United Kingdom<br>🎯 Advanced AI/ML specialization with Distinction</p>
+
+                <!-- RIGHT: Experience -->
+                <div class="journey-column reveal" id="experience">
+                    <div class="column-header">
+                        <div class="column-header-icon">💼</div>
+                        <h3>My <span>Experience</span></h3>
                     </div>
-                    <div class="timeline-dot"></div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <span class="timeline-year">🎓 2016 - 2020</span>
-                        <h3>B.Tech in Computer Science</h3>
-                        <h4>Dr. Ambedkar Institute of Technology</h4>
-                        <p>📍 Bangalore, India<br>🎯 Strong foundation in CS fundamentals</p>
+                    <div class="vtimeline">
+                        <!-- USC Research -->
+                        <div class="vtimeline-item">
+                            <div class="vtimeline-dot"></div>
+                            <div class="vtimeline-card">
+                                <span class="timeline-year">🔬 Sep 2025 - Present</span>
+                                <h3>Research Intern</h3>
+                                <h4>University of Southern California</h4>
+                                <ul class="exp-details">
+                                    <li>Built and tuned a GCN-based Graph Neural Network for Fraud Detection on a Heterogeneous Graph with targeted node/edge feature engineering</li>
+                                    <li>Delivered AUC-ROC 0.88 on held-out set; added Explainable AI via GNNExplainer to surface influential subgraphs/features</li>
+                                </ul>
+                                <div class="exp-tags">
+                                    <span class="exp-tag">GNN</span>
+                                    <span class="exp-tag">PyTorch Geometric</span>
+                                    <span class="exp-tag">Explainable AI</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- BlackBuck -->
+                        <div class="vtimeline-item">
+                            <div class="vtimeline-dot"></div>
+                            <div class="vtimeline-card">
+                                <span class="timeline-year">🤖 Sep 2024 - Dec 2024</span>
+                                <h3>AI Engineer</h3>
+                                <h4>BlackBuck Insights</h4>
+                                <ul class="exp-details">
+                                    <li>Built an agentic Text-to-SQL chatbot for supply-chain PO self-service in Cisco Webex using function calling and structured outputs</li>
+                                    <li>Scaled to 1,000+ concurrent users with 1s latency; added observability (OpenTelemetry) and automated CI/CD</li>
+                                </ul>
+                                <div class="exp-tags">
+                                    <span class="exp-tag">LangChain</span>
+                                    <span class="exp-tag">BigQuery</span>
+                                    <span class="exp-tag">Webex</span>
+                                    <span class="exp-tag">CI/CD</span>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Koantek -->
+                        <div class="vtimeline-item">
+                            <div class="vtimeline-dot"></div>
+                            <div class="vtimeline-card">
+                                <span class="timeline-year">📊 Nov 2021 - Aug 2024</span>
+                                <h3>Data Scientist</h3>
+                                <h4>Koantek</h4>
+                                <ul class="exp-details">
+                                    <li>Led team of 4 to design statistical forecasting models (SARIMAX, Prophet) with 9.1% MAPE; applied SHAP for interpretability</li>
+                                    <li>Initiated R&D on low-rank LLM fine-tuning (QLoRA, PEFT), optimizing memory footprint by 60% on consumer GPUs</li>
+                                    <li>Devised retrainable sentiment pipeline using XLNet, RoBERTa achieving 89% F1 score</li>
+                                    <li>Deployed virtual try-on system combining Mask R-CNN with StyleGAN, trimming mock-up time by 99%</li>
+                                </ul>
+                                <div class="exp-tags">
+                                    <span class="exp-tag">QLoRA</span>
+                                    <span class="exp-tag">PEFT</span>
+                                    <span class="exp-tag">XLNet</span>
+                                    <span class="exp-tag">Azure MLOps</span>
+                                    <span class="exp-tag">Databricks</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="timeline-dot"></div>
                 </div>
             </div>
         </section>
 
-        <!-- Experience Section -->
-        <section class="experience-section" id="experience">
-            <div class="section-header">
-                <h2 class="section-title">My <span>Experience</span></h2>
-                <div class="section-line"></div>
-            </div>
-            <div class="exp-timeline">
-                <div class="exp-card">
-                    <div class="exp-header">
-                        <div class="exp-title">
-                            <h3>🔬 Research Intern</h3>
-                            <h4>University of Southern California</h4>
-                        </div>
-                        <span class="exp-date">Sep 2025 - Present</span>
-                    </div>
-                    <div class="exp-body">
-                        <ul>
-                            <li>Built and tuned a GCN-based Graph Neural Network for Fraud Detection on a Heterogeneous Graph with targeted node/edge feature engineering</li>
-                            <li>Delivered AUC-ROC 0.88 on held-out set; added Explainable AI via GNNExplainer to surface influential subgraphs/features</li>
-                        </ul>
-                        <div class="exp-tags">
-                            <span class="exp-tag">GNN</span>
-                            <span class="exp-tag">PyTorch Geometric</span>
-                            <span class="exp-tag">Explainable AI</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="exp-card">
-                    <div class="exp-header">
-                        <div class="exp-title">
-                            <h3>🤖 AI Engineer</h3>
-                            <h4>BlackBuck Insights</h4>
-                        </div>
-                        <span class="exp-date">Sep 2024 - Dec 2024</span>
-                    </div>
-                    <div class="exp-body">
-                        <ul>
-                            <li>Built an agentic Text-to-SQL chatbot for supply-chain PO self-service in Cisco Webex using function calling and structured outputs</li>
-                            <li>Scaled to 1,000+ concurrent users with 1s latency; added observability (OpenTelemetry) and automated CI/CD</li>
-                        </ul>
-                        <div class="exp-tags">
-                            <span class="exp-tag">LangChain</span>
-                            <span class="exp-tag">BigQuery</span>
-                            <span class="exp-tag">Webex</span>
-                            <span class="exp-tag">CI/CD</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="exp-card">
-                    <div class="exp-header">
-                        <div class="exp-title">
-                            <h3>📊 Data Scientist</h3>
-                            <h4>Koantek</h4>
-                        </div>
-                        <span class="exp-date">Nov 2021 - Aug 2024</span>
-                    </div>
-                    <div class="exp-body">
-                        <ul>
-                            <li>Led team of 4 to design statistical forecasting models (SARIMAX, Prophet) with 9.1% MAPE; applied SHAP for interpretability</li>
-                            <li>Initiated R&D on low-rank LLM fine-tuning (QLoRA, PEFT), optimizing memory footprint by 60% on consumer GPUs</li>
-                            <li>Devised retrainable sentiment pipeline using XLNet, RoBERTa achieving 89% F1 score</li>
-                            <li>Deployed virtual try-on system combining Mask R-CNN with StyleGAN, trimming mock-up time by 99%</li>
-                        </ul>
-                        <div class="exp-tags">
-                            <span class="exp-tag">QLoRA</span>
-                            <span class="exp-tag">PEFT</span>
-                            <span class="exp-tag">XLNet</span>
-                            <span class="exp-tag">Azure MLOps</span>
-                            <span class="exp-tag">Databricks</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <!-- Blend: Journey → Projects -->
+        <div class="section-blend blend-journey-projects"></div>
 
         <!-- Projects Section -->
         <section class="projects-section" id="projects">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <h2 class="section-title">Featured <span>Projects</span></h2>
                 <div class="section-line"></div>
             </div>
             <div class="projects-grid">
-                <div class="project-card">
+                <div class="project-card reveal">
                     <div class="project-image" style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);">
                         <span>🤖</span>
                     </div>
@@ -1418,7 +1670,7 @@
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card reveal">
                     <div class="project-image" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);">
                         <span>👁️</span>
                     </div>
@@ -1434,7 +1686,7 @@
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card reveal">
                     <div class="project-image" style="background: linear-gradient(135deg, #b71c1c 0%, #c62828 100%);">
                         <span>🔍</span>
                     </div>
@@ -1449,7 +1701,7 @@
                     </div>
                 </div>
 
-                <div class="project-card">
+                <div class="project-card reveal">
                     <div class="project-image" style="background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 100%);">
                         <span>👗</span>
                     </div>
@@ -1466,14 +1718,17 @@
             </div>
         </section>
 
+        <!-- Blend: Projects → Contact -->
+        <div class="section-blend blend-projects-contact"></div>
+
         <!-- Contact Section -->
         <section class="contact-section" id="contact">
-            <div class="section-header">
+            <div class="section-header reveal">
                 <h2 class="section-title">Get In <span>Touch</span></h2>
                 <div class="section-line"></div>
             </div>
             <div class="contact-content">
-                <div class="contact-info">
+                <div class="contact-info reveal">
                     <h3>🤝 Let's Connect!</h3>
                     <p>I'm actively seeking AI/ML Engineering opportunities and would love to hear about exciting projects. Whether you have a question or just want to say hi, feel free to reach out! 🚀</p>
                     <div class="contact-details">
@@ -1500,7 +1755,7 @@
                         </div>
                     </div>
                 </div>
-                <form class="contact-form" onsubmit="handleSubmit(event)">
+                <form class="contact-form reveal" onsubmit="handleSubmit(event)">
                     <div class="form-group">
                         <input type="text" placeholder="Your Name" required>
                     </div>
@@ -1532,7 +1787,42 @@
     </div>
 
     <script>
-        // Slide management
+        // ==================== FIX #3: JS Typewriter with tight cursor ====================
+        const typewriterEl = document.getElementById('typewriter-text');
+        const phrases = [
+            'AI/ML Engineer',
+            'Data Scientist',
+            'LLM Specialist',
+            'Deep Learning Engineer'
+        ];
+        let phraseIdx = 0, charIdx = 0, deleting = false;
+
+        function typewrite() {
+            const current = phrases[phraseIdx];
+            if (!deleting) {
+                typewriterEl.textContent = current.substring(0, charIdx + 1);
+                charIdx++;
+                if (charIdx === current.length) {
+                    setTimeout(() => { deleting = true; typewrite(); }, 2000);
+                    return;
+                }
+                setTimeout(typewrite, 80);
+            } else {
+                typewriterEl.textContent = current.substring(0, charIdx - 1);
+                charIdx--;
+                if (charIdx === 0) {
+                    deleting = false;
+                    phraseIdx = (phraseIdx + 1) % phrases.length;
+                    setTimeout(typewrite, 400);
+                    return;
+                }
+                setTimeout(typewrite, 40);
+            }
+        }
+        // Start after opening animation
+        setTimeout(typewrite, 3600);
+
+        // ==================== Slide management ====================
         let currentSlide = 0;
         const slides = document.querySelectorAll('.hero-slide');
         const dots = document.querySelectorAll('.slide-dot');
@@ -1547,28 +1837,38 @@
 
         setInterval(() => goToSlide((currentSlide + 1) % slides.length), 5000);
 
-        // Navbar scroll
+        // ==================== Navbar scroll ====================
         window.addEventListener('scroll', () => {
             document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 80);
         });
 
-        // Skip intro
+        // ==================== Skip intro ====================
         document.addEventListener('click', function skip() {
             const o = document.getElementById('opening');
             if (o && getComputedStyle(o).visibility !== 'hidden') {
                 o.style.animation = 'fadeOutOpening 0.4s ease forwards';
                 document.querySelector('.main-content').style.animation = 'fadeIn 0.4s ease forwards';
+                // Start typewriter immediately on skip
+                setTimeout(typewrite, 500);
             }
         });
 
-        // Form handler
+        // ==================== FIX #2: About image fallback ====================
+        const aboutImg = document.getElementById('about-img');
+        const aboutPlaceholder = document.getElementById('about-placeholder');
+        aboutImg.addEventListener('error', function() {
+            this.style.display = 'none';
+            aboutPlaceholder.style.display = 'flex';
+        });
+
+        // ==================== Form handler ====================
         function handleSubmit(e) {
             e.preventDefault();
             alert('Thanks for reaching out! I\'ll get back to you soon. 🎉');
             e.target.reset();
         }
 
-        // Smooth scroll
+        // ==================== Smooth scroll ====================
         document.querySelectorAll('a[href^="#"]').forEach(a => {
             a.addEventListener('click', e => {
                 e.preventDefault();
@@ -1578,6 +1878,17 @@
                 }
             });
         });
+
+        // ==================== Scroll Reveal Animation ====================
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
     </script>
 </body>
 </html>
