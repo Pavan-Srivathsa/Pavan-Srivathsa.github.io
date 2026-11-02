@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pavan Srivathsa | AI/ML Engineer</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23E50914'/%3E%3Ctext x='16' y='23' font-family='Arial Narrow,Arial,sans-serif' font-weight='700' font-size='17' fill='white' text-anchor='middle'%3EPS%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -161,7 +162,7 @@
             align-items: center;
         }
 
-        /* TV Show GIF Backgrounds */
+        /* Project "series" backgrounds (generated, no image assets) */
         .hero-slide {
             position: absolute;
             inset: 0;
@@ -178,41 +179,47 @@
             background-position: center;
         }
 
-        /* The Office - Michael Scott "That's what she said" */
-        .slide-office .hero-slide-bg {
-            background-image: url('https://media.giphy.com/media/tlGD7PDy1w8fK/giphy.gif');
-        }
+        .hero-slide.active .hero-slide-bg { animation: slowDrift 12s ease-out forwards; }
+        @keyframes slowDrift { from { transform: scale(1.08); } to { transform: scale(1); } }
 
-        /* Friends - "How you doin?" */
-        .slide-friends .hero-slide-bg {
-            background-image: url('https://media.giphy.com/media/Lr3RZl7gkhd5BWZ5Nh/giphy.gif');
+        .art-dapta {
+            background:
+                radial-gradient(circle at 72% 35%, rgba(229,9,20,0.55), transparent 45%),
+                radial-gradient(circle at 88% 82%, rgba(255,110,60,0.22), transparent 40%),
+                repeating-linear-gradient(115deg, rgba(255,255,255,0.05) 0 1px, transparent 1px 28px),
+                linear-gradient(135deg, #2a0508 0%, #0b0b10 70%);
         }
-
-        /* HIMYM - Barney "Legendary" */
-        .slide-himym .hero-slide-bg {
-            background-image: url('https://media.giphy.com/media/d2jjuAZzDSVLZ5kI/giphy.gif');
+        .art-duckdb {
+            background:
+                radial-gradient(circle at 72% 38%, rgba(255,193,7,0.38), transparent 45%),
+                linear-gradient(rgba(255,214,0,0.07) 1px, transparent 1px) 0 0 / 48px 48px,
+                linear-gradient(90deg, rgba(255,214,0,0.07) 1px, transparent 1px) 0 0 / 48px 48px,
+                linear-gradient(135deg, #1f1702 0%, #0b0b10 70%);
         }
-
-        /* Brooklyn 99 - Jake Peralta */
-        .slide-brooklyn .hero-slide-bg {
-            background-image: url('https://media.giphy.com/media/3oxHQjRHcp4w4mRLkA/giphy.gif');
+        .art-gnn {
+            background:
+                radial-gradient(circle at 70% 40%, rgba(0,191,165,0.35), transparent 45%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='180'%3E%3Cg stroke='%2300bfa5' stroke-opacity='.28' stroke-width='1'%3E%3Cpath d='M20 30L90 60L160 20L220 70M90 60L70 130L150 110L220 70M150 110L200 160M70 130L20 170M160 20L150 110'/%3E%3C/g%3E%3Cg fill='%2300bfa5' fill-opacity='.55'%3E%3Ccircle cx='20' cy='30' r='3'/%3E%3Ccircle cx='90' cy='60' r='4'/%3E%3Ccircle cx='160' cy='20' r='3'/%3E%3Ccircle cx='220' cy='70' r='3'/%3E%3Ccircle cx='70' cy='130' r='3'/%3E%3Ccircle cx='200' cy='160' r='3'/%3E%3Ccircle cx='20' cy='170' r='3'/%3E%3C/g%3E%3Ccircle cx='150' cy='110' r='5' fill='%23E50914' fill-opacity='.8'/%3E%3C/svg%3E") 0 0 / 240px 180px,
+                linear-gradient(135deg, #031a17 0%, #0b0b10 70%);
         }
-
-        /* Big Bang Theory - Sheldon "Bazinga" */
-        .slide-bigbang .hero-slide-bg {
-            background-image: url('https://media.giphy.com/media/xUPGcMzfkOPDC6sMaA/giphy.gif');
+        .art-rag {
+            background:
+                radial-gradient(circle at 74% 36%, rgba(66,133,244,0.42), transparent 45%),
+                repeating-linear-gradient(180deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 18px),
+                linear-gradient(135deg, #06122b 0%, #0b0b10 70%);
+        }
+        .art-meeting {
+            background:
+                radial-gradient(circle at 70% 45%, rgba(70,211,105,0.32), transparent 45%),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.07) 0 3px, transparent 3px 14px),
+                linear-gradient(135deg, #071d12 0%, #0b0b10 70%);
         }
 
         .hero-slide-overlay {
             position: absolute;
             inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
         }
-
-        .slide-office .hero-slide-overlay { background: linear-gradient(135deg, rgba(26,35,126,0.65) 0%, rgba(13,20,33,0.8) 100%); }
-        .slide-friends .hero-slide-overlay { background: linear-gradient(135deg, rgba(156,39,176,0.6) 0%, rgba(74,20,66,0.8) 100%); }
-        .slide-himym .hero-slide-overlay { background: linear-gradient(135deg, rgba(183,28,28,0.6) 0%, rgba(74,20,20,0.8) 100%); }
-        .slide-brooklyn .hero-slide-overlay { background: linear-gradient(135deg, rgba(21,101,192,0.6) 0%, rgba(13,50,80,0.8) 100%); }
-        .slide-bigbang .hero-slide-overlay { background: linear-gradient(135deg, rgba(46,125,50,0.6) 0%, rgba(20,60,20,0.8) 100%); }
 
         .show-label {
             position: absolute;
@@ -222,14 +229,28 @@
             z-index: 5;
         }
 
-        .show-label h3 {
+        .show-award {
+            display: inline-block;
+            background: rgba(229,9,20,0.9);
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 3px;
+            margin-bottom: 8px;
+        }
+
+        .show-title {
             font-family: 'Bebas Neue', sans-serif;
             font-size: 55px;
+            line-height: 1.05;
             text-shadow: 0 0 30px rgba(0,0,0,0.9);
             letter-spacing: 3px;
         }
 
-        .show-label p {
+        .show-tagline {
             font-size: 18px;
             color: rgba(255,255,255,0.85);
             font-style: italic;
@@ -376,6 +397,8 @@
         .slide-dot {
             width: 5px;
             height: 30px;
+            padding: 0;
+            border: none;
             background: rgba(255,255,255,0.3);
             border-radius: 3px;
             cursor: pointer;
@@ -420,6 +443,7 @@
             padding: 100px 4% 160px;
             background: var(--gradient-dark);
             position: relative;
+            overflow-x: clip;
         }
 
         .section-header {
@@ -585,8 +609,26 @@
             transform: translateX(5px);
         }
 
-        .info-icon {
-            font-size: 24px;
+        .info-item .info-icon {
+            font-size: 22px;
+            color: var(--netflix-red);
+            display: flex;
+        }
+
+        .info-item a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .info-item a:hover { color: var(--netflix-red); }
+
+        /* Inline SVG icons (sprite at top of body) */
+        .icon {
+            width: 1em;
+            height: 1em;
+            display: inline-block;
+            vertical-align: -0.125em;
+            flex-shrink: 0;
         }
 
         .info-item span {
@@ -664,7 +706,7 @@
             display: block;
         }
 
-        .skill-card h4 {
+        .skill-card h3 {
             font-size: 14px;
             font-weight: 600;
             color: #fff;
@@ -718,6 +760,7 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
+            color: var(--netflix-red);
             flex-shrink: 0;
         }
         .column-header h3 {
@@ -858,11 +901,6 @@
             margin-bottom: 10px;
         }
         .edu-tooltip-row:last-child { margin-bottom: 0; }
-        .edu-tooltip-icon {
-            font-size: 18px;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
         .edu-tooltip-label {
             color: #888;
             font-size: 11px;
@@ -941,9 +979,9 @@
 
         .projects-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 30px;
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -953,6 +991,8 @@
             overflow: hidden;
             transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
             border: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
         }
 
         .project-card:hover {
@@ -965,7 +1005,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 70px;
             position: relative;
             overflow: hidden;
         }
@@ -974,21 +1013,64 @@
             content: '';
             position: absolute;
             inset: 0;
-            background: linear-gradient(135deg, var(--netflix-red) 0%, #8B0000 100%);
-            opacity: 0.9;
+            background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%);
         }
 
-        .project-image span {
+        .project-title-art {
             position: relative;
             z-index: 1;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 44px;
+            letter-spacing: 3px;
+            line-height: 1;
+            text-align: center;
+            padding: 0 20px;
+            text-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .card-monogram {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            z-index: 1;
+            background: var(--netflix-red);
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 14px;
+            letter-spacing: 1px;
+            padding: 1px 6px;
+        }
+
+        .card-ribbon {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 1;
+            background: rgba(0,0,0,0.75);
+            border: 1px solid rgba(255,255,255,0.25);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 3px;
         }
 
         .project-content {
             padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
 
         .project-content h3 {
             font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .project-meta {
+            color: #46d369;
+            font-size: 13px;
+            font-weight: 600;
             margin-bottom: 12px;
         }
 
@@ -1003,6 +1085,57 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+        }
+
+        .project-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .project-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .project-links a:hover {
+            background: var(--netflix-red);
+        }
+
+        .more-projects {
+            text-align: center;
+            margin-top: 45px;
+        }
+
+        .more-projects a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 12px 26px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .more-projects a:hover {
+            color: white;
+            border-color: var(--netflix-red);
+            background: rgba(229,9,20,0.15);
         }
 
         .project-tech span {
@@ -1062,6 +1195,8 @@
             align-items: center;
             justify-content: center;
             font-size: 22px;
+            color: var(--netflix-red);
+            flex-shrink: 0;
         }
 
         .contact-item span {
@@ -1159,8 +1294,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--netflix-gray);
-            font-size: 24px;
+            color: #aaa;
+            font-size: 22px;
             text-decoration: none;
             border-radius: 50%;
             background: rgba(255,255,255,0.05);
@@ -1206,7 +1341,26 @@
         @media (max-width: 1024px) {
             .about-content { grid-template-columns: 1fr; }
             .about-image { max-width: 400px; margin: 0 auto; }
-            .show-label { display: none; }
+            /* Carousel title moves below the hero copy, dots go horizontal */
+            .hero { padding: 100px 0 150px; }
+            .show-label {
+                top: auto;
+                bottom: 60px;
+                left: 4%;
+                right: 4%;
+                text-align: left;
+            }
+            .show-title { font-size: 34px; letter-spacing: 2px; }
+            .show-tagline { font-size: 15px; }
+            .show-award { font-size: 10px; margin-bottom: 4px; }
+            .slide-nav {
+                flex-direction: row;
+                left: 4%;
+                right: auto;
+                bottom: 30px;
+            }
+            .slide-dot { width: 24px; height: 4px; }
+            .slide-dot.active { width: 40px; height: 4px; }
         }
 
         @media (max-width: 768px) {
@@ -1219,6 +1373,8 @@
             .contact-content { grid-template-columns: 1fr; }
             .about-info { grid-template-columns: 1fr; }
             .projects-grid { grid-template-columns: 1fr; }
+            .about-image::before { top: 10px; left: 10px; right: -10px; bottom: -10px; }
+            .project-title-art { font-size: 36px; }
             .section-blend { height: 80px; }
             .edu-tooltip {
                 position: relative;
@@ -1236,12 +1392,29 @@
             .edu-tooltip::after { display: none; }
         }
 
+        @media (prefers-reduced-motion: reduce) {
+            .hero-slide.active .hero-slide-bg { animation: none; }
+        }
+
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: var(--netflix-black); }
         ::-webkit-scrollbar-thumb { background: var(--netflix-red); border-radius: 5px; }
     </style>
 </head>
 <body>
+    <!-- Icon sprite -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></symbol>
+        <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></symbol>
+        <symbol id="i-cap" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></symbol>
+        <symbol id="i-briefcase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></symbol>
+        <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol>
+        <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
+        <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+        <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+        <symbol id="i-linkedin" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 4.828v6.293zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></symbol>
+    </svg>
+
     <!-- Opening Animation -->
     <div class="opening" id="opening">
         <div class="opening-letters">
@@ -1265,50 +1438,43 @@
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
-                <button class="mobile-menu">☰</button>
+                <button class="mobile-menu" aria-label="Menu">☰</button>
             </div>
         </nav>
 
         <!-- Hero Section -->
         <section class="hero" id="home">
-            <div class="hero-slide slide-office active">
-                <div class="hero-slide-bg"></div>
+            <div class="hero-slide active">
+                <div class="hero-slide-bg art-dapta"></div>
                 <div class="hero-slide-overlay"></div>
                 <div class="show-label">
-                    <h3>THE OFFICE</h3>
-                    <p>"That's what she said!"</p>
+                    <span class="show-award">2nd Place · LA Hacks 2026</span>
+                    <p class="show-title">DAPTA</p>
+                    <p class="show-tagline">"Pay for reasoning once"</p>
                 </div>
             </div>
-            <div class="hero-slide slide-friends">
-                <div class="hero-slide-bg"></div>
+            <div class="hero-slide" aria-hidden="true">
+                <div class="hero-slide-bg art-duckdb"></div>
                 <div class="hero-slide-overlay"></div>
                 <div class="show-label">
-                    <h3>FRIENDS</h3>
-                    <p>"I'll be there for you"</p>
+                    <p class="show-title">DUCKDB LEARNED OPTIMIZER</p>
+                    <p class="show-tagline">"Learned cardinality, adaptive plans"</p>
                 </div>
             </div>
-            <div class="hero-slide slide-himym">
-                <div class="hero-slide-bg"></div>
+            <div class="hero-slide" aria-hidden="true">
+                <div class="hero-slide-bg art-gnn"></div>
                 <div class="hero-slide-overlay"></div>
                 <div class="show-label">
-                    <h3>HOW I MET YOUR MOTHER</h3>
-                    <p>"Legendary!"</p>
+                    <p class="show-title">FRAUD GNN</p>
+                    <p class="show-tagline">"Finding fraud in the graph"</p>
                 </div>
             </div>
-            <div class="hero-slide slide-brooklyn">
-                <div class="hero-slide-bg"></div>
+            <div class="hero-slide" aria-hidden="true">
+                <div class="hero-slide-bg art-rag"></div>
                 <div class="hero-slide-overlay"></div>
                 <div class="show-label">
-                    <h3>BROOKLYN NINE-NINE</h3>
-                    <p>"Cool cool cool cool"</p>
-                </div>
-            </div>
-            <div class="hero-slide slide-bigbang">
-                <div class="hero-slide-bg"></div>
-                <div class="hero-slide-overlay"></div>
-                <div class="show-label">
-                    <h3>THE BIG BANG THEORY</h3>
-                    <p>"Bazinga!"</p>
+                    <p class="show-title">GENAI RAG CHATBOT</p>
+                    <p class="show-tagline">"Answers from PDFs, SQL, and the web"</p>
                 </div>
             </div>
 
@@ -1316,7 +1482,7 @@
 
             <div class="hero-content">
                 <div class="hero-badge">
-                    <span class="netflix-badge">N</span>
+                    <span class="netflix-badge">PS</span>
                     <span class="hero-type">S E R I E S</span>
                 </div>
                 <p class="hero-greeting">Hi There, I'm</p>
@@ -1329,14 +1495,12 @@
                 </p>
                 <div class="hero-meta">
                     <span class="match-score">98% Match</span>
-                    <span>2025</span>
-                    <span class="rating-badge">USC</span>
-                    <span>3+ Years Experience</span>
-                    <span class="quality-badge">4K</span>
-                    <span class="quality-badge">HDR</span>
+                    <span class="rating-badge">MS CS @ USC '26</span>
+                    <span>3+ Years</span>
+                    <span class="quality-badge">LLMs · RAG · Inference</span>
                 </div>
                 <p class="hero-description">
-                    Building production-grade AI systems with expertise in LLMs, RAG architectures, and deep learning. Currently pursuing MS in Computer Science at USC while crafting intelligent solutions that scale.
+                    Building production AI systems across LLM fine-tuning, RAG, agentic systems, and inference. Currently pursuing an MS in Computer Science at USC while shipping intelligent systems that scale.
                 </p>
                 <div class="hero-buttons">
                     <a href="#about" class="btn btn-primary">▶ Explore</a>
@@ -1345,11 +1509,10 @@
             </div>
 
             <div class="slide-nav">
-                <div class="slide-dot active" onclick="goToSlide(0)"></div>
-                <div class="slide-dot" onclick="goToSlide(1)"></div>
-                <div class="slide-dot" onclick="goToSlide(2)"></div>
-                <div class="slide-dot" onclick="goToSlide(3)"></div>
-                <div class="slide-dot" onclick="goToSlide(4)"></div>
+                <button class="slide-dot active" onclick="goToSlide(0)" aria-label="Show Dapta" aria-current="true"></button>
+                <button class="slide-dot" onclick="goToSlide(1)" aria-label="Show DuckDB Learned Optimizer"></button>
+                <button class="slide-dot" onclick="goToSlide(2)" aria-label="Show Fraud GNN"></button>
+                <button class="slide-dot" onclick="goToSlide(3)" aria-label="Show GenAI RAG Chatbot"></button>
             </div>
         </section>
 
@@ -1372,52 +1535,52 @@
                     </div>
                 </div>
                 <div class="about-text reveal">
-                    <h3>👋 I'm Pavan Srivathsa</h3>
-                    <p class="about-role">🤖 AI/ML Engineer & Data Scientist</p>
+                    <h3>I'm Pavan Srivathsa</h3>
+                    <p class="about-role">AI/ML Engineer & Data Scientist</p>
                     <p class="about-description">
-                        I'm a Master's student at USC 🎓 specializing in Computer Science with a focus on AI/ML. With 3+ years of industry experience, I've built production-grade AI systems including RAG chatbots 💬, recommendation engines ⚡, and fine-tuned LLMs 🧠.
+                        I'm an AI/ML engineer pursuing an MS in Computer Science at USC with a focus on AI. Over 3+ years in industry, I've built production ML systems: RAG chatbots, fine-tuned LLMs, and an agentic Text-to-SQL assistant serving 1,000+ concurrent users. I also cut the memory footprint of LLM fine-tuning by 60% with QLoRA and PEFT.
                         <br><br>
-                        My expertise spans PyTorch 🔥, TensorFlow, LangChain 🦜, and cloud platforms like GCP ☁️, Azure, and AWS. I'm passionate about turning complex ML research into scalable, real-world solutions 🚀. From deploying Text-to-SQL agents handling 1000+ concurrent users to optimizing LLM memory footprints by 60%, I bring both technical depth and practical impact! ✨
+                        My current focus is LLM inference and efficient fine-tuning: making models cheaper to serve and faster to specialize. I work primarily in PyTorch, Hugging Face, and LangChain, and deploy on GCP, Azure, and AWS.
                     </p>
-                    
+
                     <div class="about-highlights">
-                        <div class="highlight-item">🏆 3+ Years Experience</div>
-                        <div class="highlight-item">🎯 Production ML Systems</div>
-                        <div class="highlight-item">📊 Data Science Expert</div>
-                        <div class="highlight-item">🌟 LLM Specialist</div>
+                        <div class="highlight-item">3+ Years Industry Experience</div>
+                        <div class="highlight-item">Production ML Systems</div>
+                        <div class="highlight-item">LLM Fine-Tuning</div>
+                        <div class="highlight-item">RAG & Agentic Systems</div>
                     </div>
 
                     <div class="about-info">
                         <div class="info-item">
-                            <span class="info-icon">📱</span>
-                            <div>
-                                <span>Phone</span>
-                                <strong>+1 213-275-9012</strong>
-                            </div>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-icon">📧</span>
+                            <span class="info-icon"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></span>
                             <div>
                                 <span>Email</span>
-                                <strong>pavansri@usc.edu</strong>
+                                <strong><a href="mailto:pavansri@usc.edu">pavansri@usc.edu</a></strong>
                             </div>
                         </div>
                         <div class="info-item">
-                            <span class="info-icon">📍</span>
+                            <span class="info-icon"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></span>
                             <div>
                                 <span>Location</span>
-                                <strong>Los Angeles, CA 🌴</strong>
+                                <strong>Los Angeles, CA</strong>
                             </div>
                         </div>
                         <div class="info-item">
-                            <span class="info-icon">🎓</span>
+                            <span class="info-icon"><svg class="icon" aria-hidden="true"><use href="#i-cap"/></svg></span>
                             <div>
                                 <span>GPA</span>
-                                <strong>3.53 / 4.0 ⭐</strong>
+                                <strong>3.53 / 4.0</strong>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-icon"><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg></span>
+                            <div>
+                                <span>LinkedIn</span>
+                                <strong><a href="https://linkedin.com/in/pav0201" target="_blank" rel="noopener">in/pav0201</a></strong>
                             </div>
                         </div>
                     </div>
-                    <a href="portfolio_assets/Resume_Pavan.pdf" class="btn btn-resume" target="_blank">📄 Download Resume</a>
+                    <a href="portfolio_assets/Resume_Pavan.pdf" class="btn btn-resume" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-download"/></svg> Download Resume</a>
                 </div>
             </div>
         </section>
@@ -1432,22 +1595,22 @@
                 <div class="section-line"></div>
             </div>
             <div class="skills-grid">
-                <div class="skill-card reveal"><span class="skill-icon">🐍</span><h4>Python</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🔥</span><h4>PyTorch</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🧠</span><h4>TensorFlow</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🦜</span><h4>LangChain</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🤗</span><h4>Hugging Face</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">📊</span><h4>Pandas</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">⚡</span><h4>Spark</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🗄️</span><h4>SQL</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">☁️</span><h4>GCP</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🔷</span><h4>Azure</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🟠</span><h4>AWS</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🐳</span><h4>Docker</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🔄</span><h4>MLflow</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">⚛️</span><h4>React</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">🌐</span><h4>FastAPI</h4></div>
-                <div class="skill-card reveal"><span class="skill-icon">📈</span><h4>Tableau</h4></div>
+                <div class="skill-card reveal"><span class="skill-icon">🐍</span><h3>Python</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🔥</span><h3>PyTorch</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🧠</span><h3>TensorFlow</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🦜</span><h3>LangChain</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🤗</span><h3>Hugging Face</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">📊</span><h3>Pandas</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">⚡</span><h3>Spark</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🗄️</span><h3>SQL</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">☁️</span><h3>GCP</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🔷</span><h3>Azure</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🟠</span><h3>AWS</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🐳</span><h3>Docker</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🔄</span><h3>MLflow</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">⚛️</span><h3>React</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">🌐</span><h3>FastAPI</h3></div>
+                <div class="skill-card reveal"><span class="skill-icon">📈</span><h3>Tableau</h3></div>
             </div>
         </section>
 
@@ -1460,13 +1623,13 @@
                 <h2 class="section-title">Education & <span>Experience</span></h2>
                 <div class="section-line"></div>
             </div>
-            <p class="journey-quote reveal">"Education is not the learning of facts, but the training of the mind to think." 📚</p>
+            <p class="journey-quote reveal">"Education is not the learning of facts, but the training of the mind to think."</p>
 
             <div class="journey-grid">
                 <!-- LEFT: Education -->
                 <div class="journey-column reveal">
                     <div class="column-header">
-                        <div class="column-header-icon">🎓</div>
+                        <div class="column-header-icon"><svg class="icon" aria-hidden="true"><use href="#i-cap"/></svg></div>
                         <h3>My <span>Education</span></h3>
                     </div>
                     <div class="vtimeline">
@@ -1476,31 +1639,28 @@
                             <div class="vtimeline-card">
                                 <div class="edu-tooltip">
                                     <div class="edu-tooltip-row">
-                                        <span class="edu-tooltip-icon">📍</span>
                                         <div>
                                             <div class="edu-tooltip-label">Location</div>
                                             <div class="edu-tooltip-value">Los Angeles, California, USA</div>
                                         </div>
                                     </div>
                                     <div class="edu-tooltip-row">
-                                        <span class="edu-tooltip-icon">📜</span>
                                         <div>
                                             <div class="edu-tooltip-label">Degree</div>
                                             <span class="edu-tooltip-degree">Master of Science (M.S.)</span>
                                         </div>
                                     </div>
                                     <div class="edu-tooltip-row">
-                                        <span class="edu-tooltip-icon">📊</span>
                                         <div>
                                             <div class="edu-tooltip-label">GPA</div>
                                             <div class="edu-tooltip-value">3.53 / 4.0</div>
                                         </div>
                                     </div>
                                 </div>
-                                <span class="timeline-year">🎓 2025 - 2026</span>
+                                <span class="timeline-year">2025 - 2026</span>
                                 <h3>MS in Computer Science</h3>
                                 <h4>University of Southern California</h4>
-                                <p>📍 Los Angeles, CA | GPA: 3.53/4.0<br>🎯 Focus: Machine Learning, NLP, Deep Learning</p>
+                                <p>Los Angeles, CA | GPA: 3.53/4.0<br>Focus: Machine Learning, NLP, Deep Learning</p>
                             </div>
                         </div>
                         <!-- LJMU -->
@@ -1509,32 +1669,29 @@
                             <div class="vtimeline-card">
                                 <div class="edu-tooltip">
                                     <div class="edu-tooltip-row">
-                                        <span class="edu-tooltip-icon">📍</span>
                                         <div>
                                             <div class="edu-tooltip-label">Location</div>
                                             <div class="edu-tooltip-value">Liverpool, United Kingdom</div>
                                         </div>
                                     </div>
                                     <div class="edu-tooltip-row">
-                                        <span class="edu-tooltip-icon">📜</span>
                                         <div>
                                             <div class="edu-tooltip-label">Degree</div>
                                             <span class="edu-tooltip-degree">Master of Science (M.S.)</span>
                                         </div>
                                     </div>
                                     <div class="edu-tooltip-row">
-                                        <span class="edu-tooltip-icon">🏅</span>
                                         <div>
                                             <div class="edu-tooltip-label">Honors</div>
                                             <div class="edu-tooltip-value">Distinction</div>
                                         </div>
                                     </div>
                                 </div>
-                                <span class="timeline-year">🏅 2020 - 2022</span>
+                                <span class="timeline-year">2020 - 2022</span>
                                 <span class="timeline-badge">DISTINCTION</span>
                                 <h3>MS in AI and Machine Learning</h3>
                                 <h4>Liverpool John Moores University</h4>
-                                <p>📍 United Kingdom<br>🎯 Advanced AI/ML specialization with Distinction</p>
+                                <p>United Kingdom<br>Advanced AI/ML specialization with Distinction</p>
                             </div>
                         </div>
                         <!-- B.Tech -->
@@ -1543,31 +1700,28 @@
                             <div class="vtimeline-card">
                                 <div class="edu-tooltip">
                                     <div class="edu-tooltip-row">
-                                        <span class="edu-tooltip-icon">📍</span>
                                         <div>
                                             <div class="edu-tooltip-label">Location</div>
                                             <div class="edu-tooltip-value">Bangalore, Karnataka, India</div>
                                         </div>
                                     </div>
                                     <div class="edu-tooltip-row">
-                                        <span class="edu-tooltip-icon">📜</span>
                                         <div>
                                             <div class="edu-tooltip-label">Degree</div>
                                             <span class="edu-tooltip-degree">Bachelor of Technology (B.Tech)</span>
                                         </div>
                                     </div>
                                     <div class="edu-tooltip-row">
-                                        <span class="edu-tooltip-icon">💻</span>
                                         <div>
                                             <div class="edu-tooltip-label">Major</div>
                                             <div class="edu-tooltip-value">Computer Science & Engineering</div>
                                         </div>
                                     </div>
                                 </div>
-                                <span class="timeline-year">🎓 2016 - 2020</span>
+                                <span class="timeline-year">2016 - 2020</span>
                                 <h3>B.Tech in Computer Science</h3>
                                 <h4>Dr. Ambedkar Institute of Technology</h4>
-                                <p>📍 Bangalore, India<br>🎯 Strong foundation in CS fundamentals</p>
+                                <p>Bangalore, India<br>Strong foundation in CS fundamentals</p>
                             </div>
                         </div>
                     </div>
@@ -1576,7 +1730,7 @@
                 <!-- RIGHT: Experience -->
                 <div class="journey-column reveal" id="experience">
                     <div class="column-header">
-                        <div class="column-header-icon">💼</div>
+                        <div class="column-header-icon"><svg class="icon" aria-hidden="true"><use href="#i-briefcase"/></svg></div>
                         <h3>My <span>Experience</span></h3>
                     </div>
                     <div class="vtimeline">
@@ -1584,7 +1738,7 @@
                         <div class="vtimeline-item">
                             <div class="vtimeline-dot"></div>
                             <div class="vtimeline-card">
-                                <span class="timeline-year">🔬 Sep 2025 - Present</span>
+                                <span class="timeline-year">Sep 2025 - Present</span>
                                 <h3>Research Intern</h3>
                                 <h4>University of Southern California</h4>
                                 <ul class="exp-details">
@@ -1602,7 +1756,7 @@
                         <div class="vtimeline-item">
                             <div class="vtimeline-dot"></div>
                             <div class="vtimeline-card">
-                                <span class="timeline-year">🤖 Sep 2024 - Dec 2024</span>
+                                <span class="timeline-year">Sep 2024 - Dec 2024</span>
                                 <h3>AI Engineer</h3>
                                 <h4>BlackBuck Insights</h4>
                                 <ul class="exp-details">
@@ -1621,7 +1775,7 @@
                         <div class="vtimeline-item">
                             <div class="vtimeline-dot"></div>
                             <div class="vtimeline-card">
-                                <span class="timeline-year">📊 Nov 2021 - Aug 2024</span>
+                                <span class="timeline-year">Nov 2021 - Aug 2024</span>
                                 <h3>Data Scientist</h3>
                                 <h4>Koantek</h4>
                                 <ul class="exp-details">
@@ -1655,8 +1809,55 @@
             </div>
             <div class="projects-grid">
                 <div class="project-card reveal">
-                    <div class="project-image" style="background: linear-gradient(135deg, #1a237e 0%, #0d47a1 100%);">
-                        <span>🤖</span>
+                    <div class="project-image art-dapta">
+                        <span class="card-monogram" aria-hidden="true">PS</span>
+                        <span class="card-ribbon">2nd Place</span>
+                        <span class="project-title-art" aria-hidden="true">DAPTA</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>Dapta</h3>
+                        <p class="project-meta">2nd Place, LA Hacks AI Hackathon · Oct 2026</p>
+                        <p>Turns repetitive, rule-bound workflows like NDA triage, invoices, and form filling into LoRA specialists on open-weight Qwen models. A router sends confident matches to a hot-swapped adapter with a short prompt and falls back to the base model on unfamiliar inputs. In the NDA-triage proof of concept on Qwen3-1.7B (held-out set), the LoRA reached 85% classification accuracy vs 39% for the full Skill prompt and 95% vs 73% on criteria accuracy, with 87% fewer prompt tokens.</p>
+                        <div class="project-tech">
+                            <span>LoRA</span>
+                            <span>PEFT</span>
+                            <span>Qwen</span>
+                            <span>vLLM</span>
+                            <span>Agents</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Pavan-Srivathsa/Dapta" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card reveal">
+                    <div class="project-image art-duckdb">
+                        <span class="card-monogram" aria-hidden="true">PS</span>
+                        <span class="card-ribbon">In Progress</span>
+                        <span class="project-title-art" aria-hidden="true">DUCKDB LEARNED OPTIMIZER</span>
+                    </div>
+                    <div class="project-content">
+                        <h3>DuckDB Learned Optimizer</h3>
+                        <p class="project-meta">C++ · Experimental</p>
+                        <p>Learned cardinality estimation for DuckDB's join-order optimizer. A C++ hook on DuckDB's cardinality-estimation path supports native, shadow, learned, hybrid, and adaptive modes, and a Python pipeline trains XGBoost estimators and exports them to ONNX with parity checks. In-engine ONNX inference and a Thompson Sampling selector for adaptive plan choice are in progress; no benchmark results yet.</p>
+                        <div class="project-tech">
+                            <span>C++</span>
+                            <span>DuckDB</span>
+                            <span>ONNX</span>
+                            <span>Query Optimization</span>
+                            <span>Bandits</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Pavan-Srivathsa/duckdb-learned-ce" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> GitHub</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card reveal">
+                    <div class="project-image art-rag">
+                        <span class="card-monogram" aria-hidden="true">PS</span>
+                        <span class="project-title-art" aria-hidden="true">GENAI RAG CHATBOT</span>
                     </div>
                     <div class="project-content">
                         <h3>GenAI RAG Chatbot</h3>
@@ -1671,50 +1872,32 @@
                 </div>
 
                 <div class="project-card reveal">
-                    <div class="project-image" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);">
-                        <span>👁️</span>
+                    <div class="project-image art-meeting">
+                        <span class="card-monogram" aria-hidden="true">PS</span>
+                        <span class="card-ribbon">Live Demo</span>
+                        <span class="project-title-art" aria-hidden="true">MEETING ASSISTANT</span>
                     </div>
                     <div class="project-content">
-                        <h3>Glaucoma Segmentation</h3>
-                        <p>Researched segmentation of optic disc and cup using CLAHE-enhanced U-Nets (Vanilla, Residual, Attention). Improved DICE score from 71% to 81% with Grad-CAM for interpretable clinical decision support.</p>
+                        <h3>Meeting Assistant</h3>
+                        <p class="project-meta">React · Groq · Whisper</p>
+                        <p>Real-time meeting assistant that transcribes live audio or uploaded recordings with Whisper Large V3, surfaces three contextual suggestions every 30 seconds, and answers questions in a streaming chat grounded in the transcript. Suggestions come from a single-call, seven-step prompt pipeline that classifies the meeting, scores candidates, and ignores prompt-injection text. Runs entirely in the browser on Groq, with first chat tokens in about 400-800 ms.</p>
                         <div class="project-tech">
-                            <span>U-Net</span>
-                            <span>PyTorch</span>
-                            <span>Grad-CAM</span>
-                            <span>Medical Imaging</span>
+                            <span>React</span>
+                            <span>Whisper</span>
+                            <span>Groq</span>
+                            <span>Prompt Engineering</span>
+                            <span>Streaming</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/Pavan-Srivathsa/meeting-assistant" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> GitHub</a>
+                            <a href="https://meeting-assistant-chi.vercel.app" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg> Live Demo</a>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="project-card reveal">
-                    <div class="project-image" style="background: linear-gradient(135deg, #b71c1c 0%, #c62828 100%);">
-                        <span>🔍</span>
-                    </div>
-                    <div class="project-content">
-                        <h3>Fraud Detection GNN</h3>
-                        <p>Graph Neural Network for heterogeneous fraud detection with GCN architecture. Achieved AUC-ROC 0.88 with explainable subgraph attribution using GNNExplainer.</p>
-                        <div class="project-tech">
-                            <span>PyTorch Geometric</span>
-                            <span>GCN</span>
-                            <span>GNNExplainer</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card reveal">
-                    <div class="project-image" style="background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 100%);">
-                        <span>👗</span>
-                    </div>
-                    <div class="project-content">
-                        <h3>Virtual Try-On System</h3>
-                        <p>Deployed on Databricks combining Mask R-CNN for apparel segmentation with StyleGAN conditioned on abstract art. Reduced fashion mock-up time by 99%.</p>
-                        <div class="project-tech">
-                            <span>Mask R-CNN</span>
-                            <span>StyleGAN</span>
-                            <span>Databricks</span>
-                        </div>
-                    </div>
-                </div>
+            <div class="more-projects reveal">
+                <a href="https://github.com/Pavan-Srivathsa?tab=repositories" target="_blank" rel="noopener">More projects on GitHub <svg class="icon" aria-hidden="true"><use href="#i-external"/></svg></a>
             </div>
         </section>
 
@@ -1729,46 +1912,39 @@
             </div>
             <div class="contact-content">
                 <div class="contact-info reveal">
-                    <h3>🤝 Let's Connect!</h3>
-                    <p>I'm actively seeking AI/ML Engineering opportunities and would love to hear about exciting projects. Whether you have a question or just want to say hi, feel free to reach out! 🚀</p>
+                    <h3>Let's Connect</h3>
+                    <p>I'm looking for AI/ML engineering roles focused on LLMs, RAG, and inference. If you're hiring or want to compare notes on a project, email is the fastest way to reach me.</p>
                     <div class="contact-details">
                         <div class="contact-item">
-                            <div class="contact-icon">📱</div>
-                            <div>
-                                <span>Phone</span>
-                                <strong><a href="tel:+12132759012">+1 213-275-9012</a></strong>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <div class="contact-icon">📧</div>
+                            <div class="contact-icon"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></div>
                             <div>
                                 <span>Email</span>
                                 <strong><a href="mailto:pavansri@usc.edu">pavansri@usc.edu</a></strong>
                             </div>
                         </div>
                         <div class="contact-item">
-                            <div class="contact-icon">📍</div>
+                            <div class="contact-icon"><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg></div>
                             <div>
                                 <span>Location</span>
-                                <strong>Los Angeles, CA, USA 🌴</strong>
+                                <strong>Los Angeles, CA, USA</strong>
                             </div>
                         </div>
                     </div>
                 </div>
                 <form class="contact-form reveal" onsubmit="handleSubmit(event)">
                     <div class="form-group">
-                        <input type="text" placeholder="Your Name" required>
+                        <input type="text" placeholder="Your Name" aria-label="Your name" required>
                     </div>
                     <div class="form-group">
-                        <input type="email" placeholder="Your Email" required>
+                        <input type="email" placeholder="Your Email" aria-label="Your email" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Subject">
+                        <input type="text" placeholder="Subject" aria-label="Subject">
                     </div>
                     <div class="form-group">
-                        <textarea placeholder="Your Message" required></textarea>
+                        <textarea placeholder="Your Message" aria-label="Your message" required></textarea>
                     </div>
-                    <button type="submit" class="btn-submit">🚀 Send Message</button>
+                    <button type="submit" class="btn-submit">Send Message</button>
                 </form>
             </div>
         </section>
@@ -1776,13 +1952,13 @@
         <!-- Footer -->
         <footer class="footer">
             <div class="social-links">
-                <a href="https://linkedin.com/in/pav0201" target="_blank" title="LinkedIn">💼</a>
-                <a href="https://github.com/Pavan-Srivathsa" target="_blank" title="GitHub">💻</a>
-                <a href="mailto:pavansri@usc.edu" title="Email">📧</a>
-                <a href="tel:+12132759012" title="Phone">📱</a>
+                <a href="https://github.com/Pavan-Srivathsa" target="_blank" rel="noopener" aria-label="GitHub profile" title="GitHub"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg></a>
+                <a href="https://linkedin.com/in/pav0201" target="_blank" rel="noopener" aria-label="LinkedIn profile" title="LinkedIn"><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg></a>
+                <a href="mailto:pavansri@usc.edu" aria-label="Email pavansri@usc.edu" title="Email"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></a>
+                <a href="portfolio_assets/Resume_Pavan.pdf" target="_blank" rel="noopener" aria-label="Resume (PDF)" title="Resume"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></a>
             </div>
-            <p class="footer-text">Thank you for visiting my portfolio! Connect with me over socials. ✨</p>
-            <p class="footer-copy">Designed with ❤️ by <a href="https://linkedin.com/in/pav0201" target="_blank">Pavan Srivathsa</a></p>
+            <p class="footer-text">Thanks for visiting. Find me on GitHub and LinkedIn, or reach out by email.</p>
+            <p class="footer-copy">Designed and built by <a href="https://linkedin.com/in/pav0201" target="_blank" rel="noopener">Pavan Srivathsa</a></p>
         </footer>
     </div>
 
@@ -1791,9 +1967,8 @@
         const typewriterEl = document.getElementById('typewriter-text');
         const phrases = [
             'AI/ML Engineer',
-            'Data Scientist',
-            'LLM Specialist',
-            'Deep Learning Engineer'
+            'LLM Engineer',
+            'Data Scientist'
         ];
         let phraseIdx = 0, charIdx = 0, deleting = false;
 
@@ -1828,10 +2003,15 @@
         const dots = document.querySelectorAll('.slide-dot');
 
         function goToSlide(index) {
-            slides.forEach(s => s.classList.remove('active'));
-            dots.forEach(d => d.classList.remove('active'));
-            slides[index].classList.add('active');
-            dots[index].classList.add('active');
+            slides.forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+                s.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+            });
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === index);
+                if (i === index) d.setAttribute('aria-current', 'true');
+                else d.removeAttribute('aria-current');
+            });
             currentSlide = index;
         }
 
@@ -1864,7 +2044,7 @@
         // ==================== Form handler ====================
         function handleSubmit(e) {
             e.preventDefault();
-            alert('Thanks for reaching out! I\'ll get back to you soon. 🎉');
+            alert('Thanks for reaching out! I\'ll get back to you soon.');
             e.target.reset();
         }
 
