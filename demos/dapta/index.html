@@ -421,23 +421,91 @@
             background: var(--bg);
             color: var(--ink);
         }
-        .stages { list-style: none; display: grid; gap: 6px; margin-top: 4px; }
-        .stages li { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+        .progress { background: #f0f1ec; border-radius: 6px; height: 8px; overflow: hidden; }
+        .progress div { height: 100%; background: #6a5acd; width: 0; transition: width 0.6s; }
+        .stage-note { font-size: 12px; color: var(--muted); }
+
+        /* ---------- Build pipeline: stage wire + live detail ---------- */
+        #build-card { grid-column: 1 / -1; scroll-margin-top: 90px; }
+        .pipe { display: grid; grid-template-columns: minmax(0, 260px) minmax(0, 1fr); gap: 22px; }
+        .stages { list-style: none; position: relative; }
+        .stages li {
+            position: relative;
+            padding: 0 0 14px 28px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+        .stages li:last-child { padding-bottom: 0; }
+        /* the wire between nodes */
+        .stages li::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 16px;
+            bottom: -2px;
+            width: 2px;
+            background: var(--line);
+        }
+        .stages li:last-child::after { display: none; }
+        .stages li.done::after { background: var(--green); }
+        .stages li.current::after {
+            background: linear-gradient(var(--green) 0 30%, #6a5acd 30% 60%, var(--line) 60%);
+            background-size: 100% 300%;
+            animation: flow 1s linear infinite;
+        }
+        /* the node */
         .stages li::before {
             content: '';
+            position: absolute;
+            left: 0;
+            top: 2px;
             width: 10px;
             height: 10px;
             border-radius: 50%;
             border: 2px solid var(--line);
-            flex-shrink: 0;
+            background: var(--surface);
+            z-index: 1;
         }
         .stages li.done { color: var(--ink); }
         .stages li.done::before { background: var(--green); border-color: var(--green); }
         .stages li.current { color: var(--ink); font-weight: 600; }
-        .stages li.current::before { border-color: #6a5acd; border-top-color: transparent; animation: spin 0.8s linear infinite; }
-        .progress { background: #f0f1ec; border-radius: 6px; height: 8px; overflow: hidden; }
-        .progress div { height: 100%; background: #6a5acd; width: 0; transition: width 0.6s; }
-        .stage-note { font-size: 12px; color: var(--muted); }
+        .stages li.current::before { border-color: #6a5acd; box-shadow: 0 0 0 4px #ece9fb; }
+        .stages li.halted::before { border-color: var(--red); background: var(--red-soft); }
+        .stages .who { display: block; font-size: 11px; font-weight: 400; color: var(--muted); font-family: ui-monospace, Menlo, monospace; }
+        @keyframes flow { from { background-position: 0 100%; } to { background-position: 0 0; } }
+
+        .detail {
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 16px;
+            display: grid;
+            gap: 12px;
+            align-content: start;
+            min-height: 300px;
+        }
+        .detail h4 { font-size: 15px; }
+        .detail .sub { font-size: 13px; color: var(--muted); }
+        .detail .tag { display: inline-block; font-size: 11px; font-family: ui-monospace, Menlo, monospace; background: #ece9fb; color: #5545b8; padding: 2px 8px; border-radius: 999px; }
+        .checks { list-style: none; display: grid; gap: 6px; font-size: 13px; }
+        .checks li { display: flex; gap: 8px; align-items: center; color: var(--muted); }
+        .checks li::before { content: ''; width: 14px; height: 14px; border-radius: 4px; border: 1.5px solid var(--line); flex-shrink: 0; }
+        .checks li.ok { color: var(--ink); }
+        .checks li.ok::before { background: var(--green) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='white' stroke-width='2'/%3E%3C/svg%3E") center / 12px no-repeat; border-color: var(--green); }
+        .splits { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+        .split { background: var(--surface); border: 1px solid var(--line); border-radius: 9px; padding: 8px 10px; font-size: 11px; color: var(--muted); }
+        .split strong { display: block; font-size: 18px; color: var(--ink); }
+        .cfg { display: flex; flex-wrap: wrap; gap: 6px; }
+        .cfg span { font-size: 11px; font-family: ui-monospace, Menlo, monospace; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 3px 7px; }
+        .detail pre { font-size: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 9px; padding: 10px; white-space: pre-wrap; overflow-wrap: anywhere; }
+        .meter { display: grid; gap: 4px; font-size: 12px; color: var(--muted); }
+        .meter .progress div { transition: width 0.25s; }
+        .train-stats { display: flex; flex-wrap: wrap; gap: 18px; font-size: 12px; color: var(--muted); }
+        .train-stats strong { display: block; font-size: 16px; color: var(--ink); }
+        .loss { width: 100%; height: 120px; background: var(--surface); border: 1px solid var(--line); border-radius: 9px; }
+        .loss .ax { stroke: var(--line); }
+        .loss polyline { fill: none; stroke: #6a5acd; stroke-width: 2; }
+        .evals { display: grid; gap: 10px; }
 
         .modal-bg {
             position: fixed;
@@ -465,15 +533,18 @@
             .lanes, .winners { grid-template-columns: 1fr; }
             .topbar { grid-template-columns: 1fr auto; row-gap: 10px; }
             .tabs { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
+            .pipe { grid-template-columns: minmax(0, 1fr); }
+            .detail { min-height: 0; }
         }
         @media (max-width: 480px) {
             main { padding: 20px 16px 60px; }
             .topbar { padding: 12px 16px; }
             .tab { padding: 7px 12px; }
             .bar-row { grid-template-columns: 92px 1fr 56px; font-size: 12px; }
+            .splits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         }
         @media (prefers-reduced-motion: reduce) {
-            .spinner, .stages li.current::before { animation: none; }
+            .spinner, .stages li.current::after { animation: none; }
             .bar { transition: none; }
         }
     </style>
@@ -481,7 +552,7 @@
 <body>
     <div class="banner">
         <span><strong>Interactive mockup</strong> of Dapta, 2nd place at LA Hacks 2026. Chat replies are scripted sample data; the Performance tab shows real benchmark results.</span>
-        <a href="../../#projects">← Back to portfolio</a>
+        <span><a href="https://github.com/Pavan-Srivathsa/Dapta" target="_blank" rel="noopener">Code on GitHub</a> · <a href="../../#projects">← Back to portfolio</a></span>
     </div>
 
     <header class="topbar">
@@ -812,18 +883,49 @@
         document.querySelectorAll('.bench-pill').forEach(p => p.addEventListener('click', () => renderBench(p.dataset.bench)));
 
         // ==================== Specialists: simulated build ====================
+        // Stage names, providers, and training settings come from the Dapta README and training runbook.
+        // Durations are sped up; the loss curve is simulated.
         const STAGES = [
-            ['Queued', 'Waiting for the factory'],
-            ['Architecting', 'Turning the task into explicit rules and an output schema'],
-            ['Building dataset', 'Generating training, dev, and frozen test cases'],
-            ['Validating', 'Checking labels, duplicates, leakage, and splits'],
-            ['Awaiting compute', 'Budget check: time and cost cap passed'],
-            ['Provisioning GPU', 'Starting a single-GPU worker'],
-            ['Training', 'QLoRA fine-tuning on the shared Qwen base'],
-            ['Evaluating', 'Scoring base, base + instructions, and the adapter on the frozen test set'],
-            ['Publishing', 'Uploading the adapter and its benchmark'],
+            { name: 'Queued', who: 'factory', ms: 1400, note: 'Preflight before any paid work starts',
+              render: () => `<ul class="checks" data-tick>${['Factory ready', 'Qwen worker ready', 'Publishing ready', 'Supabase ready'].map(c => `<li>${c}</li>`).join('')}</ul>` },
+            { name: 'Architecting', who: 'Kimi K3 · OpenRouter', ms: 2200, note: 'Turning the task into explicit rules and an output schema',
+              render: () => `<pre>${escapeHtml(`Rules
+1. Read every line item on the receipt.
+2. Total must equal the sum of line items plus tax.
+3. Unknown fields are null, never guessed.
+
+Output schema
+{ "merchant": string, "date": "YYYY-MM-DD",
+  "items": [{ "name": string, "amount": number }],
+  "tax": number, "total": number, "category": string }`)}</pre>` },
+            { name: 'Building dataset', who: 'Kimi K3 · OpenRouter', ms: 2600, note: 'Generating training, dev, frozen test, and out-of-distribution cases',
+              render: () => `<div class="splits">${[['TRAIN', 600], ['DEV', 100], ['TEST · frozen', 150], ['OOD', 50]].map(([k, n]) => `<div class="split"><strong data-count="${n}">0</strong>${k}</div>`).join('')}</div>
+                <p class="sub">Split sizes match the NDA proof of concept. Only DEV failures may guide later data repair.</p>` },
+            { name: 'Validating', who: 'validator', ms: 2600, note: 'Training cannot start until every gate passes',
+              render: () => `<ul class="checks" data-tick>${['Schema', 'Label shape', 'Duplicates', 'Leakage', 'Split isolation', 'Frozen TEST hashed'].map(c => `<li>${c}</li>`).join('')}</ul>` },
+            { name: 'Awaiting compute', who: 'budget check', ms: 1800, note: 'Hard time and cost preflight',
+              render: () => `<ul class="checks" data-tick><li>Job cost under DAPTA_FACTORY_MAX_JOB_COST_USD</li><li>Train time under DAPTA_FACTORY_MAX_TRAIN_HOURS</li><li>No other process owns the GPU</li></ul>
+                <p class="sub">A Qwen3-VL-8B LoRA is expected to take roughly 6–8 hours on one GPU.</p>` },
+            { name: 'Provisioning GPU', who: 'RunPod · A40', ms: 2000, note: 'Starting a single-GPU worker and loading the base model',
+              render: () => `<div class="meter">Loading Qwen3-VL-8B in 4-bit NF4<div class="progress"><div data-fill></div></div></div>
+                <div class="cfg"><span>A40 · ~46 GiB visible VRAM</span><span>NF4 + double quantization</span><span>BF16 compute · TF32</span><span>SDPA attention</span></div>` },
+            { name: 'Training', who: 'QLoRA · PEFT / TRL', ms: 9000, note: 'Fine-tuning a LoRA adapter on the frozen, quantized base',
+              render: () => `<div class="cfg"><span>LoRA r=16</span><span>alpha=32</span><span>dropout=0.05</span><span>q/k/v/o + gate/up/down</span><span>micro-batch 1 × grad accum 8</span><span>gradient checkpointing</span><span>paged_adamw_8bit</span><span>max seq 4096</span></div>
+                <div class="train-stats"><div>Step<strong id="t-step">0 / 75</strong></div><div>TRAIN cases seen<strong id="t-seen">0 / 600</strong></div><div>Loss<strong id="t-loss">–</strong></div></div>
+                <div class="train-stats"><span>Training loss (y) by optimizer step (x)</span></div>
+                <svg class="loss" viewBox="0 0 300 120" preserveAspectRatio="none" role="img" aria-label="Training loss falling as steps increase">
+                    <line class="ax" x1="28" y1="8" x2="28" y2="100"/><line class="ax" x1="28" y1="100" x2="294" y2="100"/>
+                    <polyline id="t-line" points=""/>
+                </svg>
+                <p class="sub">One pass over TRAIN shown: 600 cases ÷ effective batch 8 = 75 optimizer steps. Loss values are simulated.</p>` },
+            { name: 'Evaluating', who: 'frozen TEST set', ms: 3600, note: 'Same frozen cases and decoding settings for all three conditions',
+              render: () => `<div class="evals">${['Qwen base + short prompt', 'Qwen base + full Skill', 'Saved LoRA + short prompt'].map(c => `<div class="meter"><span>${c} · <b data-n>0</b> / 150</span><div class="progress"><div data-fill></div></div></div>`).join('')}</div>
+                <p class="sub">Max new tokens 4096. Any truncated case invalidates scoring instead of counting as 0%. Scores are not simulated for this sample task; the Performance tab has real results.</p>` },
+            { name: 'Publishing', who: 'Hugging Face', ms: 1800, note: 'Uploading the adapter and its benchmark',
+              render: () => `<ul class="checks" data-tick><li>Adapter uploaded to the registry</li><li>Benchmark attached</li><li>Registered for the router</li></ul>` },
         ];
         let buildTimer = null;
+        let animTimer = null;
 
         document.getElementById('build-btn').addEventListener('click', startBuild);
         document.querySelectorAll('[data-try]').forEach(b => b.addEventListener('click', () => {
@@ -832,13 +934,55 @@
             runChat(p.text, b.dataset.try, p.file);
         }));
 
+        function slug(s) { return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'new-specialist'; }
+
+        // Animate the detail panel of one stage over its duration.
+        function animateStage(box, stage) {
+            const t0 = performance.now();
+            const ticks = box.querySelectorAll('[data-tick] li');
+            const counts = box.querySelectorAll('[data-count]');
+            const fills = box.querySelectorAll('[data-fill]');
+            const ns = box.querySelectorAll('[data-n]');
+            const line = box.querySelector('#t-line');
+            const pts = [];
+            let lastStep = 0;
+            clearInterval(animTimer);
+            animTimer = setInterval(() => {
+                const f = Math.min((performance.now() - t0) / (stage.ms * 0.9), 1);
+                ticks.forEach((li, j) => li.classList.toggle('ok', f >= (j + 1) / ticks.length));
+                counts.forEach(c => c.textContent = Math.round(f * c.dataset.count));
+                // Evaluation conditions run one after another
+                fills.forEach((d, j) => {
+                    const g = fills.length > 1 ? Math.min(Math.max(f * fills.length - j, 0), 1) : f;
+                    d.style.width = g * 100 + '%';
+                    if (ns[j]) ns[j].textContent = Math.round(g * 150);
+                });
+                if (line) {
+                    const step = Math.round(f * 75);
+                    while (lastStep < step) {
+                        lastStep++;
+                        const loss = 0.35 + 1.9 * Math.exp(-lastStep / 14) + (Math.random() - 0.5) * 0.12;
+                        pts.push(`${(28 + lastStep / 75 * 266).toFixed(1)},${(100 - loss / 2.4 * 88).toFixed(1)}`);
+                        document.getElementById('t-loss').textContent = loss.toFixed(3);
+                    }
+                    line.setAttribute('points', pts.join(' '));
+                    document.getElementById('t-step').textContent = `${step} / 75`;
+                    document.getElementById('t-seen').textContent = `${step * 8} / 600`;
+                }
+                if (f >= 1) clearInterval(animTimer);
+            }, 80);
+        }
+
         function startBuild() {
             if (buildTimer) return;
             const name = document.getElementById('task').value.trim() || 'New specialist';
             const card = el(`<article class="card" id="build-card">
-                <div class="card-top"><div><h3>${escapeHtml(name)}</h3><div class="version">new · Qwen3-VL-8B</div></div><span class="state building" id="build-state">Building</span></div>
+                <div class="card-top"><div><h3>${escapeHtml(name)}</h3><div class="version">${escapeHtml(slug(name))}/qwen3-vl-8b-v1</div></div><span class="state building" id="build-state">Building</span></div>
                 <div class="progress"><div id="build-bar"></div></div>
-                <ul class="stages" id="stages">${STAGES.map(s => `<li>${s[0]}</li>`).join('')}</ul>
+                <div class="pipe">
+                    <ol class="stages" id="stages">${STAGES.map(s => `<li>${s.name}<span class="who">${s.who}</span></li>`).join('')}</ol>
+                    <div class="detail" id="stage-detail" aria-live="polite"></div>
+                </div>
                 <p class="stage-note" id="stage-note"></p>
                 <p class="stage-note">Real builds take hours; this one is sped up. Your existing specialists keep working while it trains.</p>
                 <div class="actions"><button class="btn danger" id="stop-btn">Stop build</button></div>
@@ -846,6 +990,7 @@
             const old = document.getElementById('build-card');
             if (old) old.remove();
             document.getElementById('registry').insertBefore(card, document.getElementById('builder'));
+            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
             document.getElementById('build-btn').disabled = true;
             document.getElementById('stop-btn').onclick = () => document.getElementById('stop-modal').classList.add('open');
             let i = 0;
@@ -853,29 +998,36 @@
                 const items = document.querySelectorAll('#stages li');
                 items.forEach((li, j) => { li.className = j < i ? 'done' : j === i ? 'current' : ''; });
                 document.getElementById('build-bar').style.width = (i / STAGES.length) * 100 + '%';
+                const box = document.getElementById('stage-detail');
                 if (i >= STAGES.length) {
-                    clearInterval(buildTimer); buildTimer = null;
+                    buildTimer = null;
                     const st = document.getElementById('build-state');
                     st.textContent = 'Ready'; st.className = 'state ready';
-                    document.getElementById('stage-note').textContent = 'Published. In the real system, it would now appear as a routable specialist with its benchmark attached.';
+                    box.innerHTML = `<span class="tag">Published</span><h4>${escapeHtml(name)} is ready</h4>
+                        <p class="sub">In the real system it now appears as a routable specialist, with its benchmark attached. Chat would swap this adapter in for matching requests.</p>`;
+                    document.getElementById('stage-note').textContent = 'All 9 stages finished.';
                     document.getElementById('stop-btn').remove();
                     document.getElementById('build-btn').disabled = false;
                     return;
                 }
-                document.getElementById('stage-note').textContent = STAGES[i][1] + '…';
+                const s = STAGES[i];
+                box.innerHTML = `<span class="tag">Stage ${i + 1} of ${STAGES.length} · ${s.who}</span><h4>${s.name}</h4><p class="sub">${s.note}.</p>${s.render()}`;
+                animateStage(box, s);
+                document.getElementById('stage-note').textContent = s.note + '…';
                 i++;
+                buildTimer = setTimeout(step, s.ms);
             };
             step();
-            buildTimer = setInterval(step, 1300);
         }
 
         document.getElementById('stop-cancel').onclick = () => document.getElementById('stop-modal').classList.remove('open');
         document.getElementById('stop-confirm').onclick = () => {
             document.getElementById('stop-modal').classList.remove('open');
-            clearInterval(buildTimer); buildTimer = null;
+            clearTimeout(buildTimer); buildTimer = null;
+            clearInterval(animTimer);
             const st = document.getElementById('build-state');
             st.textContent = 'Stopped'; st.className = 'state stopped';
-            document.querySelectorAll('#stages li.current').forEach(li => li.className = '');
+            document.querySelectorAll('#stages li.current').forEach(li => li.className = 'halted');
             document.getElementById('stage-note').textContent = 'Stopped safely. No later stage started and the GPU worker was shut down.';
             document.getElementById('stop-btn').remove();
             document.getElementById('build-btn').disabled = false;

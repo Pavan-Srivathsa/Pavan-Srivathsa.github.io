@@ -1358,6 +1358,33 @@
             text-decoration: none;
         }
 
+        .visitor-map {
+            max-width: 640px;
+            margin: 0 auto 30px;
+        }
+        .visitor-map[hidden] { display: none; }
+        .visitor-map h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 2px;
+            color: #ddd;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+        .visitor-map p {
+            color: var(--netflix-gray);
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+        .visitor-map img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 800 / 414;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #141414;
+        }
+
         /* ==================== SCROLL REVEAL ==================== */
         .reveal {
             opacity: 0;
@@ -1879,8 +1906,8 @@
                         </div>
                         <div class="project-links">
                             <a href="demos/dapta/"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg> Try Interactive Mockup</a>
+                            <a href="https://github.com/Pavan-Srivathsa/Dapta" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> GitHub</a>
                         </div>
-                        <p class="project-note">Code is in a private repository.</p>
                     </div>
                 </div>
 
@@ -2017,10 +2044,29 @@
                 <a href="mailto:pavansri@usc.edu" aria-label="Email pavansri@usc.edu" title="Email"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></a>
                 <a href="portfolio_assets/Resume_Pavan.pdf" target="_blank" rel="noopener" aria-label="Resume (PDF)" title="Resume"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></a>
             </div>
+            <section class="visitor-map" id="visitor-map" aria-labelledby="visitor-map-title" hidden>
+                <h2 id="visitor-map-title">Visitors Around the World</h2>
+                <p>Each dot is a place this portfolio has been viewed from. Counts by MapMyVisitors.</p>
+            </section>
             <p class="footer-text">Thanks for visiting. Find me on GitHub and LinkedIn, or reach out by email.</p>
             <p class="footer-copy">Designed and built by <a href="https://linkedin.com/in/pav0201" target="_blank" rel="noopener">Pavan Srivathsa</a></p>
         </footer>
     </div>
+
+    <script>
+        // ==================== Visitor map (MapMyVisitors) ====================
+        // Paste the d= value from the MapMyVisitors embed code. The section stays hidden while this is empty.
+        // Not lazy-loaded: the image request is what records the visit.
+        const MAPMYVISITORS_TOKEN = 'm1sVMymXNneddZE6iGvAnaoQUkykmoqc0YErNewknIs';
+        if (MAPMYVISITORS_TOKEN) {
+            const box = document.getElementById('visitor-map');
+            const q = 'd=' + encodeURIComponent(MAPMYVISITORS_TOKEN);
+            box.insertAdjacentHTML('beforeend',
+                '<img src="https://mapmyvisitors.com/map.png?' + q + '&cl=ffffff&co=141414&w=800" ' +
+                'alt="World map of portfolio visitors with total visit count" width="800" height="414" fetchpriority="low" decoding="async">');
+            box.hidden = false;
+        }
+    </script>
 
     <script>
         // ==================== FIX #3: JS Typewriter with tight cursor ====================
