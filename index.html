@@ -1359,7 +1359,7 @@
         }
 
         .visitor-map {
-            max-width: 520px;
+            max-width: 640px;
             margin: 0 auto 30px;
         }
         .visitor-map[hidden] { display: none; }
@@ -1379,10 +1379,10 @@
         .visitor-map img {
             width: 100%;
             height: auto;
-            aspect-ratio: 2 / 1;
+            aspect-ratio: 800 / 414;
             border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.1);
-            background: #0b0b0b;
+            background: #141414;
         }
 
         /* ==================== SCROLL REVEAL ==================== */
@@ -2046,7 +2046,7 @@
             </div>
             <section class="visitor-map" id="visitor-map" aria-labelledby="visitor-map-title" hidden>
                 <h2 id="visitor-map-title">Visitors Around the World</h2>
-                <p>Each dot is a place this portfolio has been viewed from. Counts by ClustrMaps.</p>
+                <p>Each dot is a place this portfolio has been viewed from. Counts by MapMyVisitors.</p>
             </section>
             <p class="footer-text">Thanks for visiting. Find me on GitHub and LinkedIn, or reach out by email.</p>
             <p class="footer-copy">Designed and built by <a href="https://linkedin.com/in/pav0201" target="_blank" rel="noopener">Pavan Srivathsa</a></p>
@@ -2054,15 +2054,16 @@
     </div>
 
     <script>
-        // ==================== Visitor map (ClustrMaps) ====================
-        // Paste the d= value from the ClustrMaps embed code. The section stays hidden while this is empty.
-        const CLUSTRMAPS_TOKEN = '';
-        if (CLUSTRMAPS_TOKEN) {
+        // ==================== Visitor map (MapMyVisitors) ====================
+        // Paste the d= value from the MapMyVisitors embed code. The section stays hidden while this is empty.
+        // Not lazy-loaded: the image request is what records the visit.
+        const MAPMYVISITORS_TOKEN = 'm1sVMymXNneddZE6iGvAnaoQUkykmoqc0YErNewknIs';
+        if (MAPMYVISITORS_TOKEN) {
             const box = document.getElementById('visitor-map');
-            const q = 'd=' + encodeURIComponent(CLUSTRMAPS_TOKEN);
+            const q = 'd=' + encodeURIComponent(MAPMYVISITORS_TOKEN);
             box.insertAdjacentHTML('beforeend',
-                '<img src="https://www.clustrmaps.com/map_v2.png?cl=ffffff&w=a&t=n&co=141414&ct=ffffff&' + q + '" ' +
-                'alt="World map of portfolio visitors with total visit count" width="520" height="260" loading="lazy">');
+                '<img src="https://mapmyvisitors.com/map.png?' + q + '&cl=ffffff&co=141414&w=800" ' +
+                'alt="World map of portfolio visitors with total visit count" width="800" height="414" fetchpriority="low" decoding="async">');
             box.hidden = false;
         }
     </script>
