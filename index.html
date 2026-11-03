@@ -1358,6 +1358,33 @@
             text-decoration: none;
         }
 
+        .visitor-map {
+            max-width: 520px;
+            margin: 0 auto 30px;
+        }
+        .visitor-map[hidden] { display: none; }
+        .visitor-map h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 22px;
+            letter-spacing: 2px;
+            color: #ddd;
+            font-weight: 400;
+            margin-bottom: 4px;
+        }
+        .visitor-map p {
+            color: var(--netflix-gray);
+            font-size: 13px;
+            margin-bottom: 14px;
+        }
+        .visitor-map img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 2 / 1;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: #0b0b0b;
+        }
+
         /* ==================== SCROLL REVEAL ==================== */
         .reveal {
             opacity: 0;
@@ -2017,10 +2044,28 @@
                 <a href="mailto:pavansri@usc.edu" aria-label="Email pavansri@usc.edu" title="Email"><svg class="icon" aria-hidden="true"><use href="#i-mail"/></svg></a>
                 <a href="portfolio_assets/Resume_Pavan.pdf" target="_blank" rel="noopener" aria-label="Resume (PDF)" title="Resume"><svg class="icon" aria-hidden="true"><use href="#i-file"/></svg></a>
             </div>
+            <section class="visitor-map" id="visitor-map" aria-labelledby="visitor-map-title" hidden>
+                <h2 id="visitor-map-title">Visitors Around the World</h2>
+                <p>Each dot is a place this portfolio has been viewed from. Counts by ClustrMaps.</p>
+            </section>
             <p class="footer-text">Thanks for visiting. Find me on GitHub and LinkedIn, or reach out by email.</p>
             <p class="footer-copy">Designed and built by <a href="https://linkedin.com/in/pav0201" target="_blank" rel="noopener">Pavan Srivathsa</a></p>
         </footer>
     </div>
+
+    <script>
+        // ==================== Visitor map (ClustrMaps) ====================
+        // Paste the d= value from the ClustrMaps embed code. The section stays hidden while this is empty.
+        const CLUSTRMAPS_TOKEN = '';
+        if (CLUSTRMAPS_TOKEN) {
+            const box = document.getElementById('visitor-map');
+            const q = 'd=' + encodeURIComponent(CLUSTRMAPS_TOKEN);
+            box.insertAdjacentHTML('beforeend',
+                '<img src="https://www.clustrmaps.com/map_v2.png?cl=ffffff&w=a&t=n&co=141414&ct=ffffff&' + q + '" ' +
+                'alt="World map of portfolio visitors with total visit count" width="520" height="260" loading="lazy">');
+            box.hidden = false;
+        }
+    </script>
 
     <script>
         // ==================== FIX #3: JS Typewriter with tight cursor ====================
