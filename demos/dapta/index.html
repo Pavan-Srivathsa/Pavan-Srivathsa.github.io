@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dapta Mockup | Pavan Srivathsa</title>
+    <meta name="description" content="Interactive mockup of Dapta, a 2nd-place LA Hacks 2026 project that turns repetitive AI tasks into small LoRA specialists on open-weight Qwen models.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233d5a3d'/%3E%3Ctext x='16' y='23' font-family='Georgia,serif' font-weight='700' font-size='19' fill='white' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #f7f7f2;
+            --surface: #ffffff;
+            --ink: #233023;
+            --muted: #565f56;
+            --sage: #6e8566;
+            --green: #3d5a3d;
+            --green-soft: #e9efe5;
+            --line: #e1e4dc;
+            --amber: #94600a;
+            --amber-soft: #fbf1dd;
+            --red: #a33b2b;
+            --red-soft: #fbe9e5;
+            --shadow: 0 6px 24px rgba(35, 48, 35, 0.08);
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.5;
+            font-variant-numeric: tabular-nums;
+        }
+
+        button { font: inherit; cursor: pointer; }
+        a { color: var(--green); }
+
+        /* ---------- Mockup banner ---------- */
+        .banner {
+            background: var(--ink);
+            color: #eef2ea;
+            font-size: 13px;
+            padding: 9px 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .banner a { color: #fff; font-weight: 600; }
+        .banner strong { color: #c9dcbf; }
+
+        /* ---------- Top bar ---------- */
+        .topbar {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            padding: 14px 24px;
+            border-bottom: 1px solid var(--line);
+            background: rgba(247, 247, 242, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .brand {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .brand-mark {
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            background: conic-gradient(from 200deg, #6fbf5f, #e9c84a, #e07a4a, #b067c9, #4a8fe0, #6fbf5f);
+        }
+        .tabs {
+            display: flex;
+            gap: 4px;
+            background: #eceee6;
+            padding: 4px;
+            border-radius: 999px;
+        }
+        .tab {
+            border: none;
+            background: none;
+            padding: 7px 18px;
+            border-radius: 999px;
+            color: var(--muted);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .tab[aria-selected="true"] {
+            background: var(--surface);
+            color: var(--ink);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        .workspace {
+            justify-self: end;
+            font-size: 13px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .dot { width: 7px; height: 7px; border-radius: 50%; background: #6fa35f; display: inline-block; }
+
+        main { max-width: 1180px; margin: 0 auto; padding: 32px 24px 80px; }
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* ---------- Chat ---------- */
+        .hero { text-align: center; padding: 40px 0 28px; }
+        .eyebrow {
+            font-size: 13px;
+            color: var(--muted);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .hero h1 {
+            font-size: clamp(36px, 7vw, 60px);
+            line-height: 1.05;
+            letter-spacing: -1.5px;
+            font-weight: 600;
+        }
+        .hero h1 span { color: var(--sage); }
+        .hero p { color: var(--muted); margin-top: 14px; font-size: 16px; }
+
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 26px 0;
+        }
+        .chip {
+            border: 1px solid var(--line);
+            background: var(--surface);
+            border-radius: 10px;
+            padding: 9px 14px;
+            font-size: 13px;
+            color: var(--ink);
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .chip:hover { border-color: var(--sage); transform: translateY(-1px); }
+        .chip small { display: block; color: var(--muted); font-size: 11px; }
+
+        .composer {
+            max-width: 780px;
+            margin: 0 auto;
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 14px 16px 12px;
+        }
+        .composer textarea {
+            width: 100%;
+            border: none;
+            resize: none;
+            font: inherit;
+            font-size: 15px;
+            color: var(--ink);
+            background: transparent;
+            min-height: 52px;
+            outline: none;
+        }
+        .composer-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .attach {
+            font-size: 12px;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .file-pill {
+            background: var(--green-soft);
+            color: var(--green);
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-weight: 500;
+        }
+        .send {
+            border: none;
+            background: var(--green);
+            color: white;
+            border-radius: 10px;
+            padding: 9px 16px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .send:disabled { opacity: 0.5; cursor: default; }
+        .hint { text-align: center; font-size: 12px; color: var(--muted); margin-top: 10px; }
+
+        .thread { max-width: 1180px; margin: 0 auto; }
+        .msg-user {
+            margin: 26px 0 14px auto;
+            max-width: 640px;
+            background: var(--green);
+            color: white;
+            border-radius: 16px 16px 4px 16px;
+            padding: 12px 16px;
+            width: fit-content;
+        }
+        .msg-user .attach { color: #d8e4d2; margin-top: 6px; }
+        .msg-user .file-pill { background: rgba(255,255,255,0.15); color: white; }
+
+        .route {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-left: 4px solid var(--green);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 18px;
+            max-width: 780px;
+        }
+        .route.warn { border-left-color: var(--amber); }
+        .route.new { border-left-color: #6a5acd; }
+        .route-head { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+        .route strong { font-size: 15px; }
+        .route p { color: var(--muted); font-size: 14px; margin-top: 4px; }
+        .route .actions { margin-top: 12px; display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn {
+            border: 1px solid var(--line);
+            background: var(--surface);
+            border-radius: 9px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink);
+        }
+        .btn.primary { background: var(--green); border-color: var(--green); color: white; }
+        .btn.danger { color: var(--red); border-color: #e8c4bc; }
+
+        .lanes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+        .lane {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .lane.ours { border-color: var(--sage); box-shadow: 0 0 0 3px var(--green-soft); }
+        .lane-head { padding: 14px 16px 10px; border-bottom: 1px solid var(--line); }
+        .model-pill {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: #efefea;
+        }
+        .ours .model-pill { background: var(--green-soft); color: var(--green); }
+        .lane-head p { font-size: 12px; color: var(--muted); margin-top: 6px; }
+        .lane-body { padding: 14px 16px; flex: 1; min-height: 170px; }
+        .status { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid var(--line);
+            border-top-color: var(--green);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .toggle { display: flex; gap: 4px; margin: 10px 0; }
+        .toggle button {
+            border: 1px solid var(--line);
+            background: var(--surface);
+            font-size: 12px;
+            padding: 3px 10px;
+            border-radius: 6px;
+            color: var(--muted);
+        }
+        .toggle button[aria-pressed="true"] { background: var(--ink); color: white; border-color: var(--ink); }
+        .fields { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .fields td { padding: 7px 0; border-bottom: 1px solid #f0f1ec; vertical-align: top; }
+        .fields td:first-child { color: var(--muted); width: 42%; padding-right: 8px; }
+        .fields .miss { color: var(--red); }
+        pre.json {
+            background: #f3f4ef;
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 12px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+        .lane-foot {
+            border-top: 1px solid var(--line);
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--muted);
+            gap: 8px;
+        }
+        .clock { font-size: 20px; font-weight: 700; color: var(--ink); }
+        .winners {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+        .winner {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+        .winner strong { display: block; color: var(--ink); font-size: 15px; }
+        .footnote { font-size: 12px; color: var(--muted); margin-top: 12px; }
+        .answer {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 16px 18px;
+            max-width: 780px;
+            font-size: 14px;
+        }
+        .new-chat { margin-top: 26px; text-align: center; }
+
+        /* ---------- Performance ---------- */
+        .page-head { margin-bottom: 22px; }
+        .page-head h2 { font-size: 30px; letter-spacing: -0.5px; }
+        .page-head p { color: var(--muted); max-width: 720px; margin-top: 6px; }
+        .bench-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+        .bench-pill {
+            border: 1px solid var(--line);
+            background: var(--surface);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .bench-pill[aria-selected="true"] { background: var(--ink); color: white; border-color: var(--ink); }
+        .bench {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            padding: 22px;
+        }
+        .bench h3 { font-size: 18px; }
+        .bench .sub { color: var(--muted); font-size: 14px; margin: 4px 0 18px; }
+        .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+        .chart { border: 1px solid #eef0ea; border-radius: 12px; padding: 16px; }
+        .chart h4 { font-size: 14px; }
+        .chart p { font-size: 12px; color: var(--muted); margin-bottom: 12px; }
+        .bar-row { display: grid; grid-template-columns: 120px 1fr 64px; align-items: center; gap: 10px; margin: 9px 0; font-size: 13px; }
+        .track { background: #f0f1ec; border-radius: 6px; height: 14px; overflow: hidden; }
+        .bar { height: 100%; background: #b9c2b4; border-radius: 6px; width: 0; transition: width 0.9s cubic-bezier(.2,.8,.2,1); }
+        .bar.ours { background: var(--green); }
+        .bar-row strong { text-align: right; }
+        .takeaway {
+            margin-top: 18px;
+            background: var(--green-soft);
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 14px;
+        }
+        .takeaway.caution { background: var(--amber-soft); }
+        .source { font-size: 12px; color: var(--muted); margin-top: 12px; }
+
+        /* ---------- Specialists ---------- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .card-top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+        .card h3 { font-size: 16px; }
+        .version { font-size: 12px; color: var(--muted); font-family: ui-monospace, Menlo, monospace; }
+        .state { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; white-space: nowrap; }
+        .state.ready { background: var(--green-soft); color: var(--green); }
+        .state.repair { background: var(--amber-soft); color: var(--amber); }
+        .state.building { background: #ece9fb; color: #5545b8; }
+        .state.stopped { background: var(--red-soft); color: var(--red); }
+        .card p { font-size: 14px; color: var(--muted); }
+        .stats { display: flex; gap: 22px; font-size: 12px; color: var(--muted); }
+        .stats strong { display: block; color: var(--ink); font-size: 16px; }
+        .card .actions { margin-top: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+
+        .builder label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 4px; }
+        .builder input, .builder select {
+            width: 100%;
+            font: inherit;
+            font-size: 14px;
+            padding: 9px 11px;
+            border: 1px solid var(--line);
+            border-radius: 9px;
+            background: var(--bg);
+            color: var(--ink);
+        }
+        .stages { list-style: none; display: grid; gap: 6px; margin-top: 4px; }
+        .stages li { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+        .stages li::before {
+            content: '';
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 2px solid var(--line);
+            flex-shrink: 0;
+        }
+        .stages li.done { color: var(--ink); }
+        .stages li.done::before { background: var(--green); border-color: var(--green); }
+        .stages li.current { color: var(--ink); font-weight: 600; }
+        .stages li.current::before { border-color: #6a5acd; border-top-color: transparent; animation: spin 0.8s linear infinite; }
+        .progress { background: #f0f1ec; border-radius: 6px; height: 8px; overflow: hidden; }
+        .progress div { height: 100%; background: #6a5acd; width: 0; transition: width 0.6s; }
+        .stage-note { font-size: 12px; color: var(--muted); }
+
+        .modal-bg {
+            position: fixed;
+            inset: 0;
+            background: rgba(20, 28, 20, 0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 50;
+        }
+        .modal-bg.open { display: flex; }
+        .modal {
+            background: var(--surface);
+            border-radius: 14px;
+            padding: 22px;
+            max-width: 420px;
+            box-shadow: var(--shadow);
+        }
+        .modal h3 { margin-bottom: 8px; }
+        .modal p { color: var(--muted); font-size: 14px; }
+        .modal .actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+
+        @media (max-width: 860px) {
+            .lanes, .winners { grid-template-columns: 1fr; }
+            .topbar { grid-template-columns: 1fr auto; row-gap: 10px; }
+            .tabs { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
+        }
+        @media (max-width: 480px) {
+            main { padding: 20px 16px 60px; }
+            .topbar { padding: 12px 16px; }
+            .tab { padding: 7px 12px; }
+            .bar-row { grid-template-columns: 92px 1fr 56px; font-size: 12px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .spinner, .stages li.current::before { animation: none; }
+            .bar { transition: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <span><strong>Interactive mockup</strong> of Dapta, 2nd place at LA Hacks 2026. Chat replies are scripted sample data; the Performance tab shows real benchmark results.</span>
+        <a href="../../#projects">← Back to portfolio</a>
+    </div>
+
+    <header class="topbar">
+        <div class="brand"><span class="brand-mark" aria-hidden="true"></span>Dapta</div>
+        <nav class="tabs" role="tablist" aria-label="Dapta sections">
+            <button class="tab" role="tab" aria-selected="true" aria-controls="view-chat" data-view="chat">Chat</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="view-performance" data-view="performance">Performance</button>
+            <button class="tab" role="tab" aria-selected="false" aria-controls="view-specialists" data-view="specialists">Specialists</button>
+        </nav>
+        <div class="workspace"><span class="dot"></span>Demo workspace</div>
+    </header>
+
+    <main>
+        <!-- ==================== CHAT ==================== -->
+        <section class="view active" id="view-chat" role="tabpanel">
+            <div id="chat-start">
+                <div class="hero">
+                    <div class="eyebrow"><span class="dot"></span>Your work, adapted.</div>
+                    <h1>What do you do<br><span>over and over?</span></h1>
+                    <p>Tell Dapta once. It finds a trained specialist for the task, or helps you build one,<br>then shows what changes in time and tokens.</p>
+                </div>
+                <div class="chips" aria-label="Example requests">
+                    <button class="chip" data-prompt="nda">Extract fields from an NDA<small>Has a trained specialist</small></button>
+                    <button class="chip" data-prompt="csv">Clean a CSV and chart it<small>Specialist under repair</small></button>
+                    <button class="chip" data-prompt="expense">Turn receipts into an expense report<small>No specialist yet</small></button>
+                    <button class="chip" data-prompt="weather">What's the weather in LA tomorrow?<small>Not a good fit</small></button>
+                </div>
+                <form class="composer" id="composer">
+                    <label for="prompt" class="sr-only" style="position:absolute;left:-9999px">Message Dapta</label>
+                    <textarea id="prompt" placeholder="Message Dapta… (try one of the examples above)"></textarea>
+                    <div class="composer-row">
+                        <div class="attach" id="attach"><span>Routed by JEV</span></div>
+                        <button class="send" type="submit" id="send">Send</button>
+                    </div>
+                </form>
+                <p class="hint">Dapta decides whether a request is repetitive enough to deserve its own specialist model.</p>
+            </div>
+            <div class="thread" id="thread" hidden></div>
+        </section>
+
+        <!-- ==================== PERFORMANCE ==================== -->
+        <section class="view" id="view-performance" role="tabpanel">
+            <div class="page-head">
+                <h2>Performance</h2>
+                <p>Measured results from the project's benchmarks. Every test set was frozen before training, and the answers were checked by code, not by another model.</p>
+            </div>
+            <div class="bench-pills" role="tablist" aria-label="Benchmarks">
+                <button class="bench-pill" role="tab" aria-selected="true" data-bench="poc">NDA triage · proof of concept</button>
+                <button class="bench-pill" role="tab" aria-selected="false" data-bench="ood">Unfamiliar NDAs</button>
+                <button class="bench-pill" role="tab" aria-selected="false" data-bench="intake">NDA intake · 8B model</button>
+            </div>
+            <div class="bench" id="bench"></div>
+        </section>
+
+        <!-- ==================== SPECIALISTS ==================== -->
+        <section class="view" id="view-specialists" role="tabpanel">
+            <div class="page-head">
+                <h2>Specialists</h2>
+                <p>Each specialist is a small LoRA adapter on one shared open-weight base model. Ready specialists can be swapped in per request.</p>
+            </div>
+            <div class="grid" id="registry">
+                <article class="card">
+                    <div class="card-top">
+                        <div><h3>NDA intake</h3><div class="version">nda-intake/qwen3-vl-8b-v1</div></div>
+                        <span class="state ready">Ready</span>
+                    </div>
+                    <p>Pulls the effective date, jurisdiction, parties, and term out of an NDA as clean JSON.</p>
+                    <div class="stats"><div>Field F1<strong>70.75%</strong></div><div>Base model<strong>Qwen3-VL-8B</strong></div></div>
+                    <div class="actions"><button class="btn primary" data-try="nda">Try it in Chat</button></div>
+                </article>
+                <article class="card">
+                    <div class="card-top">
+                        <div><h3>CSV cleaner + dashboard</h3><div class="version">csv-clean-dashboard-v1</div></div>
+                        <span class="state repair">Needs repair</span>
+                    </div>
+                    <p>The trained weights exist, but the benchmark outputs were cut off at the token limit. The fix is to re-run the evaluation, not to retrain.</p>
+                    <div class="stats"><div>Field F1<strong>not scored</strong></div><div>Base model<strong>Qwen3-VL-8B</strong></div></div>
+                    <div class="actions"><button class="btn" data-try="csv">See how Chat handles it</button></div>
+                </article>
+                <article class="card builder" id="builder">
+                    <div class="card-top">
+                        <div><h3>Build a new specialist</h3><div class="version">Simulated, sped up for the demo</div></div>
+                    </div>
+                    <div>
+                        <label for="task">Repetitive task</label>
+                        <input id="task" value="Expense report from receipts">
+                    </div>
+                    <div>
+                        <label for="examples">Example inputs you can provide</label>
+                        <select id="examples"><option>25 receipts</option><option>100 receipts</option><option>500 receipts</option></select>
+                    </div>
+                    <div class="actions"><button class="btn primary" id="build-btn">Build specialist</button></div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <div class="modal-bg" id="stop-modal" role="dialog" aria-modal="true" aria-labelledby="stop-title">
+        <div class="modal">
+            <h3 id="stop-title">Stop this build?</h3>
+            <p>No later stage will start, and the GPU worker is shut down before the shared model reloads. Specialists you already have stay available.</p>
+            <div class="actions">
+                <button class="btn" id="stop-cancel">Keep building</button>
+                <button class="btn danger" id="stop-confirm">Stop build</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== Tabs ====================
+        const tabs = document.querySelectorAll('.tab');
+        function showView(name) {
+            tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.view === name)));
+            document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+            if (name === 'performance') renderBench(currentBench);
+            window.scrollTo({ top: 0 });
+        }
+        tabs.forEach(t => t.addEventListener('click', () => showView(t.dataset.view)));
+
+        // ==================== Chat scripts (sample data) ====================
+        const NDA_FIELDS = {
+            effective_date: '2026-01-05',
+            jurisdiction: 'Delaware',
+            parties: ['Acme Robotics, Inc.', 'Northwind Labs LLC'],
+            term: '2 years'
+        };
+        const PROMPTS = {
+            nda: { text: 'Extract the key fields from this NDA.', file: 'mutual_nda_acme_northwind.pdf' },
+            csv: { text: 'Clean this sales CSV and make a dashboard chart.', file: 'q3_sales_raw.csv' },
+            expense: { text: 'Turn these receipts into an expense report.', file: '3 receipt photos' },
+            weather: { text: "What's the weather in LA tomorrow?", file: null }
+        };
+
+        function classify(text) {
+            const t = text.toLowerCase();
+            if (/nda|non-disclosure|confidential/.test(t)) return 'nda';
+            if (/csv|spreadsheet|dashboard/.test(t)) return 'csv';
+            if (/receipt|expense|invoice/.test(t)) return 'expense';
+            return 'weather';
+        }
+
+        const thread = document.getElementById('thread');
+        const chatStart = document.getElementById('chat-start');
+        const promptEl = document.getElementById('prompt');
+        let pendingFile = null;
+        let timers = [];
+
+        document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+            const p = PROMPTS[c.dataset.prompt];
+            promptEl.value = p.text;
+            pendingFile = p.file;
+            document.getElementById('attach').innerHTML = (p.file ? `<span class="file-pill">${p.file}</span>` : '') + '<span>Routed by JEV</span>';
+            promptEl.focus();
+        }));
+
+        promptEl.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); document.getElementById('composer').requestSubmit(); }
+        });
+
+        document.getElementById('composer').addEventListener('submit', e => {
+            e.preventDefault();
+            const text = promptEl.value.trim();
+            if (!text) { promptEl.focus(); return; }
+            runChat(text, classify(text), pendingFile);
+        });
+
+        function el(html) { const d = document.createElement('div'); d.innerHTML = html.trim(); return d.firstChild; }
+
+        function runChat(text, kind, file) {
+            timers.forEach(clearInterval); timers = [];
+            chatStart.hidden = true;
+            thread.hidden = false;
+            thread.innerHTML = '';
+            thread.append(el(`<div class="msg-user">${escapeHtml(text)}${file ? `<div class="attach"><span class="file-pill">${file}</span></div>` : ''}</div>`));
+
+            if (kind === 'nda') {
+                thread.append(el(`<div class="route"><div class="route-head">JEV routing</div><strong>Matched specialist: NDA intake</strong><p>A confident match, so the request goes to the shared Qwen model with the NDA adapter swapped in and a short prompt. Two frontier models run the same file with the full written instructions for comparison.</p></div>`));
+                runLanes();
+            } else if (kind === 'csv') {
+                thread.append(el(`<div class="route warn"><div class="route-head">JEV routing</div><strong>Specialist found, but it needs repair</strong><p>The CSV specialist's last evaluation was cut off, so Dapta won't trust it yet. This request falls back to the general model with the full instructions.</p></div>`));
+                thread.append(el(`<div class="answer"><strong>General model (full instructions)</strong><p style="margin-top:6px;color:var(--muted)">Removed 14 duplicate rows, normalized 3 date formats, and built a monthly revenue bar chart.</p><p class="footnote">Sample response. Once the specialist's evaluation is re-run and passes, requests like this will route to it automatically.</p></div>`));
+                addNewChat();
+            } else if (kind === 'expense') {
+                thread.append(el(`<div class="route new"><div class="route-head">JEV routing</div><strong>No specialist yet, but this is a good candidate</strong><p>Expense reports are repetitive, follow stable rules, and can be checked automatically. Dapta can train a specialist for it. Until then, the general model handles it.</p><div class="actions"><button class="btn primary" id="go-build">Build this specialist</button><button class="btn" id="use-general">Use the general model for now</button></div></div>`));
+                document.getElementById('go-build').onclick = () => { showView('specialists'); document.getElementById('task').value = 'Expense report from receipts'; startBuild(); };
+                document.getElementById('use-general').onclick = () => {
+                    thread.append(el(`<div class="answer"><strong>General model (full instructions)</strong><p style="margin-top:6px;color:var(--muted)">Expense report: 3 receipts, 2 meals and 1 parking, total $67.40.</p><p class="footnote">Sample response.</p></div>`));
+                    addNewChat();
+                };
+            } else {
+                thread.append(el(`<div class="route warn"><div class="route-head">JEV routing</div><strong>Not a good fit for a specialist</strong><p>This needs live information and isn't a repeated task, so training a model for it wouldn't help. Dapta hands it to a general model with tools instead.</p></div>`));
+                thread.append(el(`<div class="answer"><strong>General model + web tool</strong><p style="margin-top:6px;color:var(--muted)">Specialists learn stable, repeated procedures. Anything that depends on live data, like weather or prices, always goes to a general model with the right tools.</p></div>`));
+                addNewChat();
+            }
+        }
+
+        function addNewChat() {
+            const b = el(`<div class="new-chat"><button class="btn">Start a new request</button></div>`);
+            b.querySelector('button').onclick = resetChat;
+            thread.append(b);
+        }
+
+        function resetChat() {
+            timers.forEach(clearInterval); timers = [];
+            thread.hidden = true;
+            chatStart.hidden = false;
+            promptEl.value = '';
+            pendingFile = null;
+            document.getElementById('attach').innerHTML = '<span>Routed by JEV</span>';
+        }
+
+        // Sample lane data. Input token counts mirror the proof of concept's averages (297 vs 2,230).
+        const LANES = [
+            { id: 'lora', ours: true, name: 'Qwen3-VL-8B + NDA adapter', how: 'Short prompt, specialist adapter', secs: 2.4, tokens: 297, out: NDA_FIELDS },
+            { id: 'claude', name: 'Claude Opus 5.5', how: 'Full written instructions (SKILL.md)', secs: 6.8, tokens: 2230, out: NDA_FIELDS },
+            { id: 'gpt', name: 'GPT-5.6 Sol', how: 'Full written instructions (SKILL.md)', secs: 5.1, tokens: 2230, out: { ...NDA_FIELDS, term: null } }
+        ];
+
+        function runLanes() {
+            const lanes = el(`<div class="lanes"></div>`);
+            LANES.forEach(l => lanes.append(el(`
+                <article class="lane ${l.ours ? 'ours' : ''}" id="lane-${l.id}">
+                    <div class="lane-head"><span class="model-pill">${l.name}</span><p>${l.how}</p></div>
+                    <div class="lane-body"><div class="status"><span class="spinner"></span>Running…</div></div>
+                    <div class="lane-foot"><div><div class="clock">0.0s</div>sample timing</div><div>${l.tokens.toLocaleString()} input tokens</div></div>
+                </article>`)));
+            thread.append(lanes);
+            const start = performance.now();
+            const done = new Set();
+            LANES.forEach(l => {
+                const lane = document.getElementById('lane-' + l.id);
+                const clock = lane.querySelector('.clock');
+                const t = setInterval(() => {
+                    const s = (performance.now() - start) / 1000;
+                    if (s >= l.secs) {
+                        clearInterval(t);
+                        clock.textContent = l.secs.toFixed(1) + 's';
+                        renderOutput(lane, l.out);
+                        done.add(l.id);
+                        if (done.size === LANES.length) showWinners();
+                    } else {
+                        clock.textContent = s.toFixed(1) + 's';
+                    }
+                }, 100);
+                timers.push(t);
+            });
+        }
+
+        function renderOutput(lane, out) {
+            const body = lane.querySelector('.lane-body');
+            const missing = Object.values(out).some(v => v === null);
+            const preview = `<table class="fields">${Object.entries(out).map(([k, v]) =>
+                `<tr><td>${k.replace('_', ' ')}</td><td class="${v === null ? 'miss' : ''}">${v === null ? 'missing' : Array.isArray(v) ? v.join('<br>') : v}</td></tr>`).join('')}</table>`;
+            const json = `<pre class="json">${escapeHtml(JSON.stringify(out, null, 2))}</pre>`;
+            body.innerHTML = `<div class="status"><span class="dot" style="background:${missing ? '#c9832a' : '#6fa35f'}"></span>${missing ? 'Complete, 1 field missing' : 'Complete, all 4 fields'}</div>
+                <div class="toggle"><button aria-pressed="true" data-mode="preview">Preview</button><button aria-pressed="false" data-mode="json">JSON</button></div>
+                <div class="out">${preview}</div>`;
+            body.querySelectorAll('.toggle button').forEach(b => b.onclick = () => {
+                body.querySelectorAll('.toggle button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+                body.querySelector('.out').innerHTML = b.dataset.mode === 'json' ? json : preview;
+            });
+        }
+
+        function showWinners() {
+            thread.append(el(`<div class="winners">
+                <div class="winner">Fastest<strong>Qwen + NDA adapter</strong></div>
+                <div class="winner">Fewest input tokens<strong>Qwen + NDA adapter (−87%)</strong></div>
+                <div class="winner">Most complete<strong>Equal: adapter and Claude</strong></div>
+            </div>`));
+            thread.append(el(`<p class="footnote">Sample run for illustration. Timings and outputs are scripted; token counts mirror the proof of concept's averages. Winners only appear once all three models finish, and ties are shown as "Equal".</p>`));
+            addNewChat();
+        }
+
+        function escapeHtml(s) { return s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+        // ==================== Performance (real, sourced numbers) ====================
+        const BENCH = {
+            poc: {
+                title: 'NDA triage proof of concept',
+                sub: 'Qwen3-1.7B · held-out test set of 150 synthetic NDAs · correct answers produced by a rules engine',
+                charts: [
+                    { name: 'Overall classification accuracy', note: 'Higher is better', unit: '%', rows: [['Base model', 0], ['Full instructions', 38.7], ['Specialist (LoRA)', 84.7, true]] },
+                    { name: 'Individual review-criteria accuracy', note: 'Higher is better', unit: '%', rows: [['Full instructions', 72.7], ['Specialist (LoRA)', 95.3, true]] },
+                    { name: 'Average input tokens per request', note: 'Lower is better', unit: '', max: 2230, rows: [['Full instructions', 2230], ['Specialist (LoRA)', 297, true]] }
+                ],
+                takeaway: 'The specialist more than doubled classification accuracy versus giving the model the full written instructions, while sending 87% fewer input tokens. Both produced valid JSON 100% of the time.',
+                source: 'Source: skill2lora proof-of-concept results, recorded in the Dapta project documentation.'
+            },
+            ood: {
+                title: 'Unfamiliar NDAs (out-of-distribution check)',
+                sub: 'Same Qwen3-1.7B models · 50 NDAs with different headers and clause wording than anything in training',
+                charts: [
+                    { name: 'Overall classification accuracy', note: 'Higher is better', unit: '%', rows: [['Full instructions', 46], ['Specialist (LoRA)', 50, true]] },
+                    { name: 'Individual review-criteria accuracy', note: 'Higher is better', unit: '%', rows: [['Full instructions', 64.7], ['Specialist (LoRA)', 84.7, true]] }
+                ],
+                takeaway: 'On wording it had never seen, the specialist still led on individual criteria, but its overall accuracy dropped close to the baseline. Generalizing to new document styles is the main open problem, and the reason Dapta falls back to a general model when it isn\'t confident.',
+                caution: true,
+                source: 'Source: skill2lora out-of-distribution results, recorded in the Dapta project documentation.'
+            },
+            intake: {
+                title: 'NDA intake on the production base model',
+                sub: 'Qwen3-VL-8B · frozen 83-document benchmark · extracts effective date, jurisdiction, parties, and term',
+                charts: [
+                    { name: 'Field-level F1', note: 'Higher is better', unit: '%', rows: [['Base model', 57.58], ['Base + instructions', 61.28], ['Specialist (LoRA)', 70.75, true]] },
+                    { name: 'Exact-match accuracy (every field right)', note: 'Higher is better', unit: '%', rows: [['Base model', 6.02], ['Specialist (LoRA)', 33.73, true]] }
+                ],
+                takeaway: 'On the larger multimodal model used in the live app, the adapter improved field-level F1 by about 9.5 points over the instructed base model and raised fully-correct extractions from 6% to 34%.',
+                source: 'Source: Dapta README, NDA adapter benchmark.'
+            }
+        };
+        let currentBench = 'poc';
+
+        function renderBench(key) {
+            currentBench = key;
+            document.querySelectorAll('.bench-pill').forEach(p => p.setAttribute('aria-selected', String(p.dataset.bench === key)));
+            const b = BENCH[key];
+            const box = document.getElementById('bench');
+            box.innerHTML = `<h3>${b.title}</h3><p class="sub">${b.sub}</p>
+                <div class="charts">${b.charts.map(c => `
+                    <div class="chart"><h4>${c.name}</h4><p>${c.note}</p>
+                    ${c.rows.map(([label, v, ours]) => `<div class="bar-row"><span>${label}</span><div class="track"><div class="bar ${ours ? 'ours' : ''}" data-w="${(v / (c.max || 100)) * 100}"></div></div><strong>${c.unit === '%' ? v + '%' : v.toLocaleString()}</strong></div>`).join('')}
+                    </div>`).join('')}</div>
+                <div class="takeaway ${b.caution ? 'caution' : ''}">${b.takeaway}</div>
+                <p class="source">${b.source} Latency and dollar cost on the production serving stack have not been measured yet.</p>`;
+            requestAnimationFrame(() => requestAnimationFrame(() =>
+                box.querySelectorAll('.bar').forEach(bar => bar.style.width = Math.max(bar.dataset.w, 0.5) + '%')));
+        }
+        document.querySelectorAll('.bench-pill').forEach(p => p.addEventListener('click', () => renderBench(p.dataset.bench)));
+
+        // ==================== Specialists: simulated build ====================
+        const STAGES = [
+            ['Queued', 'Waiting for the factory'],
+            ['Architecting', 'Turning the task into explicit rules and an output schema'],
+            ['Building dataset', 'Generating training, dev, and frozen test cases'],
+            ['Validating', 'Checking labels, duplicates, leakage, and splits'],
+            ['Awaiting compute', 'Budget check: time and cost cap passed'],
+            ['Provisioning GPU', 'Starting a single-GPU worker'],
+            ['Training', 'QLoRA fine-tuning on the shared Qwen base'],
+            ['Evaluating', 'Scoring base, base + instructions, and the adapter on the frozen test set'],
+            ['Publishing', 'Uploading the adapter and its benchmark'],
+        ];
+        let buildTimer = null;
+
+        document.getElementById('build-btn').addEventListener('click', startBuild);
+        document.querySelectorAll('[data-try]').forEach(b => b.addEventListener('click', () => {
+            showView('chat');
+            const p = PROMPTS[b.dataset.try];
+            runChat(p.text, b.dataset.try, p.file);
+        }));
+
+        function startBuild() {
+            if (buildTimer) return;
+            const name = document.getElementById('task').value.trim() || 'New specialist';
+            const card = el(`<article class="card" id="build-card">
+                <div class="card-top"><div><h3>${escapeHtml(name)}</h3><div class="version">new · Qwen3-VL-8B</div></div><span class="state building" id="build-state">Building</span></div>
+                <div class="progress"><div id="build-bar"></div></div>
+                <ul class="stages" id="stages">${STAGES.map(s => `<li>${s[0]}</li>`).join('')}</ul>
+                <p class="stage-note" id="stage-note"></p>
+                <p class="stage-note">Real builds take hours; this one is sped up. Your existing specialists keep working while it trains.</p>
+                <div class="actions"><button class="btn danger" id="stop-btn">Stop build</button></div>
+            </article>`);
+            const old = document.getElementById('build-card');
+            if (old) old.remove();
+            document.getElementById('registry').insertBefore(card, document.getElementById('builder'));
+            document.getElementById('build-btn').disabled = true;
+            document.getElementById('stop-btn').onclick = () => document.getElementById('stop-modal').classList.add('open');
+            let i = 0;
+            const step = () => {
+                const items = document.querySelectorAll('#stages li');
+                items.forEach((li, j) => { li.className = j < i ? 'done' : j === i ? 'current' : ''; });
+                document.getElementById('build-bar').style.width = (i / STAGES.length) * 100 + '%';
+                if (i >= STAGES.length) {
+                    clearInterval(buildTimer); buildTimer = null;
+                    const st = document.getElementById('build-state');
+                    st.textContent = 'Ready'; st.className = 'state ready';
+                    document.getElementById('stage-note').textContent = 'Published. In the real system, it would now appear as a routable specialist with its benchmark attached.';
+                    document.getElementById('stop-btn').remove();
+                    document.getElementById('build-btn').disabled = false;
+                    return;
+                }
+                document.getElementById('stage-note').textContent = STAGES[i][1] + '…';
+                i++;
+            };
+            step();
+            buildTimer = setInterval(step, 1300);
+        }
+
+        document.getElementById('stop-cancel').onclick = () => document.getElementById('stop-modal').classList.remove('open');
+        document.getElementById('stop-confirm').onclick = () => {
+            document.getElementById('stop-modal').classList.remove('open');
+            clearInterval(buildTimer); buildTimer = null;
+            const st = document.getElementById('build-state');
+            st.textContent = 'Stopped'; st.className = 'state stopped';
+            document.querySelectorAll('#stages li.current').forEach(li => li.className = '');
+            document.getElementById('stage-note').textContent = 'Stopped safely. No later stage started and the GPU worker was shut down.';
+            document.getElementById('stop-btn').remove();
+            document.getElementById('build-btn').disabled = false;
+        };
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('stop-modal').classList.remove('open'); });
+    </script>
+</body>
+</html>

@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckDB Learned Optimizer | Pavan Srivathsa</title>
+    <meta name="description" content="Interactive mockup of a learned cardinality estimator plugged into DuckDB's join-order optimizer, with native, shadow, learned, hybrid, and adaptive modes.">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23fff100'/%3E%3Ctext x='16' y='22' font-family='Menlo,monospace' font-weight='700' font-size='14' fill='%23111' text-anchor='middle'%3ECE%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #0f1012;
+            --panel: #17181b;
+            --panel-2: #1e2024;
+            --line: #2c2e33;
+            --text: #e8e8e6;
+            --muted: #9a9ca3;
+            --yellow: #fff100;
+            --yellow-dim: rgba(255, 241, 0, 0.12);
+            --green: #4ade80;
+            --amber: #fbbf24;
+            --red: #f87171;
+            --blue: #7cb7ff;
+            --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            font-variant-numeric: tabular-nums;
+        }
+        button { font: inherit; cursor: pointer; }
+        a { color: var(--yellow); }
+
+        .banner {
+            background: var(--yellow);
+            color: #111;
+            font-size: 13px;
+            padding: 9px 16px;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 16px;
+            justify-content: center;
+        }
+        .banner a { color: #111; font-weight: 700; }
+
+        header.top { padding: 28px 24px 8px; max-width: 1280px; margin: 0 auto; }
+        .title-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .logo {
+            background: var(--yellow);
+            color: #111;
+            font-family: var(--mono);
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+        h1 { font-size: clamp(24px, 4vw, 34px); letter-spacing: -0.5px; }
+        .tag {
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--line);
+            color: var(--muted);
+            border-radius: 999px;
+            padding: 3px 10px;
+        }
+        .intro { color: var(--muted); max-width: 860px; margin-top: 10px; font-size: 15px; }
+        .intro strong { color: var(--text); }
+
+        .layout {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 20px 24px 80px;
+            display: grid;
+            grid-template-columns: 330px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+        .layout > *, .main > * { min-width: 0; }
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 18px;
+        }
+        .panel h2 {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+        .settings { position: sticky; top: 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+
+        .setting label, .setting .label { font-family: var(--mono); font-size: 12.5px; display: block; margin-bottom: 6px; }
+        .setting .help { font-size: 12px; color: var(--muted); margin-top: 6px; }
+        .switch { display: flex; align-items: center; gap: 10px; font-size: 13px; }
+        .switch input { appearance: none; width: 38px; height: 22px; border-radius: 999px; background: var(--line); position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
+        .switch input::after { content: ''; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: left 0.2s; }
+        .switch input:checked { background: var(--yellow); }
+        .switch input:checked::after { left: 19px; background: #111; }
+
+        .modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .mode {
+            border: 1px solid var(--line);
+            background: var(--panel-2);
+            color: var(--text);
+            padding: 7px 4px;
+            border-radius: 7px;
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+        .mode[aria-pressed="true"] { background: var(--yellow); color: #111; border-color: var(--yellow); font-weight: 600; }
+        .mode:disabled { opacity: 0.35; cursor: not-allowed; }
+        .mode-desc { font-size: 12.5px; color: var(--muted); margin-top: 8px; min-height: 54px; }
+        .mode-desc strong { color: var(--text); }
+
+        input[type="range"] { width: 100%; accent-color: var(--yellow); }
+        .range-row { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+        .range-row strong { color: var(--yellow); }
+
+        pre.sql {
+            font-family: var(--mono);
+            font-size: 12px;
+            background: #0b0c0d;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 12px;
+            overflow-x: auto;
+            color: #cfd2d8;
+            white-space: pre;
+        }
+        pre.sql.wrap { white-space: pre-wrap; word-break: break-all; }
+        .kw { color: var(--yellow); }
+        .str { color: var(--green); }
+        .num { color: var(--blue); }
+        .cm { color: #6b6e75; }
+
+        .main { display: grid; gap: 20px; min-width: 0; }
+        .queries { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+        .q {
+            border: 1px solid var(--line);
+            background: var(--panel-2);
+            color: var(--text);
+            border-radius: 9px;
+            padding: 9px 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .q small { display: block; font-weight: 400; color: var(--muted); font-size: 11.5px; }
+        .q[aria-selected="true"] { border-color: var(--yellow); background: var(--yellow-dim); }
+        .run-row { display: flex; align-items: center; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+        .run {
+            background: var(--yellow);
+            color: #111;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 18px;
+            font-weight: 700;
+            font-family: var(--mono);
+            font-size: 13px;
+        }
+        .run:disabled { opacity: 0.6; cursor: default; }
+        .run-note { font-size: 12.5px; color: var(--muted); }
+
+        .pipeline { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11.5px; }
+        .stage {
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 5px 9px;
+            color: #5f626a;
+            transition: all 0.3s;
+        }
+        .stage.on { color: var(--text); border-color: #55585f; background: var(--panel-2); }
+        .stage.hot { color: #111; background: var(--yellow); border-color: var(--yellow); }
+        .stage.wip::after { content: ' · in progress'; color: var(--amber); }
+        .stage.hot.wip::after { color: #7a5b00; }
+        .arrow { color: #4b4e55; }
+        details { margin-top: 12px; font-size: 13px; color: var(--muted); }
+        details summary { cursor: pointer; color: var(--text); }
+        .features { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .features code { font-family: var(--mono); font-size: 11.5px; background: var(--panel-2); border: 1px solid var(--line); padding: 2px 7px; border-radius: 5px; color: #cfd2d8; }
+
+        .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+        .stat { background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+        .stat span { font-size: 12px; color: var(--muted); }
+        .stat strong { display: block; font-size: 20px; margin-top: 2px; }
+        .stat small { font-size: 12px; color: var(--muted); }
+        .good { color: var(--green); }
+        .bad { color: var(--red); }
+        .warn { color: var(--amber); }
+
+        .plan { font-family: var(--mono); font-size: 12.5px; }
+        .node {
+            border: 1px solid var(--line);
+            background: var(--panel-2);
+            border-radius: 8px;
+            padding: 10px 12px;
+            margin-top: 8px;
+            position: relative;
+        }
+        .node .op { color: var(--yellow); font-weight: 600; }
+        .node .rel { color: var(--text); }
+        .node .est { display: flex; flex-wrap: wrap; gap: 6px 16px; margin-top: 6px; color: var(--muted); }
+        .node .est b { color: var(--text); font-weight: 600; }
+        .node .est .used { outline: 1px solid var(--yellow); outline-offset: 2px; border-radius: 3px; }
+        .badge { font-size: 11px; padding: 1px 7px; border-radius: 999px; border: 1px solid currentColor; margin-left: 6px; white-space: nowrap; }
+        .scan { color: var(--muted); }
+        .indent-1 { margin-left: 22px; }
+        .indent-2 { margin-left: 44px; }
+        .indent-3 { margin-left: 66px; }
+        .indent-4 { margin-left: 88px; }
+        .explain { font-size: 13.5px; color: var(--muted); margin-top: 14px; border-left: 3px solid var(--yellow); padding-left: 12px; }
+        .explain strong { color: var(--text); }
+        .empty { color: var(--muted); font-size: 14px; padding: 20px 0; }
+
+        .console {
+            font-family: var(--mono);
+            font-size: 11.5px;
+            background: #0b0c0d;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 10px 12px;
+            max-height: 180px;
+            overflow: auto;
+            color: #a9adb5;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .bandit { display: grid; gap: 12px; }
+        .arm { display: grid; grid-template-columns: 70px 1fr 110px; gap: 10px; align-items: center; font-size: 13px; }
+        .arm .track { height: 16px; background: var(--panel-2); border-radius: 5px; overflow: hidden; border: 1px solid var(--line); }
+        .arm .fill { height: 100%; background: var(--blue); transition: width 0.3s; }
+        .arm.learned .fill { background: var(--yellow); }
+        .arm span:last-child { font-family: var(--mono); font-size: 12px; color: var(--muted); text-align: right; }
+        .bandit-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        .btn {
+            border: 1px solid var(--line);
+            background: var(--panel-2);
+            color: var(--text);
+            border-radius: 7px;
+            padding: 7px 12px;
+            font-size: 12.5px;
+            font-family: var(--mono);
+        }
+
+        @media (max-width: 960px) {
+            .layout { grid-template-columns: 1fr; }
+            .settings { position: static; }
+            .summary { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 480px) {
+            .layout, header.top { padding-left: 16px; padding-right: 16px; }
+            .indent-1 { margin-left: 10px; } .indent-2 { margin-left: 20px; } .indent-3 { margin-left: 30px; } .indent-4 { margin-left: 40px; }
+            .arm { grid-template-columns: 60px 1fr 92px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <span><strong>Interactive mockup with simulated numbers.</strong> It shows how the system is designed to behave. The real project has no benchmark results yet.</span>
+        <a href="../../#projects">← Back to portfolio</a>
+    </div>
+
+    <header class="top">
+        <div class="title-row">
+            <span class="logo">CE</span>
+            <h1>DuckDB Learned Optimizer</h1>
+            <span class="tag">C++ · XGBoost → ONNX · Experimental</span>
+        </div>
+        <p class="intro">When a database joins several tables, it has to <strong>guess how many rows each step will produce</strong> (its "cardinality estimate") to decide which tables to join first. Bad guesses lead to slow join orders. This project plugs a <strong>machine-learned estimator</strong> into DuckDB's join-order optimizer, with safety modes that fall back to DuckDB's own estimates. Pick a query, change the settings, and run it.</p>
+    </header>
+
+    <div class="layout">
+        <!-- ==================== SETTINGS ==================== -->
+        <aside class="panel settings" aria-label="Optimizer settings">
+            <h2>Settings</h2>
+            <div class="setting">
+                <div class="switch"><input type="checkbox" id="enabled" checked><label for="enabled" style="margin:0">learned_ce_enabled</label></div>
+                <p class="help">Off means DuckDB's built-in estimator only.</p>
+            </div>
+            <div class="setting">
+                <span class="label">learned_ce_mode</span>
+                <div class="modes" role="group" aria-label="learned_ce_mode">
+                    <button class="mode" data-mode="native">native</button>
+                    <button class="mode" data-mode="shadow">shadow</button>
+                    <button class="mode" data-mode="learned">learned</button>
+                    <button class="mode" data-mode="hybrid" aria-pressed="true">hybrid</button>
+                    <button class="mode" data-mode="adaptive">adaptive</button>
+                </div>
+                <p class="mode-desc" id="mode-desc"></p>
+            </div>
+            <div class="setting">
+                <label for="threshold">learned_ce_confidence_threshold</label>
+                <input type="range" id="threshold" min="0" max="1" step="0.05" value="0.5">
+                <div class="range-row"><span>0.0</span><strong id="threshold-val">0.50</strong><span>1.0</span></div>
+                <p class="help">The model's estimate is used only when its confidence clears this bar.</p>
+            </div>
+            <div class="setting">
+                <div class="switch"><input type="checkbox" id="telemetry" checked><label for="telemetry" style="margin:0">learned_ce_collect_telemetry</label></div>
+                <p class="help">Logs native vs learned estimates for future retraining.</p>
+            </div>
+            <div class="setting">
+                <span class="label">Generated SQL</span>
+                <pre class="sql wrap" id="set-sql"></pre>
+            </div>
+        </aside>
+
+        <div class="main">
+            <!-- ==================== QUERY ==================== -->
+            <section class="panel" aria-label="Query">
+                <h2>1 · Pick a query</h2>
+                <div class="queries" role="tablist" aria-label="Queries" id="queries"></div>
+                <pre class="sql" id="query-sql"></pre>
+                <div class="run-row">
+                    <button class="run" id="run">EXPLAIN ANALYZE ▶</button>
+                    <span class="run-note" id="run-note"></span>
+                </div>
+            </section>
+
+            <!-- ==================== PIPELINE ==================== -->
+            <section class="panel" aria-label="Code path">
+                <h2>2 · Where the estimate comes from</h2>
+                <div class="pipeline" id="pipeline">
+                    <span class="stage" data-s="jo">JoinOrderOptimizer</span><span class="arrow">→</span>
+                    <span class="stage" data-s="ce">CardinalityEstimator (native)</span><span class="arrow">→</span>
+                    <span class="stage" data-s="bridge">LearnedCEBridge</span><span class="arrow">→</span>
+                    <span class="stage" data-s="feat">CEFeatureExtractor</span><span class="arrow">→</span>
+                    <span class="stage" data-s="gate">EstimatorGate</span><span class="arrow">→</span>
+                    <span class="stage wip" data-s="onnx">ONNX model</span>
+                </div>
+                <details>
+                    <summary>The 14 features the model sees for each join</summary>
+                    <div class="features">
+                        <code>log_native_estimate</code><code>log_left_cardinality</code><code>log_right_cardinality</code><code>log_left_ndv</code><code>log_right_ndv</code><code>ndv_ratio</code><code>relation_count</code><code>join_edge_count</code><code>equality_predicate_count</code><code>range_predicate_count</code><code>filter_count</code><code>join_graph_density</code><code>has_left_stats</code><code>has_right_stats</code>
+                    </div>
+                    <p style="margin-top:10px">Target: <code style="font-family:var(--mono)">log1p(actual_cardinality)</code>, predicted with an XGBoost regressor exported to ONNX. The current model was trained on TPC-H only.</p>
+                </details>
+            </section>
+
+            <!-- ==================== RESULTS ==================== -->
+            <section class="panel" aria-label="Results" aria-live="polite">
+                <h2>3 · Chosen plan</h2>
+                <div id="results"><p class="empty">Run the query to see which join order the optimizer picks, and how far off each estimate was.</p></div>
+            </section>
+
+            <section class="panel" id="bandit-panel" hidden aria-label="Adaptive selector">
+                <h2>Adaptive selector · Thompson Sampling · planned</h2>
+                <p class="run-note" style="margin-bottom:14px">For each query shape, the selector keeps a belief about which estimator produces faster plans and samples from it, so it keeps exploring while mostly picking the winner. This part of the real project is still in progress.</p>
+                <div class="bandit" id="bandit"></div>
+                <div class="bandit-actions" style="margin-top:14px">
+                    <button class="btn" id="run-25">Run this query 25×</button>
+                    <button class="btn" id="bandit-reset">Reset beliefs</button>
+                </div>
+            </section>
+
+            <section class="panel" id="telemetry-panel" hidden aria-label="Telemetry">
+                <h2>Telemetry log</h2>
+                <div class="console" id="console"></div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // ==================== Simulated query data ====================
+        // Each query has two candidate join orders. The native plan is what DuckDB's own estimates prefer;
+        // the learned plan is what the model's estimates prefer. Numbers are illustrative.
+        const QUERIES = {
+            q3: {
+                name: 'TPC-H Q3-style', blurb: '3-way join · in training data', confidence: 0.86,
+                sql: `<span class="kw">SELECT</span> l_orderkey, <span class="kw">sum</span>(l_extendedprice * (<span class="num">1</span> - l_discount)) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> customer, orders, lineitem
+<span class="kw">WHERE</span> c_mktsegment = <span class="str">'BUILDING'</span>
+  <span class="kw">AND</span> c_custkey = o_custkey <span class="kw">AND</span> l_orderkey = o_orderkey
+  <span class="kw">AND</span> o_orderdate &lt; <span class="str">'1995-03-15'</span> <span class="kw">AND</span> l_shipdate &gt; <span class="str">'1995-03-15'</span>
+<span class="kw">GROUP BY</span> l_orderkey <span class="kw">ORDER BY</span> revenue <span class="kw">DESC LIMIT</span> <span class="num">10</span>;`,
+                native: { ms: 412, nodes: [
+                    { d: 0, rel: '(lineitem ⋈ orders) ⋈ customer', n: 30142, l: 11980, a: 11620 },
+                    { d: 1, rel: 'lineitem ⋈ orders', n: 1100000, l: 1610000, a: 1587000 },
+                    { d: 2, scan: 'lineitem  (l_shipdate filter)', rows: 3241000 },
+                    { d: 2, scan: 'orders  (o_orderdate filter)', rows: 727000 },
+                    { d: 1, scan: "customer  (segment = 'BUILDING')", rows: 30142 } ] },
+                learned: { ms: 168, nodes: [
+                    { d: 0, rel: '(customer ⋈ orders) ⋈ lineitem', n: 30142, l: 11980, a: 11620 },
+                    { d: 1, rel: 'customer ⋈ orders', n: 4350000, l: 141800, a: 142300 },
+                    { d: 2, scan: "customer  (segment = 'BUILDING')", rows: 30142 },
+                    { d: 2, scan: 'orders  (o_orderdate filter)', rows: 727000 },
+                    { d: 1, scan: 'lineitem  (l_shipdate filter)', rows: 3241000 } ] },
+                story: 'DuckDB overestimates <strong>customer ⋈ orders</strong> by about 30× because it treats the segment and date filters as independent, so it joins the much larger lineitem table first. The learned estimate is close to the true count, which lets the optimizer start from the small customer side.'
+            },
+            q5: {
+                name: 'TPC-H Q5-style', blurb: '6-way join · in training data', confidence: 0.71,
+                sql: `<span class="kw">SELECT</span> n_name, <span class="kw">sum</span>(l_extendedprice * (<span class="num">1</span> - l_discount)) <span class="kw">AS</span> revenue
+<span class="kw">FROM</span> customer, orders, lineitem, supplier, nation, region
+<span class="kw">WHERE</span> c_custkey = o_custkey <span class="kw">AND</span> l_orderkey = o_orderkey
+  <span class="kw">AND</span> l_suppkey = s_suppkey <span class="kw">AND</span> c_nationkey = s_nationkey
+  <span class="kw">AND</span> s_nationkey = n_nationkey <span class="kw">AND</span> n_regionkey = r_regionkey
+  <span class="kw">AND</span> r_name = <span class="str">'ASIA'</span> <span class="kw">AND</span> o_orderdate <span class="kw">BETWEEN</span> <span class="str">'1994-01-01'</span> <span class="kw">AND</span> <span class="str">'1994-12-31'</span>
+<span class="kw">GROUP BY</span> n_name <span class="kw">ORDER BY</span> revenue <span class="kw">DESC</span>;`,
+                native: { ms: 655, nodes: [
+                    { d: 0, rel: '((lineitem ⋈ supplier) ⋈ orders) ⋈ customer', n: 9600, l: 7400, a: 7240 },
+                    { d: 1, rel: '(lineitem ⋈ supplier) ⋈ orders', n: 95000, l: 182000, a: 181300 },
+                    { d: 2, rel: 'lineitem ⋈ supplier', n: 600000, l: 1190000, a: 1206000 },
+                    { d: 3, scan: 'lineitem', rows: 6001215 },
+                    { d: 3, scan: "supplier ⋈ nation ⋈ region  (r_name = 'ASIA')", rows: 2003 },
+                    { d: 2, scan: 'orders  (1994)', rows: 227600 },
+                    { d: 1, scan: 'customer', rows: 150000 } ] },
+                learned: { ms: 371, nodes: [
+                    { d: 0, rel: '((customer ⋈ orders) ⋈ lineitem) ⋈ supplier', n: 36000, l: 7300, a: 7240 },
+                    { d: 1, rel: '(customer ⋈ orders) ⋈ lineitem', n: 6000000, l: 910000, a: 910400 },
+                    { d: 2, rel: 'customer ⋈ orders', n: 1500000, l: 228000, a: 227600 },
+                    { d: 3, scan: "customer ⋈ nation ⋈ region  (r_name = 'ASIA')", rows: 30050 },
+                    { d: 3, scan: 'orders  (1994)', rows: 227600 },
+                    { d: 2, scan: 'lineitem', rows: 6001215 },
+                    { d: 1, scan: 'supplier', rows: 10000 } ] },
+                story: 'With six tables, small errors multiply at every join. DuckDB underestimates the lineitem ⋈ supplier step and overestimates the customer side, so it builds the big intermediate result first. The learned estimates stay within a few percent at each step.'
+            },
+            imdb: {
+                name: 'IMDB-style', blurb: '4-way join · never seen in training', confidence: 0.34,
+                sql: `<span class="kw">SELECT</span> <span class="kw">min</span>(t.title), <span class="kw">min</span>(t.production_year)
+<span class="kw">FROM</span> title t, movie_companies mc, movie_info_idx mi_idx, info_type it
+<span class="kw">WHERE</span> it.info = <span class="str">'top 250 rank'</span>
+  <span class="kw">AND</span> t.id = mc.movie_id <span class="kw">AND</span> t.id = mi_idx.movie_id
+  <span class="kw">AND</span> mi_idx.info_type_id = it.id
+  <span class="kw">AND</span> mc.note <span class="kw">LIKE</span> <span class="str">'%(co-production)%'</span>;`,
+                native: { ms: 94, nodes: [
+                    { d: 0, rel: '((info_type ⋈ movie_info_idx) ⋈ title) ⋈ movie_companies', n: 4100, l: 96, a: 3820 },
+                    { d: 1, rel: '(info_type ⋈ movie_info_idx) ⋈ title', n: 1450, l: 210000, a: 1380 },
+                    { d: 2, rel: 'info_type ⋈ movie_info_idx', n: 1450, l: 38900, a: 1380 },
+                    { d: 3, scan: "info_type  (info = 'top 250 rank')", rows: 1 },
+                    { d: 3, scan: 'movie_info_idx', rows: 1380035 },
+                    { d: 2, scan: 'title', rows: 2528312 },
+                    { d: 1, scan: "movie_companies  (note LIKE '%(co-production)%')", rows: 2609129 } ] },
+                learned: { ms: 238, nodes: [
+                    { d: 0, rel: '((movie_companies ⋈ title) ⋈ movie_info_idx) ⋈ info_type', n: 3900, l: 96, a: 3820 },
+                    { d: 1, rel: '(movie_companies ⋈ title) ⋈ movie_info_idx', n: 4000, l: 300, a: 3820 },
+                    { d: 2, rel: 'movie_companies ⋈ title', n: 2600000, l: 21000, a: 2610000 },
+                    { d: 3, scan: "movie_companies  (note LIKE '%(co-production)%')", rows: 2609129 },
+                    { d: 3, scan: 'title', rows: 2528312 },
+                    { d: 2, scan: 'movie_info_idx', rows: 1380035 },
+                    { d: 1, scan: "info_type  (info = 'top 250 rank')", rows: 1 } ] },
+                story: 'The model was trained only on TPC-H, and this IMDB workload looks nothing like it. Its estimates are off by more than 100×, and its confidence is low (0.34). This is exactly the case the confidence gate exists for: in <strong>hybrid</strong> mode with the default threshold, the optimizer ignores the model and keeps DuckDB\'s faster plan.'
+            }
+        };
+
+        const MODE_DESC = {
+            native: '<strong>native</strong>: DuckDB\'s own estimates only. The control group.',
+            shadow: '<strong>shadow</strong>: the model makes its estimates, but the optimizer still uses DuckDB\'s. Safe for comparing the two in production.',
+            learned: '<strong>learned</strong>: the optimizer uses the model\'s estimate whenever the model is eligible.',
+            hybrid: '<strong>hybrid</strong>: the model\'s estimate is used only if its confidence clears the threshold; otherwise it falls back to DuckDB\'s.',
+            adaptive: '<strong>adaptive</strong> (planned): a Thompson Sampling bandit learns, per query shape, which estimator yields faster plans.'
+        };
+
+        // ==================== State ====================
+        const state = { enabled: true, mode: 'hybrid', threshold: 0.5, telemetry: true, query: 'q3' };
+        const bandit = {};   // per query: { native: [alpha, beta], learned: [alpha, beta], picks: {native, learned} }
+        const logLines = [];
+
+        const $ = id => document.getElementById(id);
+        const fmt = n => n >= 1e6 ? (n / 1e6).toFixed(n >= 1e7 ? 0 : 2) + 'M' : n >= 1e4 ? Math.round(n / 1e3) + 'K' : n.toLocaleString();
+        const qerr = (est, act) => Math.max(est / act, act / est);
+
+        // ==================== Settings UI ====================
+        function renderSettings() {
+            document.querySelectorAll('.mode').forEach(b => {
+                b.setAttribute('aria-pressed', String(b.dataset.mode === state.mode));
+                b.disabled = !state.enabled;
+            });
+            $('threshold').disabled = !state.enabled;
+            $('telemetry').disabled = !state.enabled;
+            $('mode-desc').innerHTML = state.enabled ? MODE_DESC[state.mode] : 'The learned estimator is switched off. Every estimate comes from DuckDB.';
+            $('threshold-val').textContent = state.threshold.toFixed(2);
+            $('set-sql').innerHTML =
+                `<span class="kw">SET</span> learned_ce_enabled = <span class="num">${state.enabled}</span>;\n` +
+                (state.enabled ?
+                `<span class="kw">SET</span> learned_ce_mode = <span class="str">'${state.mode}'</span>;\n` +
+                `<span class="kw">SET</span> learned_ce_model_path = <span class="str">'artifacts/model.onnx'</span>;\n` +
+                `<span class="kw">SET</span> learned_ce_confidence_threshold = <span class="num">${state.threshold.toFixed(2)}</span>;\n` +
+                `<span class="kw">SET</span> learned_ce_collect_telemetry = <span class="num">${state.telemetry}</span>;` : '');
+            renderPipeline();
+            $('bandit-panel').hidden = !(state.enabled && state.mode === 'adaptive');
+            $('telemetry-panel').hidden = !(state.enabled && state.telemetry && logLines.length);
+            if (!$('bandit-panel').hidden) renderBandit();
+        }
+
+        function renderPipeline(lastSource) {
+            const lit = { jo: 1, ce: 1 };
+            if (state.enabled && state.mode !== 'native') Object.assign(lit, { bridge: 1, feat: 1, gate: 1, onnx: 1 });
+            document.querySelectorAll('.stage').forEach(s => {
+                s.classList.toggle('on', !!lit[s.dataset.s]);
+                const hot = lastSource === 'learned' ? ['onnx', 'gate'] : lastSource === 'native' ? ['ce'] : [];
+                s.classList.toggle('hot', hot.includes(s.dataset.s));
+            });
+        }
+
+        $('enabled').addEventListener('change', e => { state.enabled = e.target.checked; renderSettings(); });
+        $('telemetry').addEventListener('change', e => { state.telemetry = e.target.checked; renderSettings(); });
+        $('threshold').addEventListener('input', e => { state.threshold = +e.target.value; renderSettings(); });
+        document.querySelectorAll('.mode').forEach(b => b.addEventListener('click', () => { state.mode = b.dataset.mode; renderSettings(); }));
+
+        // ==================== Queries ====================
+        function renderQueries() {
+            $('queries').innerHTML = Object.entries(QUERIES).map(([k, q]) =>
+                `<button class="q" role="tab" aria-selected="${k === state.query}" data-q="${k}">${q.name}<small>${q.blurb}</small></button>`).join('');
+            document.querySelectorAll('.q').forEach(b => b.addEventListener('click', () => {
+                state.query = b.dataset.q;
+                renderQueries();
+                $('results').innerHTML = '<p class="empty">Run the query to see which join order the optimizer picks.</p>';
+                renderPipeline();
+                if (!$('bandit-panel').hidden) renderBandit();
+            }));
+            const q = QUERIES[state.query];
+            $('query-sql').innerHTML = q.sql;
+            $('run-note').textContent = `Model confidence for this query shape: ${q.confidence.toFixed(2)}`;
+        }
+
+        // ==================== Bandit (Thompson Sampling) ====================
+        function getBandit(k) {
+            return bandit[k] || (bandit[k] = { native: [1, 1], learned: [1, 1], picks: { native: 0, learned: 0 } });
+        }
+        // Beta(a, b) with integer a, b: the a-th smallest of (a + b - 1) uniforms
+        function sampleBeta(a, b) {
+            const u = Array.from({ length: a + b - 1 }, Math.random).sort((x, y) => x - y);
+            return u[a - 1];
+        }
+        function banditPick(k) {
+            const s = getBandit(k);
+            return sampleBeta(...s.learned) > sampleBeta(...s.native) ? 'learned' : 'native';
+        }
+        function banditUpdate(k, arm) {
+            const q = QUERIES[k], s = getBandit(k);
+            const best = Math.min(q.native.ms, q.learned.ms);
+            const observed = q[arm].ms * (0.9 + Math.random() * 0.2);   // noisy runtime
+            const win = observed <= best * 1.1;
+            s[arm][win ? 0 : 1]++;
+            s.picks[arm]++;
+        }
+        function renderBandit() {
+            const s = getBandit(state.query);
+            const row = (arm) => {
+                const [a, b] = s[arm];
+                const mean = a / (a + b);
+                return `<div class="arm ${arm}"><span>${arm}</span><div class="track"><div class="fill" style="width:${mean * 100}%"></div></div><span>win ${(mean * 100).toFixed(0)}% · ${s.picks[arm]} picks</span></div>`;
+            };
+            $('bandit').innerHTML = row('native') + row('learned') +
+                `<p class="run-note">Bars show the selector's current estimate of how often each estimator yields the fastest plan for <strong style="color:var(--text)">${QUERIES[state.query].name}</strong>.</p>`;
+        }
+        $('run-25').addEventListener('click', () => {
+            for (let i = 0; i < 25; i++) banditUpdate(state.query, banditPick(state.query));
+            renderBandit();
+        });
+        $('bandit-reset').addEventListener('click', () => { delete bandit[state.query]; renderBandit(); });
+
+        // ==================== Run ====================
+        function decide(q) {
+            if (!state.enabled || state.mode === 'native') return { plan: 'native', source: 'native', why: state.enabled ? 'native mode' : 'learned estimator disabled' };
+            if (state.mode === 'shadow') return { plan: 'native', source: 'native', shadow: true, why: 'shadow mode: model estimates are logged, not used' };
+            if (state.mode === 'learned') return { plan: 'learned', source: 'learned', why: 'learned mode' };
+            if (state.mode === 'hybrid') {
+                return q.confidence >= state.threshold
+                    ? { plan: 'learned', source: 'learned', why: `confidence ${q.confidence.toFixed(2)} ≥ threshold ${state.threshold.toFixed(2)}` }
+                    : { plan: 'native', source: 'native', fallback: true, why: `fallback: confidence ${q.confidence.toFixed(2)} < threshold ${state.threshold.toFixed(2)}` };
+            }
+            const arm = banditPick(state.query);
+            return { plan: arm, source: arm, why: `Thompson Sampling picked the ${arm} estimator`, bandit: true };
+        }
+
+        function qBadge(e) {
+            const cls = e < 2 ? 'good' : e < 10 ? 'warn' : 'bad';
+            return `<span class="badge ${cls}">q-error ${e < 10 ? e.toFixed(1) : Math.round(e)}×</span>`;
+        }
+
+        $('run').addEventListener('click', () => {
+            const btn = $('run');
+            btn.disabled = true;
+            btn.textContent = 'Planning…';
+            $('results').innerHTML = '<p class="empty">Optimizing join order…</p>';
+            setTimeout(() => { btn.disabled = false; btn.textContent = 'EXPLAIN ANALYZE ▶'; runQuery(); }, 550);
+        });
+
+        function runQuery() {
+            const q = QUERIES[state.query];
+            const d = decide(q);
+            const plan = q[d.plan];
+            const other = q[d.plan === 'native' ? 'learned' : 'native'];
+            const joins = plan.nodes.filter(n => n.rel);
+            const usedErr = joins.map(n => qerr(d.source === 'learned' ? n.l : n.n, n.a));
+            const median = [...usedErr].sort((a, b) => a - b)[Math.floor(usedErr.length / 2)];
+            const delta = other.ms / plan.ms;
+            const showLearned = state.enabled && state.mode !== 'native';
+
+            const tree = plan.nodes.map(n => {
+                const ind = `indent-${n.d}`;
+                if (n.rel) {
+                    const usedL = d.source === 'learned';
+                    return `<div class="node ${ind}"><span class="op">HASH_JOIN</span> <span class="rel">${n.rel}</span>
+                        <div class="est">
+                            <span class="${!usedL ? 'used' : ''}">native est <b>${fmt(n.n)}</b>${qBadge(qerr(n.n, n.a))}</span>
+                            ${showLearned ? `<span class="${usedL ? 'used' : ''}">learned est <b>${fmt(n.l)}</b>${qBadge(qerr(n.l, n.a))}</span>` : ''}
+                            <span>actual <b>${fmt(n.a)}</b></span>
+                        </div></div>`;
+                }
+                return `<div class="node scan ${ind}"><span class="op" style="color:var(--blue)">SEQ_SCAN</span> ${n.scan} · <b style="color:var(--text)">${fmt(n.rows)}</b> rows</div>`;
+            }).join('');
+
+            const cmpText = d.plan === 'native'
+                ? (delta < 1 ? `<span class="bad">${(1 / delta).toFixed(1)}× slower</span> than the learned plan` : `<span class="good">${delta.toFixed(1)}× faster</span> than the learned plan`)
+                : (delta > 1 ? `<span class="good">${delta.toFixed(1)}× faster</span> than DuckDB's native plan` : `<span class="bad">${(1 / delta).toFixed(1)}× slower</span> than DuckDB's native plan`);
+
+            $('results').innerHTML = `
+                <div class="summary">
+                    <div class="stat"><span>Estimates used</span><strong style="color:${d.source === 'learned' ? 'var(--yellow)' : 'var(--blue)'}">${d.source}</strong><small>${d.why}</small></div>
+                    <div class="stat"><span>Simulated runtime</span><strong>${plan.ms} ms</strong><small>${cmpText}</small></div>
+                    <div class="stat"><span>Median q-error (used)</span><strong class="${median < 2 ? 'good' : median < 10 ? 'warn' : 'bad'}">${median.toFixed(1)}×</strong><small>1.0× = perfect estimate</small></div>
+                    <div class="stat"><span>Result rows</span><strong>${fmt(joins[0].a)}</strong><small>same answer either way</small></div>
+                </div>
+                <div class="plan">${tree}</div>
+                <p class="explain">${q.story}${d.shadow ? '<br><br><strong>Shadow mode:</strong> the learned estimates above were computed and logged, but the plan still follows DuckDB\'s. Switch to <strong>hybrid</strong> or <strong>learned</strong> to let them change the join order.' : ''}</p>
+                <p class="run-note" style="margin-top:10px">The highlighted estimate is the one the optimizer used. q-error = max(estimate / actual, actual / estimate).</p>`;
+
+            renderPipeline(d.source);
+
+            if (d.bandit) { banditUpdate(state.query, d.plan); renderBandit(); }
+
+            if (state.enabled && state.telemetry && state.mode !== 'native') {
+                const ts = new Date().toISOString().slice(11, 19);
+                joins.forEach(n => logLines.unshift(`${ts} mode=${state.mode} query=${state.query} join="${n.rel}" native=${n.n} learned=${n.l} actual=${n.a} used=${d.source}`));
+                $('console').textContent = logLines.slice(0, 60).join('\n');
+            }
+            $('telemetry-panel').hidden = !(state.enabled && state.telemetry && logLines.length);
+        }
+
+        renderSettings();
+        renderQueries();
+    </script>
+</body>
+</html>

@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pavan Srivathsa | AI/ML Engineer</title>
+    <meta name="description" content="Pavan Srivathsa, AI/ML engineer and USC MS CS student. 3+ years building production ML systems: LLM fine-tuning, RAG, agentic systems, and inference.">
+    <meta property="og:title" content="Pavan Srivathsa | AI/ML Engineer">
+    <meta property="og:description" content="AI/ML engineer and USC MS CS student. 3+ years building production ML systems: LLM fine-tuning, RAG, agentic systems, and inference.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pavan-srivathsa.github.io/">
+    <meta property="og:image" content="https://pavan-srivathsa.github.io/portfolio_assets/profile.jpg">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23E50914'/%3E%3Ctext x='16' y='23' font-family='Arial Narrow,Arial,sans-serif' font-weight='700' font-size='17' fill='white' text-anchor='middle'%3EPS%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -482,6 +488,7 @@
 
         .about-image img {
             width: 100%;
+            height: auto;
             border-radius: 10px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             transition: transform 0.4s;
@@ -1074,6 +1081,22 @@
             margin-bottom: 12px;
         }
 
+        .project-content p.project-summary {
+            color: #eee;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .project-note {
+            color: #999;
+            font-size: 13px;
+            font-style: italic;
+        }
+
+        .project-links + .project-note { margin-top: 10px; }
+        .project-tech + .project-note { margin-top: auto; padding-top: 20px; }
+
         .project-content p {
             color: #aaa;
             font-size: 14px;
@@ -1274,6 +1297,15 @@
             transform: translateY(-2px);
         }
 
+        .form-status {
+            margin-top: 14px;
+            font-size: 14px;
+            color: #ccc;
+            min-height: 1.4em;
+        }
+
+        .form-status a { color: white; }
+
         /* ==================== FOOTER ==================== */
         .footer {
             background: linear-gradient(180deg, var(--netflix-black) 0%, #050505 100%);
@@ -1368,7 +1400,25 @@
             .opening-name { font-size: 45px; }
             .hero-title { font-size: 55px; }
             .section-title { font-size: 38px; }
-            .nav-links { display: none; }
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                gap: 0;
+                background: #141414;
+                border-top: 1px solid rgba(255,255,255,0.08);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            }
+            .nav-links.open { display: flex; }
+            .nav-links a {
+                display: block;
+                padding: 14px 4%;
+                font-size: 16px;
+            }
+            .nav-links a::after { display: none; }
             .mobile-menu { display: block; }
             .contact-content { grid-template-columns: 1fr; }
             .about-info { grid-template-columns: 1fr; }
@@ -1411,7 +1461,8 @@
         <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></symbol>
         <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></symbol>
         <symbol id="i-external" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
-        <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+        <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12-7.5a1 1 0 0 0 0-1.72l-12-7.5A1 1 0 0 0 7 4.5Z"/></symbol>
+        <symbol id="i-github"viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
         <symbol id="i-linkedin" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 4.828v6.293zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></symbol>
     </svg>
 
@@ -1429,7 +1480,7 @@
         <nav class="navbar" id="navbar">
             <div class="nav-content">
                 <div class="logo">PAVAN SRIVATHSA</div>
-                <ul class="nav-links">
+                <ul class="nav-links" id="nav-links">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#about">About</a></li>
                     <li><a href="#skills">Skills</a></li>
@@ -1438,7 +1489,7 @@
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
-                <button class="mobile-menu" aria-label="Menu">☰</button>
+                <button class="mobile-menu" aria-label="Menu" aria-controls="nav-links" aria-expanded="false">☰</button>
             </div>
         </nav>
 
@@ -1527,7 +1578,7 @@
             </div>
             <div class="about-content">
                 <div class="about-image reveal">
-                    <img id="about-img" src="portfolio_assets/profile.jpg" alt="Pavan Srivathsa presenting on Gen AI">
+                    <img id="about-img" src="portfolio_assets/profile.jpg" alt="Pavan Srivathsa presenting on Gen AI" width="750" height="1000" loading="lazy">
                     <!-- Fallback placeholder shown if image fails -->
                     <div class="about-placeholder" id="about-placeholder">
                         <span class="placeholder-initials">PS</span>
@@ -1817,7 +1868,8 @@
                     <div class="project-content">
                         <h3>Dapta</h3>
                         <p class="project-meta">2nd Place, LA Hacks AI Hackathon · Oct 2026</p>
-                        <p>Turns repetitive, rule-bound workflows like NDA triage, invoices, and form filling into LoRA specialists on open-weight Qwen models. A router sends confident matches to a hot-swapped adapter with a short prompt and falls back to the base model on unfamiliar inputs. In the NDA-triage proof of concept on Qwen3-1.7B (held-out set), the LoRA reached 85% classification accuracy vs 39% for the full Skill prompt and 95% vs 73% on criteria accuracy, with 87% fewer prompt tokens.</p>
+                        <p class="project-summary">Teaches a small open-source AI model a repetitive task once, so it handles that task faster, cheaper, and more accurately afterward.</p>
+                        <p>Tasks like NDA review, invoices, and form filling get their own lightweight LoRA adapter on an open-weight Qwen model. A router swaps in the right adapter for familiar requests and falls back to the base model for anything new. In the NDA-review proof of concept (Qwen3-1.7B, held-out test set), the adapter was 85% accurate vs 39% for the model given the full written instructions, scored 95% vs 73% on individual review criteria, and used 87% fewer prompt tokens.</p>
                         <div class="project-tech">
                             <span>LoRA</span>
                             <span>PEFT</span>
@@ -1826,8 +1878,9 @@
                             <span>Agents</span>
                         </div>
                         <div class="project-links">
-                            <a href="https://github.com/Pavan-Srivathsa/Dapta" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> GitHub</a>
+                            <a href="demos/dapta/"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg> Try Interactive Mockup</a>
                         </div>
+                        <p class="project-note">Code is in a private repository.</p>
                     </div>
                 </div>
 
@@ -1840,6 +1893,7 @@
                     <div class="project-content">
                         <h3>DuckDB Learned Optimizer</h3>
                         <p class="project-meta">C++ · Experimental</p>
+                        <p class="project-summary">Uses machine learning to help the DuckDB database predict how much data a query will touch, so it can choose faster ways to run it.</p>
                         <p>Learned cardinality estimation for DuckDB's join-order optimizer. A C++ hook on DuckDB's cardinality-estimation path supports native, shadow, learned, hybrid, and adaptive modes, and a Python pipeline trains XGBoost estimators and exports them to ONNX with parity checks. In-engine ONNX inference and a Thompson Sampling selector for adaptive plan choice are in progress; no benchmark results yet.</p>
                         <div class="project-tech">
                             <span>C++</span>
@@ -1849,6 +1903,7 @@
                             <span>Bandits</span>
                         </div>
                         <div class="project-links">
+                            <a href="demos/duckdb/"><svg class="icon" aria-hidden="true"><use href="#i-play"/></svg> Try Interactive Mockup</a>
                             <a href="https://github.com/Pavan-Srivathsa/duckdb-learned-ce" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> GitHub</a>
                         </div>
                     </div>
@@ -1861,6 +1916,7 @@
                     </div>
                     <div class="project-content">
                         <h3>GenAI RAG Chatbot</h3>
+                        <p class="project-summary">A chatbot that answers questions by looking them up in PDFs, databases, and web pages instead of guessing.</p>
                         <p>Retrieval-augmented generation chatbot with LangChain agents and custom tools on Databricks. Answers questions from PDFs, SQL databases, and URLs with context-aware responses. 22% faster response time.</p>
                         <div class="project-tech">
                             <span>LangChain</span>
@@ -1868,6 +1924,7 @@
                             <span>Databricks</span>
                             <span>SQL</span>
                         </div>
+                        <p class="project-note">No public code or demo.</p>
                     </div>
                 </div>
 
@@ -1880,6 +1937,7 @@
                     <div class="project-content">
                         <h3>Meeting Assistant</h3>
                         <p class="project-meta">React · Groq · Whisper</p>
+                        <p class="project-summary">An AI sidekick for live meetings: it writes down what's said, suggests what to ask or say next, and answers questions about the conversation.</p>
                         <p>Real-time meeting assistant that transcribes live audio or uploaded recordings with Whisper Large V3, surfaces three contextual suggestions every 30 seconds, and answers questions in a streaming chat grounded in the transcript. Suggestions come from a single-call, seven-step prompt pipeline that classifies the meeting, scores candidates, and ignores prompt-injection text. Runs entirely in the browser on Groq, with first chat tokens in about 400-800 ms.</p>
                         <div class="project-tech">
                             <span>React</span>
@@ -1892,6 +1950,7 @@
                             <a href="https://github.com/Pavan-Srivathsa/meeting-assistant" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg> GitHub</a>
                             <a href="https://meeting-assistant-chi.vercel.app" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true"><use href="#i-external"/></svg> Live Demo</a>
                         </div>
+                        <p class="project-note">The demo asks for your own Groq API key, saved only in your browser.</p>
                     </div>
                 </div>
             </div>
@@ -1944,7 +2003,8 @@
                     <div class="form-group">
                         <textarea placeholder="Your Message" aria-label="Your message" required></textarea>
                     </div>
-                    <button type="submit" class="btn-submit">Send Message</button>
+                    <button type="submit" class="btn-submit">Send via Email</button>
+                    <p class="form-status" id="form-status" role="status"></p>
                 </form>
             </div>
         </section>
@@ -1994,8 +2054,14 @@
                 setTimeout(typewrite, 40);
             }
         }
-        // Start after opening animation
-        setTimeout(typewrite, 3600);
+        // Start after opening animation (only one typing loop may run)
+        let typewriterStarted = false;
+        function startTypewriter() {
+            if (typewriterStarted) return;
+            typewriterStarted = true;
+            typewrite();
+        }
+        const typewriterTimer = setTimeout(startTypewriter, 3600);
 
         // ==================== Slide management ====================
         let currentSlide = 0;
@@ -2015,7 +2081,26 @@
             currentSlide = index;
         }
 
-        setInterval(() => goToSlide((currentSlide + 1) % slides.length), 5000);
+        // Restart the auto-advance timer whenever a slide is chosen by hand
+        let slideTimer;
+        function restartSlideTimer() {
+            clearInterval(slideTimer);
+            slideTimer = setInterval(() => goToSlide((currentSlide + 1) % slides.length), 5000);
+        }
+        dots.forEach(d => d.addEventListener('click', restartSlideTimer));
+        restartSlideTimer();
+
+        // ==================== Mobile menu ====================
+        const menuBtn = document.querySelector('.mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+        function setMenu(open) {
+            navLinks.classList.toggle('open', open);
+            menuBtn.setAttribute('aria-expanded', String(open));
+            menuBtn.textContent = open ? '✕' : '☰';
+        }
+        menuBtn.addEventListener('click', () => setMenu(!navLinks.classList.contains('open')));
+        navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
 
         // ==================== Navbar scroll ====================
         window.addEventListener('scroll', () => {
@@ -2029,7 +2114,8 @@
                 o.style.animation = 'fadeOutOpening 0.4s ease forwards';
                 document.querySelector('.main-content').style.animation = 'fadeIn 0.4s ease forwards';
                 // Start typewriter immediately on skip
-                setTimeout(typewrite, 500);
+                clearTimeout(typewriterTimer);
+                setTimeout(startTypewriter, 500);
             }
         });
 
@@ -2042,10 +2128,16 @@
         });
 
         // ==================== Form handler ====================
+        // No backend: the form opens the visitor's email app with the message prefilled.
+        const CONTACT_EMAIL = 'pavansri@usc.edu';
         function handleSubmit(e) {
             e.preventDefault();
-            alert('Thanks for reaching out! I\'ll get back to you soon.');
-            e.target.reset();
+            const [name, email, subject, message] = [...e.target.querySelectorAll('input, textarea')].map(f => f.value.trim());
+            const body = `${message}\n\n${name}\n${email}`;
+            const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject || `Hello from ${name}`)}&body=${encodeURIComponent(body)}`;
+            document.getElementById('form-status').innerHTML =
+                `Opening your email app to send this message. If nothing opens, email me directly at <a href="mailto:${CONTACT_EMAIL}">${CONTACT_EMAIL}</a>.`;
+            window.location.href = href;
         }
 
         // ==================== Smooth scroll ====================
